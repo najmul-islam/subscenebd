@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
+const fileUpoad = require("express-fileupload");
 const errorHandler = require("./middlewares/errorMiddleare");
 const connectDB = require("./config/db");
 
@@ -9,9 +10,16 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  fileUpoad({
+    createParentPath: true,
+  })
+);
 
 // routes
 app.use("/api/users", require("./routes/userRoute"));
+app.use("/api/subs", require("./routes/subRoute"));
+
 // serve frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
