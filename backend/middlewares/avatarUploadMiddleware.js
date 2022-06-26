@@ -1,23 +1,22 @@
 const asyncHandler = require("express-async-handler");
 const path = require("path");
 
-const subUpload = asyncHandler(async (req, res, next) => {
-  const { title, year } = req.body;
-  const subtitle = req.files.subtitle;
-  console.log(subtitle);
-  if (!subtitle) {
+const avatarUpload = asyncHandler(async (req, res, next) => {
+  console.log(req.user);
+  const avatar = req.files.avatar;
+  if (!avatar) {
     res.status(400);
-    throw new Error("Please add a subtitle");
+    throw new Error("Please add a avatar");
   }
-  const subSize = subtitle.size;
-  const extension = path.extname(subtitle.name);
+  const avatarSize = avatar.size;
+  const extension = path.extname(avatar.name);
 
   // check file format
-  const allowedExtensions = /zip|srt|style|sub|txt|ssa|ass|smi/;
+  const allowedExtensions = /jpg|png/;
   if (!allowedExtensions.test(extension)) {
     res.status(400);
     throw new Error(
-      `File format ${extension} not supported. Allowed formats are: txt, smi, srt, ssa, sub, ass, style.`
+      `File format ${extension} not supported. Allowed formats are: jpg, png`
     );
   }
 
@@ -64,9 +63,8 @@ const subUpload = asyncHandler(async (req, res, next) => {
   );
 
   await subtitle.mv(subPath);
-  req.sublink = `/uploads/subtitles/${subName}`;
-  req.mimetype = subtitle.mimetype;
+  req.subPath = subPath;
   next();
 });
 
-module.exports = subUpload;
+module.exports = avatarUpload;

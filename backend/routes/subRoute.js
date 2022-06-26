@@ -4,12 +4,14 @@ const {
   getAllSub,
   getSingleSub,
   createSub,
+  downloadSub,
 } = require("../controllers/subController");
 
-const upload = require("../middlewares/subUploadMiddleware");
+const subUpload = require("../middlewares/subUploadMiddleware");
 
 router.get("/", getAllSub);
+router.post("/", subUpload, createSub);
 router.get("/:id", getSingleSub);
-router.post("/", upload, createSub);
+router.get("/:id/download", downloadSub);
 
 module.exports = router;

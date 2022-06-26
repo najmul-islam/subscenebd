@@ -2,22 +2,37 @@ const mongoose = require("mongoose");
 
 const subSchema = mongoose.Schema(
   {
-    sub: {
-      type: String,
-    },
     title: {
       type: String,
     },
-    year: {
+    description: {
       type: String,
     },
     releaseName: {
       type: String,
     },
+    releaseDate: {
+      type: String,
+    },
+    mediaType: {
+      type: String,
+    },
+    mimetype: {
+      type: String,
+    },
+    sublink: {
+      type: String,
+    },
+    posterPath: {
+      type: String,
+    },
+    genres: {
+      type: Array,
+    },
     releaseType: {
       type: String,
       enum: [
-        "Dont know",
+        "Don't know",
         "Cam",
         "Telesync",
         "DVD",
@@ -27,9 +42,6 @@ const subSchema = mongoose.Schema(
         "Other",
       ],
       default: "Dont know",
-    },
-    about: {
-      type: String,
     },
   },
   { timestamps: true }

@@ -1,15 +1,17 @@
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
 const fileUpoad = require("express-fileupload");
 const errorHandler = require("./middlewares/errorMiddleare");
 const connectDB = require("./config/db");
-
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static("public"));
 app.use(
   fileUpoad({
     createParentPath: true,

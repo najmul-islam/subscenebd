@@ -1,6 +1,5 @@
 const path = require("path");
 const asyncHandler = require("express-async-handler");
-const genSubname = require("../helpers/genSubname");
 const Sub = require("../models/subModel");
 
 // get all sub
@@ -21,14 +20,52 @@ const getSingleSub = asyncHandler(async (req, res) => {
 
 // create sub
 const createSub = asyncHandler(async (req, res) => {
-  const { title, year, releaseName, releaseType, about } = req.body;
-  const subPath = req.subPath;
-  console.log(subPath);
-  res.status(200).json();
+  const {
+    title,
+    description,
+    releaseName,
+    releaseType,
+    releaseDate,
+    mediaType,
+    posterPath,
+    genres,
+  } = req.body;
+
+  const sublink = req.sublink;
+  const mimetype = req.mimetype;
+
+  if (!title && !year) {
+    res.status(400);
+    throw new Error("please title and year field");
+  }
+
+  const newSub = await Sub.create({
+    sublink,
+    title,
+    description,
+    releaseName,
+    releaseType,
+    releaseDate,
+    mimetype,
+    mediaType,
+    posterPath,
+    genres,
+  });
+
+  res.status(200).json(newSub);
+});
+
+const downloadSub = asyncHandler(async (req, res) => {
+  const subtitle = await Sub.findById(req.params.id);
+  res.set({
+    "Content-Type": subtitle.mimetype,
+  });
+  res.sendFile(path.join(__dirname, "../public", subtitle.sublink));
 });
 
 module.exports = {
   getAllSub,
   getSingleSub,
   createSub,
+  downloadSub,
 };
