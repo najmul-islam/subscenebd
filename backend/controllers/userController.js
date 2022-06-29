@@ -80,8 +80,15 @@ const profile = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
 
+// get all user
+const getAllUser = asyncHandler(async (req, res) => {
+  const Users = await User.find({});
+  res.status(200).json(Users);
+});
+
 module.exports = {
   registerUser,
   loginUser,
   profile,
+  getAllUser,
 };

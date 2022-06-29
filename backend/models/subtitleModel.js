@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const subSchema = mongoose.Schema(
+const subtitleSchema = mongoose.Schema(
   {
     title: {
       type: String,
@@ -47,4 +47,4 @@ const subSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Sub", subSchema);
+module.exports = mongoose.model("Subtitle", subtitleSchema);

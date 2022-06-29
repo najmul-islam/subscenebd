@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const path = require("path");
 
-const subUpload = asyncHandler(async (req, res, next) => {
+const subtitleUpload = asyncHandler(async (req, res, next) => {
   const { title, year } = req.body;
   const subtitle = req.files.subtitle;
   console.log(subtitle);
@@ -69,4 +69,4 @@ const subUpload = asyncHandler(async (req, res, next) => {
   next();
 });
 
-module.exports = subUpload;
+module.exports = subtitleUpload;

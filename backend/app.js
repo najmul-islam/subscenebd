@@ -20,7 +20,7 @@ app.use(
 
 // routes
 app.use("/api/users", require("./routes/userRoute"));
-app.use("/api/subs", require("./routes/subRoute"));
+app.use("/api/subtitles", require("./routes/subtitleRoute"));
 
 // serve frontend
 if (process.env.NODE_ENV === "production") {
