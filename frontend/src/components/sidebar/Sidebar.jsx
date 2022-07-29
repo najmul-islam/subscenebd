@@ -1,4 +1,4 @@
-import { useHeader } from "../../contexts/HeaderContext";
+import useHeader from "../../hooks/HeaderHook";
 import { Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import SidebarList from "./SidebarList";

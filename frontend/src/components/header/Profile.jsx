@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useHeader } from "../../contexts/HeaderContext";
-import { useNavigate } from "react-router-dom";
+import useColorMode from "../../hooks/ColorModeHook";
 import HeaderListItem from "./HeaderListItem";
 import {
   Avatar,
@@ -19,11 +18,13 @@ import {
   EmailOutlined,
   FileDownloadOutlined,
   ExitToAppOutlined,
-  NightlightRoundOutlined,
   BookmarksOutlined,
+  NightlightRoundOutlined,
+  LightModeOutlined,
 } from "@mui/icons-material";
-
+// import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 const Profile = () => {
+  const { mode, toggleColor } = useColorMode();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
 
@@ -99,11 +100,17 @@ const Profile = () => {
         </ListItem>
         <Divider />
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={toggleColor}>
             <ListItemIcon sx={{ minWidth: "35px" }}>
-              <NightlightRoundOutlined />
+              {mode === "dark" ? (
+                <LightModeOutlined />
+              ) : (
+                <NightlightRoundOutlined />
+              )}
             </ListItemIcon>
-            <ListItemText>Appearance</ListItemText>
+            <ListItemText>
+              {mode === "dark" ? "Light Mode" : "Dark Mode"}
+            </ListItemText>
           </ListItemButton>
         </ListItem>
       </Menu>

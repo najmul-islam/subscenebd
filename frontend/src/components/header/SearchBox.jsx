@@ -2,7 +2,7 @@ import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-
+console.log(styled);
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -12,10 +12,10 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginLeft: 0,
   maxWidth: "600px",
-  // [theme.breakpoints.up("md")]: {
-  //   marginLeft: theme.spacing(1),
-  //   width: "auto",
-  // },
+  [theme.breakpoints.up("md")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -35,7 +35,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-    width: "100%",
+    // width: "100%",
     [theme.breakpoints.up("sm")]: {
       width: "600px",
       "&:focus": {

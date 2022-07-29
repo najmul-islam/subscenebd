@@ -1,4 +1,4 @@
-import { useHeader } from "../../contexts/HeaderContext";
+import useHeader from "../../hooks/HeaderHook";
 import { useNavigate } from "react-router-dom";
 import {
   ListItem,

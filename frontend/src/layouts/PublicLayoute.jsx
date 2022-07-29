@@ -1,11 +1,14 @@
 import React from "react";
-import { useHeader } from "../contexts/HeaderContext";
+import useHeader from "../hooks/HeaderHook";
 import { Outlet } from "react-router-dom";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 import Sidebar from "../components/sidebar/Sidebar";
+import GoToTop from "../components/others/GoToTop";
 import Footer from "../components/footer/Footer";
+import Fab from "@mui/material/Fab";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-const PublicLayoute = () => {
+const PublicLayoute = (props) => {
   const { drawerWidth } = useHeader();
   return (
     <Box sx={{ display: "flex" }}>
@@ -21,6 +24,7 @@ const PublicLayoute = () => {
         <CssBaseline />
         <Toolbar sx={{ minHeight: "64px" }} />
         <Outlet />
+        <GoToTop />
         <Footer />
       </Box>
     </Box>

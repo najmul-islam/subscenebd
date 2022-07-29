@@ -3,14 +3,13 @@ import HeaderListItem from "./HeaderListItem";
 import { Menu, IconButton, Typography, Divider, Tooltip } from "@mui/material";
 
 import {
-  Upload,
-  UploadOutlined,
+  PostAddOutlined,
   MovieOutlined,
   SmartDisplayOutlined,
   MovieFilterOutlined,
   MusicVideoOutlined,
 } from "@mui/icons-material";
-import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
+
 const Uploads = () => {
   const [anchorElCreate, setAnchorElCreate] = useState(null);
 
@@ -28,12 +27,7 @@ const Uploads = () => {
     <>
       <Tooltip title="Add Subtitle">
         <IconButton onClick={handleOpenCreateMenu}>
-          {/* {open ? (
-            <Upload sx={{ fontSize: "25px", color: "white" }} />
-          ) : (
-            <UploadOutlined sx={{ fontSize: "25px", color: "white" }} />
-          )} */}
-          <PostAddOutlinedIcon sx={{ fontSize: "25px", color: "white" }} />
+          <PostAddOutlined sx={{ fontSize: "25px", color: "white" }} />
         </IconButton>
       </Tooltip>
       <Menu

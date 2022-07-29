@@ -1,4 +1,4 @@
-import { useHeader } from "../../contexts/HeaderContext";
+import useHeader from "../../hooks/HeaderHook";
 import Logo from "./Logo";
 import Profile from "./Profile";
 import Uploads from "./Uploads";
@@ -32,8 +32,8 @@ const Header = () => {
             <Logo />
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {/* <SearchBox /> */}
+          <Box>
+            <SearchBox />
           </Box>
 
           <Box>

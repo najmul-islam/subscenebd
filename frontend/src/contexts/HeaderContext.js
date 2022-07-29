@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
 
-const HeaderContext = createContext();
+export const HeaderContext = createContext();
 
 export const HeaderProvider = ({ children }) => {
   // toggle button
@@ -30,6 +30,6 @@ export const HeaderProvider = ({ children }) => {
   );
 };
 
-export const useHeader = () => {
-  return useContext(HeaderContext);
-};
+// export const useHeader = () => {
+//   return useContext(HeaderContext);
+// };
