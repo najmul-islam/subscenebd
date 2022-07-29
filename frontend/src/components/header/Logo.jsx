@@ -1,0 +1,25 @@
+import { useHeader } from "../../contexts/HeaderContext";
+import { IconButton, Typography } from "@mui/material";
+import { Menu } from "@mui/icons-material";
+
+const Logo = () => {
+  const { toggleSidebar, setToggleSidebar } = useHeader();
+  return (
+    <>
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        edge="start"
+        onClick={() => setToggleSidebar(!toggleSidebar)}
+        sx={{ mr: 2, p: "10px" }}
+      >
+        <Menu />
+      </IconButton>
+      <Typography variant="h6" noWrap component="div">
+        Drawer
+      </Typography>
+    </>
+  );
+};
+
+export default Logo;

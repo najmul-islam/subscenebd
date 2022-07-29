@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const genToken = require("../helpers/genToken");
 const User = require("../models/userModel");
+const Subtitle = require("../models/subtitleModel");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -86,9 +87,32 @@ const getAllUser = asyncHandler(async (req, res) => {
   res.status(200).json(Users);
 });
 
+// get single user
+const singleUser = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const user = await User.findById({ _id: id }).select("-password -email");
+
+  if (!user) {
+    res.status(400);
+    throw new Error("There no user with this id");
+  }
+  res.status(200).json(user);
+});
+
+// get single user subtitle
+const singleUserSubtitle = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+
+  const subtitles = await Subtitle.find({ user: id });
+
+  res.status(200).json(subtitles);
+});
+
 module.exports = {
   registerUser,
   loginUser,
   profile,
   getAllUser,
+  singleUser,
+  singleUserSubtitle,
 };

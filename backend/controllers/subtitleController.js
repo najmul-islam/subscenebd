@@ -19,6 +19,11 @@ const getSingleSubtitle = asyncHandler(async (req, res) => {
   res.status(200).json(subtitle);
 });
 
+// get user subtitle
+const getUserSubtitle = asyncHandler(async (req, res) => {
+  const subtitles = await Subtitle.find({ user: req.user.id });
+});
+
 // create sub
 const createSubtitle = asyncHandler(async (req, res) => {
   const {
@@ -41,6 +46,7 @@ const createSubtitle = asyncHandler(async (req, res) => {
   }
 
   const newSubtitle = await Subtitle.create({
+    user: req.user.id,
     sublink,
     title,
     description,

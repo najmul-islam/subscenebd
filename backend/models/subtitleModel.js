@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const subtitleSchema = mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     title: {
       type: String,
     },
@@ -31,17 +36,7 @@ const subtitleSchema = mongoose.Schema(
     },
     releaseType: {
       type: String,
-      enum: [
-        "Don't know",
-        "Cam",
-        "Telesync",
-        "DVD",
-        "BluRay",
-        "TV",
-        "Web",
-        "Other",
-      ],
-      default: "Dont know",
+      enum: ["CAM", "DVD", "HDR", "TV", "WEB", "BR"],
     },
   },
   { timestamps: true }
