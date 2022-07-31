@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, createContext } from "react";
 
 export const HeaderContext = createContext();
 
@@ -29,7 +29,3 @@ export const HeaderProvider = ({ children }) => {
     </HeaderContext.Provider>
   );
 };
-
-// export const useHeader = () => {
-//   return useContext(HeaderContext);
-// };

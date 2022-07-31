@@ -1,4 +1,3 @@
-import useHeader from "../../hooks/HeaderHook";
 import Logo from "./Logo";
 import Profile from "./Profile";
 import Uploads from "./Uploads";
@@ -8,8 +7,6 @@ import SearchBox from "./SearchBox";
 import { Box, AppBar, Toolbar } from "@mui/material";
 
 const Header = () => {
-  const { drawerWidth } = useHeader();
-
   return (
     <>
       <AppBar
@@ -32,9 +29,7 @@ const Header = () => {
             <Logo />
           </Box>
 
-          <Box>
-            <SearchBox />
-          </Box>
+          <SearchBox />
 
           <Box>
             <Uploads />

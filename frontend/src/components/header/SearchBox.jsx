@@ -1,60 +1,67 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-console.log(styled);
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  maxWidth: "600px",
-  [theme.breakpoints.up("md")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
+import React from "react";
+import { IconButton, InputBase, Tooltip, styled } from "@mui/material";
+import { SearchRounded } from "@mui/icons-material";
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
+const Search = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.primary,
+  width: "35%",
   display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  // justifyContent: "end",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  width: "100%",
+  display: "flex",
+  justifyContent: "end",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    // width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "600px",
-      "&:focus": {
-        maxWidth: "700px",
-      },
+    width: "80%",
+    padding: "5px 15px",
+    border: "1px solid",
+    borderColor: theme.palette.primary,
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderBottomLeftRadius: theme.shape.borderRadius,
+    fontSize: "18px",
+    fontWeight: theme.typography.fontWeightRegular,
+    "&:focus": {
+      width: "90%",
     },
+    // padding: theme.spacing(1, 2),
+    // padding: "10px 20px",
+    // padding: `calc(1em + ${theme.spacing(4)})`,
+    // transition: theme.transitions.create("width"),
+    // "&:focus": {
+    //   border: "2px solid",
+    // },
+    // width: "100%",
+    // [theme.breakpoints.up("sm")]: {
+    //   maxWidth: "600px",
+    //   "&:focus": {
+    //     maxWidth: "600px",
+    //   },
+    // },
   },
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  padding: "0px 15px",
+  borderTop: "1px solid",
+  borderRight: "1px solid",
+  borderBottom: "1px solid",
+  borderTopLeftRadius: "0",
+  borderBottomLeftRadius: "0",
+  borderTopRightRadius: theme.shape.borderRadius,
+  borderBottomRightRadius: theme.shape.borderRadius,
 }));
 
 const SearchBox = () => {
   return (
     <Search>
-      <SearchIconWrapper>
-        <SearchIcon />
-      </SearchIconWrapper>
-      <StyledInputBase
-        placeholder="Search…"
-        inputProps={{ "aria-label": "search" }}
-      />
+      <StyledInputBase placeholder="Search..." />
+      <Tooltip title="search">
+        <StyledIconButton sx={{ minWidth: "35px" }} aria-label="search">
+          <SearchRounded />
+        </StyledIconButton>
+      </Tooltip>
     </Search>
   );
 };

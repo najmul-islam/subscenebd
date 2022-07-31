@@ -11,7 +11,15 @@ const Logo = () => {
         aria-label="open drawer"
         edge="start"
         onClick={() => setToggleSidebar(!toggleSidebar)}
-        sx={{ mr: 2, p: "10px" }}
+        sx={{ mr: 2, p: "10px", display: { xs: "inline-flex", md: "none" } }}
+      >
+        <Menu />
+      </IconButton>
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        edge="start"
+        sx={{ mr: 2, p: "10px", display: { md: "inline-flex", xs: "none" } }}
       >
         <Menu />
       </IconButton>

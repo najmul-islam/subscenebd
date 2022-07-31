@@ -2,13 +2,12 @@ import React from "react";
 import useHeader from "../hooks/HeaderHook";
 import { Outlet } from "react-router-dom";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
+// component
 import Sidebar from "../components/sidebar/Sidebar";
 import GoToTop from "../components/others/GoToTop";
 import Footer from "../components/footer/Footer";
-import Fab from "@mui/material/Fab";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-const PublicLayoute = (props) => {
+const PublicLayoute = () => {
   const { drawerWidth } = useHeader();
   return (
     <Box sx={{ display: "flex" }}>
