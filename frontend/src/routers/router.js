@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 // layout
 import PublicLayoute from "../layouts/PublicLayoute";
 import PrivateLayoutes from "../layouts/PrivateLayoutes";
+import PriveteRoute from "./PriveteRoute";
 // public
 import Latest from "./LatestRoute";
 import Popular from "./PopularRoute";
@@ -11,6 +12,9 @@ import Movies from "./MoviesRoute";
 import Series from "./SeriesRoute";
 import ShortFilm from "./ShortFilmsRoute";
 import Music from "./MusicsRoute";
+// authentication
+import Register from "./RegisterRoute";
+import Login from "./LoginRoute";
 // user
 import Profile from "./ProfileRoute";
 import Messages from "./MessagesRoute";
@@ -38,17 +42,24 @@ const Router = () => {
         <Route path="/series" element={<Series />} />
         <Route path="/short-films" element={<ShortFilm />} />
         <Route path="/musics" element={<Music />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+
         {/* private route */}
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/user/subtitles" element={<Subtitles />} />
-        <Route path="/user/messages" element={<Messages />} />
-        <Route path="/user/bookmarks" element={<Bookmarks />} />
-        <Route path="/user/downloads" element={<Downloads />} />
+        <Route path="/user/*" element={<PriveteRoute />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="subtitles" element={<Subtitles />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="bookmarks" element={<Bookmarks />} />
+          <Route path="downloads" element={<Downloads />} />
+        </Route>
         {/* upload */}
-        <Route path="/upload/movie" element={<MovieUpload />} />
-        <Route path="/upload/series" element={<SeriesUpload />} />
-        <Route path="/upload/short-film" element={<ShortFilmUpload />} />
-        <Route path="/upload/music" element={<MusicUpload />} />
+        <Route path="/upload/*" element={<PriveteRoute />}>
+          <Route path="movie" element={<MovieUpload />} />
+          <Route path="series" element={<SeriesUpload />} />
+          <Route path="short-film" element={<ShortFilmUpload />} />
+          <Route path="music" element={<MusicUpload />} />
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Route>

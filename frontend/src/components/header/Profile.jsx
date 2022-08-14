@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import useColorMode from "../../hooks/ColorModeHook";
 import HeaderListItem from "./HeaderListItem";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../features/auth/authSlice";
+
 import {
   Avatar,
   Menu,
@@ -27,6 +31,9 @@ const Profile = () => {
   const { mode, toggleColor } = useColorMode();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
+  const { user, reset } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -36,10 +43,18 @@ const Profile = () => {
     setAnchorElUser(null);
   };
 
+  const onLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <>
       <IconButton onClick={handleOpenUserMenu}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+        <Avatar
+          alt={user.name.toUpperCase()}
+          src="/static/images/avatar/2.jpg"
+        />
       </IconButton>
       <Menu
         anchorEl={anchorElUser}
@@ -56,8 +71,11 @@ const Profile = () => {
       >
         <ListItem disablePadding>
           <ListItemButton>
-            <Avatar />
-            <ListItemText sx={{ ml: 2 }}> Najmul Islam</ListItemText>
+            <Avatar
+              alt={user.name.toUpperCase()}
+              src="/static/images/avatar/2.jpg"
+            />
+            <ListItemText sx={{ ml: 2 }}>{user.name}</ListItemText>
           </ListItemButton>
         </ListItem>
 
@@ -91,7 +109,7 @@ const Profile = () => {
         />
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={onLogout}>
             <ListItemIcon sx={{ minWidth: "35px" }}>
               <ExitToAppOutlined />
             </ListItemIcon>
