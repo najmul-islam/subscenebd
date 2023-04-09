@@ -1,42 +1,44 @@
 import { Routes, Route } from "react-router-dom";
 // layout
-import PublicLayoute from "../layouts/PublicLayoute";
-import PrivateLayoutes from "../layouts/PrivateLayoutes";
-import PriveteRoute from "./PriveteRoute";
+import PublicLayout from "../layouts/PublicLayout";
+import UsersLayoute from "../layouts/UsersLayout";
+
 // public
-import Latest from "./LatestRoute";
-import Popular from "./PopularRoute";
-import Home from "./HomeRoute";
-import All from "./AllRoute";
-import Movies from "./MoviesRoute";
-import Series from "./SeriesRoute";
-import ShortFilm from "./ShortFilmsRoute";
-import Music from "./MusicsRoute";
+import Latest from "./public/LatestRoute";
+import Popular from "./public/PopularRoute";
+import Home from "./public/HomeRoute";
+import All from "./public/AllRoute";
+import Movies from "./public/MoviesRoute";
+import Series from "./public/SeriesRoute";
+import ShortFilm from "./public/ShortFilmsRoute";
+import Music from "./public/MusicsRoute";
+
 // authentication
-import Register from "./RegisterRoute";
-import Login from "./LoginRoute";
+import Register from "./shared/RegisterRoute";
+import Login from "./shared/LoginRoute";
+
 // user
-import Profile from "./ProfileRoute";
-import Messages from "./MessagesRoute";
-import Bookmarks from "./BookmarksRoute";
-import Subtitles from "./SubtitlesRoute";
-import Downloads from "./DownloadsRoute";
+import Profile from "./user/ProfileRoute";
+import Messages from "./user/MessagesRoute";
+import Bookmarks from "./user/BookmarksRoute";
+import Subtitles from "./user/SubtitlesRoute";
+import Downloads from "./user/DownloadsRoute";
 // upload
-import MovieUpload from "./MoiveUploadRoute";
+import MovieUpload from "./user/MoiveUploadRoute";
 import SeriesUpload from "../pages/SeriesUploadPage";
-import ShortFilmUpload from "./ShortFilmUploadRoute";
-import MusicUpload from "./MusicUploadRoute";
+import ShortFilmUpload from "./user/ShortFilmUploadRoute";
+import MusicUpload from "./user/MusicUploadRoute";
 // components
 import SearchMovie from "../components/uploads/SearchMovie";
 import UploadMovie from "../components/uploads/UploadMovie";
 
-import NotFound from "./NotFoundRoute";
+import NotFound from "./shared/NotFoundRoute";
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<PublicLayoute />}>
-        {/* public route */}
+      {/* public route */}
+      <Route path="/" element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/latest" element={<Latest />} />
         <Route path="/popular" element={<Popular />} />
@@ -47,27 +49,27 @@ const Router = () => {
         <Route path="/musics" element={<Music />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
-        {/* private route */}
-        <Route path="/user/*" element={<PriveteRoute />}>
-          <Route path="profile" element={<Profile />} />
-          <Route path="subtitles" element={<Subtitles />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="bookmarks" element={<Bookmarks />} />
-          <Route path="downloads" element={<Downloads />} />
-        </Route>
-        {/* upload */}
-        <Route path="/upload/*" element={<PriveteRoute />}>
-          <Route path="movie/search" element={<SearchMovie />} />
-          <Route path="movie/upload" element={<UploadMovie />} />
-
-          <Route path="series" element={<SeriesUpload />} />
-          <Route path="short-film" element={<ShortFilmUpload />} />
-          <Route path="music" element={<MusicUpload />} />
-        </Route>
-
-        <Route path="*" element={<NotFound />} />
       </Route>
+
+      {/* user route */}
+      <Route path="/user/*" element={<UsersLayoute roles={["user"]} />}>
+        <Route path="profile" element={<Profile />} />
+        <Route path="subtitles" element={<Subtitles />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="bookmarks" element={<Bookmarks />} />
+        <Route path="downloads" element={<Downloads />} />
+      </Route>
+      {/* user upload */}
+      <Route path="/upload/*" element={<UsersLayoute roles={["user"]} />}>
+        <Route path="movie/search" element={<SearchMovie />} />
+        <Route path="movie/upload" element={<UploadMovie />} />
+
+        <Route path="series" element={<SeriesUpload />} />
+        <Route path="short-film" element={<ShortFilmUpload />} />
+        <Route path="music" element={<MusicUpload />} />
+      </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

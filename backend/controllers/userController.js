@@ -1,6 +1,4 @@
 const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
-const genToken = require("../helpers/genToken");
 const User = require("../models/userModel");
 const Subtitle = require("../models/subtitleModel");
 
@@ -34,15 +32,11 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error(`Email <b>${email}</b> is already taken`);
   }
 
-  // hash password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
   // create user
   const user = await User.create({
     name,
     email,
-    password: hashedPassword,
+    password,
   });
 
   if (user) {
@@ -50,6 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
+      token: user.generateToken(),
     });
   } else {
     res.status(400);
@@ -63,12 +58,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (user && (await bcrypt.compare(password, user.password))) {
+  if (user && (await user.isValidPassword(password))) {
     res.json({
       _id: user.id,
       name: user.name,
       email: user.email,
-      token: genToken(user._id),
+      token: user.generateToken(),
     });
   } else {
     res.status(400);
@@ -83,8 +78,8 @@ const profile = asyncHandler(async (req, res) => {
 
 // get all user
 const getAllUser = asyncHandler(async (req, res) => {
-  const Users = await User.find({});
-  res.status(200).json(Users);
+  const users = await User.find({});
+  res.status(200).json({ nbHits: users.length, users });
 });
 
 // get single user

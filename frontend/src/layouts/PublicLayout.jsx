@@ -7,7 +7,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import GoToTop from "../components/others/GoToTop";
 import Footer from "../components/footer/Footer";
 
-const PublicLayoute = () => {
+const PublicLayout = () => {
   const { drawerWidth } = useHeader();
   return (
     <Box sx={{ display: "flex" }}>
@@ -30,4 +30,4 @@ const PublicLayoute = () => {
   );
 };
 
-export default PublicLayoute;
+export default PublicLayout;

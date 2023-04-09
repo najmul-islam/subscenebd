@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
-import Loading from "../components/loading/Loading";
-const All = lazy(() => import("../pages/AllPage"));
+import Loading from "../../components/loading/Loading";
+const All = lazy(() => import("../../pages/public/AllPage"));
 
 const AllRoute = () => {
   return (

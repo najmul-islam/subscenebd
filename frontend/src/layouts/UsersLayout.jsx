@@ -1,11 +1,14 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import Footer from "../components/footer/Footer";
 
-const PrivateLayoutes = () => {
-  return (
+const UsersLayout = ({ roles = [] }) => {
+  const { user } = useSelector((state) => state.auth);
+
+  return !roles.length || roles.includes(user?.role) ? (
     <>
       <header>
         <Header />
@@ -20,7 +23,9 @@ const PrivateLayoutes = () => {
         <Footer />
       </footer>
     </>
+  ) : (
+    <Navigate to="/login" replace />
   );
 };
 
-export default PrivateLayoutes;
+export default UsersLayout;

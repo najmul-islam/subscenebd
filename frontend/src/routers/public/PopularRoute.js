@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import Loading from "../components/loading/Loading";
+import Loading from "../../components/loading/Loading";
 const Popular = lazy(() => import("../pages/PopularPage"));
 
 const PopularRoute = () => {

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import Loading from "../components/loading/Loading";
+import Loading from "../../components/loading/Loading";
 const MovieUpload = lazy(() => import("../pages/MovieUploadPage"));
 
 const MovieUploadRoute = () => {
