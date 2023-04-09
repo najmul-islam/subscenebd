@@ -49,7 +49,7 @@ const Uploads = () => {
 
         <Divider />
         <HeaderListItem
-          link="/upload/movie"
+          link="/upload/movie/search"
           icon={<MovieOutlined />}
           text="Movie"
         />

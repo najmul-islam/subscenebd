@@ -15,6 +15,7 @@
     "axios": "^0.27.2",
     "downloadjs": "^1.4.7",
     "formik": "^2.2.9",
+    "jodit-react": "^1.3.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",

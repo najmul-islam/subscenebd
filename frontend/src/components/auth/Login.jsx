@@ -31,7 +31,10 @@ const AuthLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
+    ({ auth }) => {
+      console.log("state", auth);
+      return auth;
+    }
   );
 
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +57,7 @@ const AuthLogin = () => {
       .required("Email is required"),
     password: Yup.string().max(255).required("Password is required"),
   });
+
   const onSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     try {
       setStatus({ success: false });

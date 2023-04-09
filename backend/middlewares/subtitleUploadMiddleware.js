@@ -4,7 +4,7 @@ const path = require("path");
 const subtitleUpload = asyncHandler(async (req, res, next) => {
   const { title, year } = req.body;
   const subtitle = req.files.subtitle;
-  console.log(subtitle);
+  // console.log(subtitle);
   if (!subtitle) {
     res.status(400);
     throw new Error("Please add a subtitle");

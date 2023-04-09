@@ -26,6 +26,9 @@ import MovieUpload from "./MoiveUploadRoute";
 import SeriesUpload from "../pages/SeriesUploadPage";
 import ShortFilmUpload from "./ShortFilmUploadRoute";
 import MusicUpload from "./MusicUploadRoute";
+// components
+import SearchMovie from "../components/uploads/SearchMovie";
+import UploadMovie from "../components/uploads/UploadMovie";
 
 import NotFound from "./NotFoundRoute";
 
@@ -55,7 +58,9 @@ const Router = () => {
         </Route>
         {/* upload */}
         <Route path="/upload/*" element={<PriveteRoute />}>
-          <Route path="movie" element={<MovieUpload />} />
+          <Route path="movie/search" element={<SearchMovie />} />
+          <Route path="movie/upload" element={<UploadMovie />} />
+
           <Route path="series" element={<SeriesUpload />} />
           <Route path="short-film" element={<ShortFilmUpload />} />
           <Route path="music" element={<MusicUpload />} />
