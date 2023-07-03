@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 // material-ui
 import { Grid, Stack, Typography } from "@mui/material";
+import Login from "../../components/shared/auth/Login";
 // project import
-import Login from "../components/auth/Login";
+
 // import AuthWrapper from "../components/auth/AuthWrapper";
 
 const LoginPage = () => {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // material-ui
 import { Grid, Stack, Typography } from "@mui/material";
 // project import
-import Register from "../components/auth/Register";
+import Register from "../../components/shared/auth/Register";
 
 const RegisterPage = () => {
   return (

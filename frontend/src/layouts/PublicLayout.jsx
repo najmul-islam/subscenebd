@@ -1,16 +1,18 @@
 import React from "react";
-import useHeader from "../hooks/HeaderHook";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 // component
-import Sidebar from "../components/sidebar/Sidebar";
-import GoToTop from "../components/others/GoToTop";
-import Footer from "../components/footer/Footer";
+import Header from "../components/shared/header/Header";
+import Sidebar from "../components/shared/sidebar/Sidebar";
+import GoToTop from "../components/shared/others/GoToTop";
+import Footer from "../components/shared/footer/Footer";
 
 const PublicLayout = () => {
-  const { drawerWidth } = useHeader();
+  const { drawerWidth } = useSelector((state) => state.theme);
   return (
     <Box sx={{ display: "flex" }}>
+      <Header />
       <Sidebar />
       <Box
         component="main"

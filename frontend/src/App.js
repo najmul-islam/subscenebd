@@ -5,21 +5,19 @@ import ScrollToTop from "./helpers/ScrollToTop";
 
 // context api
 import { MovieProvider } from "./contexts/MovieContext";
-import { HeaderProvider } from "./contexts/HeaderContext";
-import { ColorModeProvider } from "./contexts/ColorModeContext";
+// theme provider
+import Themeprovider from "./themes/Themeprovider";
 
 const App = () => {
   return (
     <>
       <ScrollToTop>
-        <MovieProvider>
-          <HeaderProvider>
-            <ColorModeProvider>
-              <Router />
-              <ToastContainer />
-            </ColorModeProvider>
-          </HeaderProvider>
-        </MovieProvider>
+        {/* <MovieProvider> */}
+        <Themeprovider>
+          <Router />
+          <ToastContainer />
+        </Themeprovider>
+        {/* </MovieProvider> */}
       </ScrollToTop>
     </>
   );

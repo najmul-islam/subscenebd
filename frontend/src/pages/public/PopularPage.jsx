@@ -1,5 +1,5 @@
 import React from "react";
-import Items from "../components/subtitles/Items";
+import Items from "../../components/public/subtitles/Items";
 
 const PopularPage = () => {
   return (

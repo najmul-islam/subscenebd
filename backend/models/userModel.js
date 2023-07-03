@@ -46,7 +46,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.method.isValidPassword = async function (password) {
+userSchema.methods.isValidPassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);
   } catch (error) {
@@ -54,7 +54,7 @@ userSchema.method.isValidPassword = async function (password) {
   }
 };
 
-userSchema.method.generateToken = function () {
+userSchema.methods.generateToken = function () {
   return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });

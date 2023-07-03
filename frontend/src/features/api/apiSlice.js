@@ -23,5 +23,6 @@ export const apiSlice = createApi({
     }
     return result;
   },
+  tagTypes: ["Subtitles, Subtitle"],
   endpoints: (builder) => ({}),
 });
