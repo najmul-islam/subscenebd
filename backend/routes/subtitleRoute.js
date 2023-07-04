@@ -9,15 +9,18 @@ const {
   downloadSubtitle,
 } = require("../controllers/subtitleController");
 
-const subUpload = require("../middlewares/subtitleUploadMiddleware");
-const protect = require("../middlewares/authMiddleware");
+const subtitleUpload = require("../middlewares/subtitleMiddleware");
+const { isUser } = require("../middlewares/authMiddleware");
 
-router.route("/").get(getAllSubtitle).post(protect, subUpload, createSubtitle);
+router
+  .route("/")
+  .get(getAllSubtitle)
+  .post(isUser, subtitleUpload, createSubtitle);
 router.get("/download/:id", downloadSubtitle);
 router
   .route("/:id")
   .get(getSingleSubtitle)
-  .put(protect, updateSubtitle)
-  .delete(protect, deleteSubtitle);
+  .put(isUser, updateSubtitle)
+  .delete(isUser, deleteSubtitle);
 
 module.exports = router;

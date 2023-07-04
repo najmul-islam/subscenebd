@@ -27,18 +27,21 @@ const getUserSubtitle = asyncHandler(async (req, res) => {
 // create sub
 const createSubtitle = asyncHandler(async (req, res) => {
   const {
+    tmdbId,
     title,
+    // original_title,
     description,
-    releaseName,
-    releaseType,
-    releaseDate,
-    mediaType,
-    posterPath,
+    release_name,
+    release_type,
+    release_date,
+    media_type,
+    backdrop_path,
+    poster_path,
     genres,
   } = req.body;
 
-  const sublink = req.sublink;
-  const mimetype = req.mimetype;
+  const mime_type = req.mime_type;
+  const subtitle_link = req.subtitle_link;
 
   if (!title && !year) {
     res.status(400);
@@ -46,17 +49,20 @@ const createSubtitle = asyncHandler(async (req, res) => {
   }
 
   const newSubtitle = await Subtitle.create({
-    user: req.user.id,
-    sublink,
+    user: req.user._id,
+    tmdbId,
+    subtitle_link,
     title,
+    // original_title,
     description,
-    releaseName,
-    releaseType,
-    releaseDate,
-    mimetype,
-    mediaType,
-    posterPath,
-    genres,
+    release_name: JSON.parse(release_name),
+    release_type,
+    release_date,
+    mime_type,
+    media_type,
+    backdrop_path,
+    poster_path,
+    genres: JSON.parse(genres),
   });
 
   res.status(200).json(newSubtitle);
@@ -105,7 +111,7 @@ const deleteSubtitle = asyncHandler(async (req, res) => {
 const downloadSubtitle = asyncHandler(async (req, res) => {
   const subtitle = await Subtitle.findById(req.params.id);
   res.set({
-    "Content-Type": subtitle.mimetype,
+    "Content-Type": subtitle.mime_type,
   });
   res.sendFile(path.join(__dirname, "../public", subtitle.sublink));
 });

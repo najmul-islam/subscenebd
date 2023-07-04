@@ -19,7 +19,7 @@ app.use(
 );
 
 // routes
-app.use("/api/users", require("./routes/userRoute"));
+app.use("/api/user", require("./routes/userRoute"));
 app.use("/api/subtitles", require("./routes/subtitleRoute"));
 
 // serve frontend

@@ -2,7 +2,8 @@ const asyncHanlder = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
-const protect = asyncHanlder(async (req, res, next) => {
+// check user
+const isUser = asyncHanlder(async (req, res, next) => {
   let token;
 
   if (
@@ -17,7 +18,7 @@ const protect = asyncHanlder(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // get form the token
-      req.user = await User.findById(decoded.id).select("-password");
+      req.user = await User.findById(decoded._id).select("-password");
 
       next();
     } catch (error) {
@@ -33,4 +34,24 @@ const protect = asyncHanlder(async (req, res, next) => {
   }
 });
 
-module.exports = protect;
+// check moderator
+const isModerator = asyncHanlder(async (req, res, next) => {
+  if (req.user.role === "moderator") {
+    return next();
+  } else {
+    res.status(401);
+    throw new Error("you do not have the permission to perform this action");
+  }
+});
+
+// check admin
+const isAdmin = asyncHanlder(async (req, res, next) => {
+  if (req.user.role === "admin") {
+    return next();
+  } else {
+    res.status(401);
+    throw new Error("you do not have the permission to perform this action");
+  }
+});
+
+module.exports = { isUser, isModerator, isAdmin };
