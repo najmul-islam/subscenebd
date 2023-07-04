@@ -7,36 +7,43 @@ const subtitleSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+    tmdbId: {
+      type: Number,
+    },
     title: {
       type: String,
     },
     description: {
       type: String,
     },
-    releaseName: {
+    release_name: {
+      type: Array,
+    },
+    release_type: {
+      type: String,
+      // enum: ["CAM", "DVD", "HDR", "TV", "WEB", "BR"],
+    },
+    release_date: {
       type: String,
     },
-    releaseDate: {
+    // film/tv-series/short-film/music
+    media_type: {
       type: String,
     },
-    mediaType: {
+    mime_type: {
       type: String,
     },
-    mimetype: {
+    subtitle_link: {
       type: String,
     },
-    sublink: {
+    backdrop_path: {
       type: String,
     },
-    posterPath: {
+    poster_path: {
       type: String,
     },
     genres: {
       type: Array,
-    },
-    releaseType: {
-      type: String,
-      enum: ["CAM", "DVD", "HDR", "TV", "WEB", "BR"],
     },
   },
   { timestamps: true }

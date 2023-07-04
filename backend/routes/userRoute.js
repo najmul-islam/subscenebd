@@ -9,12 +9,13 @@ const {
   singleUserSubtitle,
 } = require("../controllers/userController");
 
-const protect = require("../middlewares/authMiddleware");
+const { isUser } = require("../middlewares/authMiddleware");
 
+// delete all route from here
 router.get("/all", getAllUser);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/profile", protect, profile);
+router.get("/profile", isUser, profile);
 router.get("/:id", singleUser);
 router.get("/:id/subtitles", singleUserSubtitle);
 
