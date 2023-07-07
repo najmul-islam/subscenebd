@@ -1,6 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Router from "./routers/Router";
+import Router from "./routers/router";
 import ScrollToTop from "./helpers/ScrollToTop";
 
 // context api
