@@ -9,6 +9,7 @@ const {
   likeSubtitle,
   dislikeSubtitle,
   downloadSubtitle,
+  downloadSubtitleCount,
 } = require("../controllers/subtitleController");
 
 const subtitleUpload = require("../middlewares/subtitleMiddleware");
@@ -18,7 +19,7 @@ router
   .route("/")
   .get(getAllSubtitle)
   .post(isUser, subtitleUpload, createSubtitle);
-router.get("/download/:id", downloadSubtitle);
+router.route("/download/:id").get(downloadSubtitle).put(downloadSubtitleCount);
 router
   .route("/:id")
   .get(getSingleSubtitle)

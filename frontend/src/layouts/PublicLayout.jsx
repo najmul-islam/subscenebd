@@ -18,13 +18,14 @@ const PublicLayout = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <CssBaseline />
         <Toolbar sx={{ height: "65px" }} />
-        <Outlet />
+        <Box padding={2}>
+          <Outlet />
+        </Box>
         <GoToTop />
         <Footer />
       </Box>

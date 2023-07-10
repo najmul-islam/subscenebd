@@ -6,12 +6,12 @@ const SubtitleItemSkeleton = () => {
       <Card
         sx={{
           width: { xs: "138px", sm: "150px" },
-          height: { sm: "305px", xs: "287px" },
+          height: { xs: "271px", sm: "290px" },
         }}
       >
         <Skeleton
           variant="rectangular"
-          sx={{ height: "225px", padding: "0" }}
+          sx={{ height: { xs: "207px", sm: "225px" }, padding: "0" }}
         />
         <Box padding="3px">
           <Skeleton height="18px" />

@@ -1,5 +1,5 @@
 // import useHeader from "../../../hooks/HeaderHook";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   ListItem,
   ListItemButton,
@@ -22,7 +22,7 @@ const SidebarListItem = ({ link, icon, text }) => {
 
   return (
     <>
-      <ListItem onClick={() => navigate(link)} disablePadding>
+      <ListItem component={Link} to={link} disablePadding>
         <ListItemButton
           selected={selectedUrl === link}
           onClick={() => handleListItem(link)}

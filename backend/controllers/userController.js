@@ -80,7 +80,7 @@ const profile = asyncHandler(async (req, res) => {
 
 // get all user
 const getAllUser = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("subtitles");
   res.status(200).json({ nbHits: users.length, users });
 });
 

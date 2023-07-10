@@ -23,6 +23,13 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "moderator", "user"],
       default: "user",
     },
+
+    subtitles: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Subtitle",
+      },
+    ],
   },
   {
     timestamps: true,
