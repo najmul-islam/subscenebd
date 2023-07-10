@@ -18,7 +18,7 @@ const Logo = () => {
         aria-label="open drawer"
         edge="start"
         onClick={() => handleSidebar(!sidebar)}
-        sx={{ mr: 2, p: "10px", display: { xs: "inline-flex", md: "none" } }}
+        sx={{ mr: 2, p: "10px", display: { xs: "inline-flex", lg: "none" } }}
       >
         <Menu />
       </IconButton>
@@ -26,7 +26,7 @@ const Logo = () => {
         color="inherit"
         aria-label="open drawer"
         edge="start"
-        sx={{ mr: 2, p: "10px", display: { md: "inline-flex", xs: "none" } }}
+        sx={{ mr: 2, p: "10px", display: { lg: "inline-flex", xs: "none" } }}
       >
         <Menu />
       </IconButton>

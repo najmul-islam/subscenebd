@@ -9,6 +9,7 @@ export const subtitleApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["Subtitles"],
     }),
+
     getSubtitle: builder.query({
       query: (id) => ({
         url: `/subtitles/${id}`,
@@ -16,6 +17,7 @@ export const subtitleApi = apiSlice.injectEndpoints({
       }),
       providesTags: (result, error, arg) => [{ type: "Subtitle", id: arg }],
     }),
+
     postSubtitle: builder.mutation({
       query: (data) => ({
         url: "/subtitles",

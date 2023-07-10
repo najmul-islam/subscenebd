@@ -27,7 +27,7 @@ const UsersLayout = ({ roles = [] }) => {
         }}
       >
         <CssBaseline />
-        <Toolbar sx={{ minHeight: "64px" }} />
+        <Toolbar sx={{ height: "65px" }} />
         <Box sx={{ minHeight: "80vh" }}>
           <Outlet />
         </Box>

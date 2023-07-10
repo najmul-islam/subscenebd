@@ -23,7 +23,7 @@ const PublicLayout = () => {
         }}
       >
         <CssBaseline />
-        <Toolbar sx={{ minHeight: "64px" }} />
+        <Toolbar sx={{ height: "65px" }} />
         <Outlet />
         <GoToTop />
         <Footer />

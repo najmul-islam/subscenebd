@@ -45,6 +45,18 @@ const subtitleSchema = mongoose.Schema(
     genres: {
       type: Array,
     },
+    likes: {
+      type: Array,
+      default: [],
+    },
+    dislikes: {
+      type: Array,
+      default: [],
+    },
+    downloads: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

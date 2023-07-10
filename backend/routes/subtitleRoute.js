@@ -6,6 +6,8 @@ const {
   createSubtitle,
   updateSubtitle,
   deleteSubtitle,
+  likeSubtitle,
+  dislikeSubtitle,
   downloadSubtitle,
 } = require("../controllers/subtitleController");
 
@@ -22,5 +24,8 @@ router
   .get(getSingleSubtitle)
   .put(isUser, updateSubtitle)
   .delete(isUser, deleteSubtitle);
+
+router.route("/like/:id").put(isUser, likeSubtitle);
+router.route("/dislike/:id").put(isUser, dislikeSubtitle);
 
 module.exports = router;

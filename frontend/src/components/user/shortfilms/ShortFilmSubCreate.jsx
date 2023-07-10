@@ -16,11 +16,11 @@ import {
 import { movieApi } from "../../../features/movie/movieApi";
 import { usePostSubtitleMutation } from "../../../features/subtitle/subtitleApi";
 
-const MovieSubCreate = () => {
+const ShortFilmSubCreate = () => {
   const [subtitleFiles, setSubtitleFiles] = useState([]);
-  const [movie, setMovie] = useState({});
+  const [shortFilm, setShortFilm] = useState({});
 
-  const { movieId } = useParams();
+  const { shortFilmId } = useParams();
   const dispatch = useDispatch();
 
   // post subtitle api
@@ -38,10 +38,10 @@ const MovieSubCreate = () => {
   const onSubmit = (values) => {
     // title
     const original_title =
-      movie?.title === movie?.original_title
+      shortFilm?.title === shortFilm?.original_title
         ? ""
-        : ` (${movie?.original_title})`;
-    const title = `${movie?.title}${original_title}`.trim();
+        : ` (${shortFilm?.original_title})`;
+    const title = `${shortFilm?.title}${original_title}`.trim();
 
     // release name
     const release_name = JSON.stringify(
@@ -49,23 +49,23 @@ const MovieSubCreate = () => {
     );
 
     // genres
-    const genres = JSON.stringify(movie?.genres.map((genre) => genre.name));
+    const genres = JSON.stringify(shortFilm?.genres.map((genre) => genre.name));
 
     // release date
-    const release_date = moment(movie.release_date).year();
+    const release_date = moment(shortFilm.release_date).year();
 
     // append form
     const formData = new FormData();
     formData.append("subtitle", values.subtitle);
-    formData.append("tmdbId", movie?.id);
+    formData.append("tmdbId", shortFilm?.id);
     formData.append("title", title);
-    formData.append("subtitle_name", movie?.title);
+    formData.append("subtitle_name", shortFilm?.title);
     formData.append("description", values.description);
     formData.append("release_name", release_name);
-    formData.append("media_type", "movie");
+    formData.append("media_type", "short-film");
     formData.append("release_date", release_date);
-    formData.append("backdrop_path", movie?.backdrop_path);
-    formData.append("poster_path", movie?.poster_path);
+    formData.append("backdrop_path", shortFilm?.backdrop_path);
+    formData.append("poster_path", shortFilm?.poster_path);
     formData.append("genres", genres);
 
     try {
@@ -142,18 +142,18 @@ const MovieSubCreate = () => {
   };
 
   useEffect(() => {
-    dispatch(movieApi.endpoints.getMovieById.initiate(movieId))
+    dispatch(movieApi.endpoints.getMovieById.initiate(shortFilmId))
       .unwrap()
-      .then((data) => setMovie(data));
-  }, [dispatch, movieId]);
+      .then((data) => setShortFilm(data));
+  }, [dispatch, shortFilmId]);
 
-  console.log("movie", movie);
+  console.log("movie", shortFilm);
   // console.log("formik: ", formik);
   // console.log("values: ", formik.values);
   console.log("subtitle: ", subtitle);
   // console.log("relase_name: ", values.release_name);
   return (
-    movie && (
+    shortFilm && (
       <Box
         component="form"
         sx={{
@@ -245,8 +245,8 @@ const MovieSubCreate = () => {
           />
         </div>
 
-        <h1>Name: {movie.title}</h1>
-        <h2>Year: {moment(movie.release_date).year()}</h2>
+        <h1>Name: {shortFilm.title}</h1>
+        <h2>Year: {moment(shortFilm.release_date).year()}</h2>
         <Button variant="outlined" type="submit">
           Upload
         </Button>
@@ -255,4 +255,4 @@ const MovieSubCreate = () => {
   );
 };
 
-export default MovieSubCreate;
+export default ShortFilmSubCreate;

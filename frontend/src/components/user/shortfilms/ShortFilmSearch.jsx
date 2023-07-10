@@ -15,10 +15,10 @@ import {
 // movie_poster url
 const movie_poster = process.env.REACT_APP_IMG_API;
 
-const MovieSearch = () => {
+const ShortFilmSearch = () => {
   const [search, setSearch] = useState("");
   const [searchValue, setSearchValue] = useState("");
-  const { data: movies, isLoading } = useGetMovieBySearchQuery(searchValue);
+  const { data: shortFilms, isLoading } = useGetMovieBySearchQuery(searchValue);
 
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const MovieSearch = () => {
     setSearchValue(search);
   };
 
-  console.log(movies);
+  console.log(shortFilms);
   if (isLoading) return <h2>Loading...</h2>;
   return (
     <>
@@ -54,20 +54,20 @@ const MovieSearch = () => {
       <Grid container spacing={2}>
         <List>
           {/* onClick={() => navigate(`/upload/movie/${}`)} */}
-          {movies ? (
-            movies?.results?.map((movie) => (
-              <ListItem key={movie.id}>
-                <Link to={`/upload/movie/${movie.id}`}>
+          {shortFilms ? (
+            shortFilms?.results?.map((film) => (
+              <ListItem key={film.id}>
+                <Link to={`/upload/short-film/${film.id}`}>
                   <ListItemAvatar>
                     <Avatar
                       variant="square"
                       sx={{ width: 70, height: 40 }}
-                      src={`${movie_poster}${movie.poster_path}`}
+                      src={`${movie_poster}${film.poster_path}`}
                     />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={movie.title}
-                    secondary={movie.release_date.substr(0, 4)}
+                    primary={film.title}
+                    secondary={film.release_date.substr(0, 4)}
                   />
                 </Link>
               </ListItem>
@@ -81,4 +81,4 @@ const MovieSearch = () => {
   );
 };
 
-export default MovieSearch;
+export default ShortFilmSearch;

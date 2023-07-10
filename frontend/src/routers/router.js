@@ -32,8 +32,10 @@ import SeriesSearchPage from "../pages/user/series/SeriesSearchPage";
 import SeriesDetailsPage from "../pages/user/series/SeriesDetailsPage";
 import SeriesSubCreatePage from "../pages/user/series/SeriesSubCreatePage";
 // user/shortfilm pages
+import ShortFilmSearchPage from "../pages/user/shortfilm/ShortFilmSearchPage";
+import ShortFilmSubCreatePage from "../pages/user/shortfilm/ShortFilmSubCreatePage";
 // user/music pages
-
+import MusicSearchPage from "../pages/user/music/MusicSearchPage";
 // other pages
 import NotFoundPage from "../pages/shared/NotFoundPage";
 
@@ -75,9 +77,13 @@ const Router = () => {
           path="series/:seriesId/season/:seasonId"
           element={<SeriesSubCreatePage />}
         />
-
-        {/* <Route path="short-film" element={<ShortFilmUpload />} /> */}
-        {/* <Route path="music" element={<MusicUpload />} />  */}
+        {/* short film route */}
+        <Route path="short-film" element={<ShortFilmSearchPage />} />
+        <Route
+          path="short-film/:shortFilmId"
+          element={<ShortFilmSubCreatePage />}
+        />
+        <Route path="music" element={<MusicSearchPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

@@ -15,6 +15,7 @@ const Header = () => {
   const { user } = useSelector((state) => state.auth);
 
   const [showSerachBox, setShowSearchBox] = useState(false);
+
   const handleShowSearchBox = (value) => {
     setShowSearchBox(value);
   };

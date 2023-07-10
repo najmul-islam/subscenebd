@@ -1,10 +1,10 @@
 import React from "react";
-import Items from "../../components/public/subtitles/Items";
+import SubtitleList from "../../components/public/subtitles/SubtitleList";
 
 const PopularPage = () => {
   return (
     <>
-      <Items />
+      <SubtitleList />
     </>
   );
 };

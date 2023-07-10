@@ -4,7 +4,7 @@ const Subtitle = require("../models/subtitleModel");
 
 // get all sub
 const getAllSubtitle = asyncHandler(async (req, res) => {
-  const subtitles = await Subtitle.find({});
+  const subtitles = await Subtitle.find({}).populate("user", "_id name");
 
   res.status(200).json(subtitles);
 });
@@ -90,6 +90,57 @@ const updateSubtitle = asyncHandler(async (req, res) => {
   res.status(200).json(updatedSubtitle);
 });
 
+// like / dislike a subtitle
+const likeSubtitle = asyncHandler(async (req, res) => {
+  const subtitle = await Subtitle.findById(req.params.id);
+
+  // remove user dislike
+  if (subtitle.dislikes.includes(req.user._id)) {
+    await subtitle.updateOne({
+      $pull: { dislikes: req.user._id },
+    });
+  }
+
+  // add user like
+  if (!subtitle.likes.includes(req.user._id)) {
+    const updatedSubtitle = await subtitle.updateOne({
+      $push: { likes: req.user._id },
+    });
+    res.status(200).json(updatedSubtitle);
+  } else {
+    const updatedSubtitle = await subtitle.updateOne({
+      $pull: { likes: req.user._id },
+    });
+    res.status(200).json(updatedSubtitle);
+  }
+});
+
+const dislikeSubtitle = asyncHandler(async (req, res) => {
+  const subtitle = await Subtitle.findById(req.params.id);
+
+  // remove user like
+  if (subtitle.likes.includes(req.user._id)) {
+    await subtitle.updateOne({
+      $pull: { likes: req.user._id },
+    });
+  }
+
+  // add user dislike
+  if (!subtitle.dislikes.includes(req.user._id)) {
+    const updatedSubtitle = await subtitle.updateOne({
+      $push: { dislikes: req.user._id },
+    });
+
+    res.status(200).json(updatedSubtitle);
+  } else {
+    const updatedSubtitle = await subtitle.updateOne({
+      $pull: { dislikes: req.user._id },
+    });
+
+    res.status(200).json(updatedSubtitle);
+  }
+});
+
 // delete subtitle
 const deleteSubtitle = asyncHandler(async (req, res) => {
   const subtitle = await Subtitle.findById(req.params.id);
@@ -100,7 +151,7 @@ const deleteSubtitle = asyncHandler(async (req, res) => {
   }
 
   // check for user
-  // make sure the logged in user matches the goal user
+  // make sure the logged in user matches the subtitle user
 
   await subtitle.remove();
 
@@ -121,6 +172,8 @@ module.exports = {
   getSingleSubtitle,
   createSubtitle,
   updateSubtitle,
+  likeSubtitle,
+  dislikeSubtitle,
   deleteSubtitle,
   downloadSubtitle,
 };
