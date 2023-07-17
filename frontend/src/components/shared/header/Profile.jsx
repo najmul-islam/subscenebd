@@ -72,10 +72,13 @@ const Profile = () => {
         PaperProps={{
           sx: {
             width: "300px",
+            paddingTop: "0",
+            paddingBottom: "0",
           },
         }}
+        sx={{ paddingTop: "0", paddingBottom: "0" }}
       >
-        <ListItem disablePadding>
+        <ListItem disablePadding sx={{ paddingTop: "0", paddingBottom: "0" }}>
           <ListItemButton>
             <Avatar
               alt={user.name.toUpperCase()}

@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 // layout
 import PublicLayout from "../layouts/PublicLayout";
 import UsersLayout from "../layouts/UsersLayout";
+import LatestLayout from "../layouts/LatestLayout";
+import PopularLayout from "../layouts/PopularLayout";
 
 // auth page
 import RegisterPage from "../pages/shared/RegisterPage";
@@ -10,14 +12,12 @@ import LoginPage from "../pages/shared/LoginPage";
 
 // public pages
 import HomePage from "../pages/public/HomePage";
-import LatestPage from "../pages/public/LatestPage";
-import PopularPage from "../pages/public/PopularPage";
 import AllPage from "../pages/public/AllPage";
 import MoviesPage from "../pages/public/MoviesPage";
 import SeriesPage from "../pages/public/SeriesPage";
 import ShortFilmsPage from "../pages/public/ShortFilmsPage";
 import MusicsPage from "../pages/public/MusicsPage";
-
+import SingleSubtitlePage from "../pages/public/SingleSubtitlePage";
 // user/profile pages
 import ProfilePage from "../pages/user/profile/ProfilePage";
 import SubtitlesPage from "../pages/user/profile/SubtitlesPage";
@@ -47,13 +47,24 @@ const Router = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/latest" element={<LatestPage />} />
-        <Route path="/popular" element={<PopularPage />} />
-        <Route path="/all" element={<AllPage />} />
-        <Route path="/movies" element={<MoviesPage />} />
-        <Route path="/series" element={<SeriesPage />} />
-        <Route path="/short-films" element={<ShortFilmsPage />} />
-        <Route path="/musics" element={<MusicsPage />} />
+
+        <Route path="/latest/*" element={<LatestLayout />}>
+          <Route path="all" element={<AllPage />} />
+          <Route path="movies" element={<MoviesPage />} />
+          <Route path="series" element={<SeriesPage />} />
+          <Route path="short-films" element={<ShortFilmsPage />} />
+          <Route path="musics" element={<MusicsPage />} />
+        </Route>
+
+        <Route path="/popular/*" element={<PopularLayout />}>
+          <Route path="all" element={<AllPage />} />
+          <Route path="movies" element={<MoviesPage />} />
+          <Route path="series" element={<SeriesPage />} />
+          <Route path="short-films" element={<ShortFilmsPage />} />
+          <Route path="musics" element={<MusicsPage />} />
+        </Route>
+
+        <Route path="/subtitles/:subtitleId" element={<SingleSubtitlePage />} />
       </Route>
 
       {/* user route */}

@@ -2,11 +2,13 @@ import React from "react";
 import moment from "moment";
 import { Card, CardMedia, Grid, Typography, Box, Divider } from "@mui/material";
 import { DownloadRounded, AccessTimeRounded } from "@mui/icons-material";
+import wordsToNumbers from "words-to-numbers";
+import { Link } from "react-router-dom";
 
 const img_url = process.env.REACT_APP_IMG_API;
 
 const SubtitleItem = ({ subtitle }) => {
-  // format fun
+  // format number
   const formatNumber = (number = 0) => {
     if (Math.abs(number) >= 1e9) {
       return (number / 1e9).toFixed(1).replace(/\.0$/, "") + "B";
@@ -18,7 +20,11 @@ const SubtitleItem = ({ subtitle }) => {
     return number.toString();
   };
 
-  // console.log(subtitle);
+  // format season -> word to number
+  const formatSeason = (title) => {
+    return wordsToNumbers(title?.split("-")[1].split(" ")[1]);
+  };
+
   return (
     <Grid item>
       <Card
@@ -42,27 +48,47 @@ const SubtitleItem = ({ subtitle }) => {
             background: "#0000006f",
           }}
         >
-          2012
+          {subtitle?.release_date}
         </Typography>
+        {subtitle?.media_type === "series" ? (
+          <Typography
+            sx={{
+              position: "absolute",
+              top: "0",
+              right: "0",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: "600",
+              padding: "0px 3px",
+              background: "#0000006f",
+            }}
+            title={subtitle?.title.split("-")[1]}
+          >
+            S-{formatSeason(subtitle?.title)}
+          </Typography>
+        ) : null}
         <CardMedia
           component="img"
           image={`${img_url}${subtitle?.poster_path}`}
           // sx={{ height: "200px" }}
           alt={subtitle?.title}
         />
-        <Typography
-          variant="subtitle2"
-          paddingX="3px"
-          noWrap
-          title={subtitle?.title}
-        >
-          {subtitle?.title}
-        </Typography>
+        <Link to={`/subtitles/${subtitle?._id}`}>
+          <Typography
+            variant="subtitle2"
+            paddingX="3px"
+            noWrap
+            title={subtitle?.title}
+          >
+            {subtitle?.title}
+          </Typography>
+        </Link>
 
         <Typography variant="body2" paddingX="3px" noWrap>
           {subtitle?.user?.name}
         </Typography>
-        <Typography
+
+        <Box
           sx={{
             paddingX: "3px",
             paddingBottom: "3px",
@@ -89,9 +115,9 @@ const SubtitleItem = ({ subtitle }) => {
             }}
           >
             <AccessTimeRounded sx={{ fontSize: "13px", marginRight: "3px" }} />
-            {moment(subtitle.createdAt).startOf("hour").fromNow()}
+            {moment(subtitle.createdAt).startOf("m").fromNow()}
           </Box>
-        </Typography>
+        </Box>
       </Card>
     </Grid>
   );

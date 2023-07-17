@@ -25,6 +25,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.7",
     "web-vitals": "^2.1.4",
+    "words-to-numbers": "^1.5.1",
     "yup": "^0.32.11"
   },
   "scripts": {

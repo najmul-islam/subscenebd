@@ -1,11 +1,5 @@
 import SidebarListItem from "./SidebarListItem";
-import {
-  List,
-  Divider,
-  ToggleButtonGroup,
-  ToggleButton,
-  Box,
-} from "@mui/material";
+import { List, Divider, Box } from "@mui/material";
 
 import {
   AccessTimeOutlined,
@@ -17,30 +11,32 @@ import {
   MusicVideoOutlined,
 } from "@mui/icons-material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useMatch, useNavigate } from "react-router-dom";
 
 const SidebarList = () => {
   const [list, setList] = useState("latest");
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const handleList = (e, newList) => {
     setList(newList);
   };
+
   return (
     <>
-      <List>
+      <List sx={{ display: "flex", padding: "0" }}>
         <SidebarListItem
-          link="/latest"
+          link="/latest/all"
           icon={<AccessTimeOutlined />}
           text="Latest"
         />
         <SidebarListItem
-          link="/popular"
+          link="/popular/all"
           icon={<BarChartOutlined />}
           text="Popular"
         />
       </List>
       <Divider />
-      <List sx={{ paddingTop: "1px" }}>
+      <List sx={{ paddingTop: "0" }}>
         {/* <Box sx={{ display: "flex" }}>
           <SidebarListItem
             link="/latest"
@@ -137,33 +133,92 @@ const SidebarList = () => {
             />
           </Box>
         )} */}
-        <Box>
+
+        {pathname.split("/")[1] === "latest" ? (
+          <Box>
+            <SidebarListItem
+              link="/latest/all"
+              icon={<VideoLibraryOutlined />}
+              text="All"
+              onClick={() => setList("latest")}
+            />
+            <SidebarListItem
+              link="/latest/movies"
+              icon={<MovieOutlined />}
+              text="Movies"
+            />
+            <SidebarListItem
+              link="/latest/series"
+              icon={<SmartDisplayOutlined />}
+              text="TV-Series"
+            />
+            <SidebarListItem
+              link="/latest/short-films"
+              icon={<MovieFilterOutlined />}
+              text="Short Films"
+            />
+            <SidebarListItem
+              link="/latest/musics"
+              icon={<MusicVideoOutlined />}
+              text="Music Videos"
+            />
+          </Box>
+        ) : (
+          <Box>
+            <SidebarListItem
+              link="/popular/all"
+              icon={<VideoLibraryOutlined />}
+              text="All"
+            />
+            <SidebarListItem
+              link="/popular/movies"
+              icon={<MovieOutlined />}
+              text="Movies"
+            />
+            <SidebarListItem
+              link="/popular/series"
+              icon={<SmartDisplayOutlined />}
+              text="TV-Series"
+            />
+            <SidebarListItem
+              link="/popular/short-films"
+              icon={<MovieFilterOutlined />}
+              text="Short Films"
+            />
+            <SidebarListItem
+              link="/popular/musics"
+              icon={<MusicVideoOutlined />}
+              text="Music Videos"
+            />
+          </Box>
+        )}
+        {/* <Box>
           <SidebarListItem
-            link="all"
+            link="/latest/all"
             icon={<VideoLibraryOutlined />}
             text="All"
           />
           <SidebarListItem
-            link="movies"
+            link="/latest/movies"
             icon={<MovieOutlined />}
             text="Movies"
           />
           <SidebarListItem
-            link="series"
+            link="/latest/series"
             icon={<SmartDisplayOutlined />}
             text="TV-Series"
           />
           <SidebarListItem
-            link="short-films"
+            link="/latest/short-films"
             icon={<MovieFilterOutlined />}
             text="Short Films"
           />
           <SidebarListItem
-            link="musics"
+            link="/latest/musics"
             icon={<MusicVideoOutlined />}
             text="Music Videos"
           />
-        </Box>
+        </Box> */}
       </List>
     </>
   );

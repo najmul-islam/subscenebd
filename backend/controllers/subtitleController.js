@@ -5,7 +5,9 @@ const User = require("../models/userModel");
 
 // get all sub
 const getAllSubtitle = asyncHandler(async (req, res) => {
-  const subtitles = await Subtitle.find({}).populate("user", "_id name");
+  const subtitles = await Subtitle.find({})
+    .populate("user", "_id name")
+    .sort({ createdAt: -1 });
 
   res.status(200).json(subtitles);
 });

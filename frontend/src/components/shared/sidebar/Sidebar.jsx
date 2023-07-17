@@ -5,6 +5,7 @@ import SidebarList from "./SidebarList";
 import Header from "../header/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../features/theme/themeSlice";
+import AccordionList from "./AccordionList";
 
 const Sidebar = () => {
   // const { toggleSidebar, setToggleSidebar, drawerWidth } = useHeader();
@@ -50,10 +51,11 @@ const Sidebar = () => {
               <Menu />
             </IconButton>
             <Typography variant="h6" component="div" sm={{ flexGrow: 1 }}>
-              News
+              Subscenebd
             </Typography>
           </Toolbar>
-          <SidebarList />
+          {/* <SidebarList /> */}
+          <AccordionList />
         </Drawer>
 
         {/* desktop view */}
@@ -69,10 +71,11 @@ const Sidebar = () => {
         >
           <Toolbar disableGutters sx={{ paddingX: "20px" }}>
             <Typography variant="h6" component="div">
-              News
+              Subscenebd
             </Typography>
           </Toolbar>
-          <SidebarList />
+          <AccordionList />
+          {/* <SidebarList /> */}
         </Drawer>
       </Box>
     </>
