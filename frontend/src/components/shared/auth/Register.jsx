@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 // material-ui
 import {
+  Box,
   Button,
   Divider,
   FormHelperText,
@@ -96,92 +97,123 @@ const Register = () => {
   } = formik;
 
   return (
-    <>
-      <form noValidate onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="name-signup">User name*</InputLabel>
-              <OutlinedInput
-                id="name-login"
-                type="name"
-                value={values.name}
-                name="name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                placeholder="user name"
-                fullWidth
-                error={Boolean(touched.name && errors.name)}
-              />
-              {touched.name && errors.name && (
-                <FormHelperText error id="helper-text-name-signup">
-                  {errors.name}
-                </FormHelperText>
-              )}
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
-              <OutlinedInput
-                fullWidth
-                error={Boolean(touched.email && errors.email)}
-                id="email-login"
-                type="email"
-                value={values.email}
-                name="email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                placeholder="email"
-                inputProps={{}}
-              />
-              {touched.email && errors.email && (
-                <FormHelperText error id="helper-text-email-signup">
-                  {errors.email}
-                </FormHelperText>
-              )}
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="password-signup">Password*</InputLabel>
-              <OutlinedInput
-                fullWidth
-                error={Boolean(touched.password && errors.password)}
-                id="password-signup"
-                type={showPassword ? "text" : "password"}
-                value={values.password}
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? (
-                        <VisibilityOutlined />
-                      ) : (
-                        <VisibilityOffOutlined />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                placeholder="password"
-                inputProps={{}}
-              />
-              {touched.password && errors.password && (
-                <FormHelperText error id="helper-text-password-signup">
-                  {errors.password}
-                </FormHelperText>
-              )}
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
+    <Box display="flex" justifyContent="center" paddingY={5}>
+      <Box
+        sx={{
+          borderRadius: "10px",
+          paddingY: "20px",
+          paddingX: "30px",
+        }}
+        boxShadow={3}
+      >
+        <Stack
+          direction="row"
+          marginBottom={3}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="h6" fontWeight="800">
+            Registration
+          </Typography>
+          <Typography
+            component={RouterLink}
+            to="/login"
+            variant="body2"
+            sx={{ textDecoration: "none" }}
+            color="primary"
+          >
+            Allready have an account?
+          </Typography>
+        </Stack>
+        <form noValidate onSubmit={handleSubmit}>
+          <Stack spacing={1} marginBottom={3}>
+            <InputLabel htmlFor="name-signup">User name*</InputLabel>
+            <OutlinedInput
+              id="name-login"
+              type="name"
+              value={values.name}
+              name="name"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              placeholder="User name"
+              fullWidth
+              error={Boolean(touched.name && errors.name)}
+              sx={{ height: "45px" }}
+            />
+            {touched.name && errors.name && (
+              <FormHelperText error id="helper-text-name-signup">
+                {errors.name}
+              </FormHelperText>
+            )}
+          </Stack>
+
+          <Stack spacing={1} marginBottom={3}>
+            <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
+            <OutlinedInput
+              fullWidth
+              error={Boolean(touched.email && errors.email)}
+              id="email-login"
+              type="email"
+              value={values.email}
+              name="email"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              placeholder="Email"
+              sx={{ height: "45px" }}
+            />
+            {touched.email && errors.email && (
+              <FormHelperText error id="helper-text-email-signup">
+                {errors.email}
+              </FormHelperText>
+            )}
+          </Stack>
+
+          <Stack spacing={1} marginBottom={3}>
+            <InputLabel htmlFor="password-signup">Password*</InputLabel>
+            <OutlinedInput
+              fullWidth
+              error={Boolean(touched.password && errors.password)}
+              id="password-signup"
+              type={showPassword ? "text" : "password"}
+              value={values.password}
+              name="password"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                    size="large"
+                  >
+                    {showPassword ? (
+                      <VisibilityOutlined />
+                    ) : (
+                      <VisibilityOffOutlined />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+              placeholder="Password"
+              inputProps={{}}
+              sx={{ height: "45px" }}
+            />
+            {touched.password && errors.password && (
+              <FormHelperText error id="helper-text-password-signup">
+                {errors.password}
+              </FormHelperText>
+            )}
+          </Stack>
+
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={2}
+            marginBottom={3}
+          >
             <Typography variant="body2">
               By Signing up, you agree to our &nbsp;
               <Link variant="subtitle2" component={RouterLink} to="#">
@@ -192,36 +224,33 @@ const Register = () => {
                 Privacy Policy
               </Link>
             </Typography>
-          </Grid>
+          </Stack>
           {errors.submit && (
-            <Grid item xs={12} md={6}>
-              <FormHelperText error>{errors.submit}</FormHelperText>
-            </Grid>
+            <FormHelperText error>{errors.submit}</FormHelperText>
           )}
-          <Grid item xs={12} md={6}>
-            <Button
-              disableElevation
-              disabled={isSubmitting}
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              Create Account
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={6}>
+
+          <Button
+            disableElevation
+            disabled={isSubmitting}
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            Create Account
+          </Button>
+
+          <Stack marginY={3}>
             <Divider>
               <Typography variant="caption">Sign up with</Typography>
             </Divider>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <SocialLogin />
-          </Grid>
-        </Grid>
-      </form>
-    </>
+          </Stack>
+
+          <SocialLogin />
+        </form>
+      </Box>
+    </Box>
   );
 };
 
