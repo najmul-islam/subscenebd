@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useRegisterMutation } from "../../../features/auth/authApi";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { VisibilityOutlined, VisibilityOffOutlined } from "@mui/icons-material";
+import SocialLogin from "./SocialLogin";
+
 // material-ui
 import {
   Box,
   Button,
   Divider,
   FormHelperText,
-  Grid,
   Link,
   IconButton,
   InputAdornment,
@@ -18,29 +23,24 @@ import {
   Typography,
 } from "@mui/material";
 
-import * as Yup from "yup";
-import { useFormik } from "formik";
-
-import SocialLogin from "./SocialLogin";
-
-import { VisibilityOutlined, VisibilityOffOutlined } from "@mui/icons-material";
-import { useRegisterMutation } from "../../../features/auth/authApi";
-
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // rtk
   const { user } = useSelector((state) => state.auth);
   const [register, { isError, isSuccess, error }] = useRegisterMutation();
 
+  // form value
   const initialValues = {
     name: "",
     email: "",
     password: "",
   };
 
+  // validate shema
   const validationSchema = Yup.object().shape({
     name: Yup.string().max(255).required("Name is required"),
     email: Yup.string()
@@ -50,6 +50,7 @@ const Register = () => {
     password: Yup.string().max(255).required("Password is required"),
   });
 
+  // handle submit
   const onSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     try {
       setStatus({ success: false });
@@ -71,6 +72,7 @@ const Register = () => {
     event.preventDefault();
   };
 
+  // formik
   const formik = useFormik({
     initialValues,
     validationSchema,
