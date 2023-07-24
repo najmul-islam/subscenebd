@@ -84,7 +84,7 @@ const Register = () => {
       toast.error(error.error);
     }
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/login");
     }
   }, [user, isError, isSuccess, navigate, dispatch, error]);
 

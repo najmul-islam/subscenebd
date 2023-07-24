@@ -1,16 +1,11 @@
-import React from "react";
+import { Box } from "@mui/material";
+import BookmarkList from "../../../components/user/bookmark/BookmarkList";
 
 const BookmarksPage = () => {
   return (
-    <div>
-      <h1>Bookmarks Page</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam adipisci
-        recusandae cum ducimus eum minima debitis quis dolorum voluptatibus
-        eveniet, quibusdam excepturi impedit esse tempore dolores ratione dolore
-        est eos!
-      </p>
-    </div>
+    <Box>
+      <BookmarkList />
+    </Box>
   );
 };
 

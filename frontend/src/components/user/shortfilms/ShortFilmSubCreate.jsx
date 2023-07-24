@@ -7,14 +7,25 @@ import { useFormik } from "formik";
 import {
   Box,
   Button,
+  Divider,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { movieApi } from "../../../features/movie/movieApi";
 import { usePostSubtitleMutation } from "../../../features/subtitle/subtitleApi";
+import {
+  ArrowForwardOutlined,
+  AttachFileOutlined,
+  Delete,
+  UploadFileOutlined,
+} from "@mui/icons-material";
+import SingleMedia from "./SingleMedia";
 
 const ShortFilmSubCreate = () => {
   const [subtitleFiles, setSubtitleFiles] = useState([]);
@@ -147,110 +158,169 @@ const ShortFilmSubCreate = () => {
       .then((data) => setShortFilm(data));
   }, [dispatch, shortFilmId]);
 
-  console.log("movie", shortFilm);
-  // console.log("formik: ", formik);
-  // console.log("values: ", formik.values);
-  console.log("subtitle: ", subtitle);
-  // console.log("relase_name: ", values.release_name);
   return (
     shortFilm && (
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": {
-            my: 2,
-            width: { xs: "100%", sm: "60%", md: "70%", xl: "40%" },
-          },
-        }}
-        onSubmit={handleSubmit}
-      >
-        <div>
-          <Button variant="contained" component="label">
-            Select Subtitle
-            <input
-              hidden
-              multiple
-              accept="application/x-zip-compressed"
-              type="file"
-              name="subtitle"
-              onChange={handleFileChange}
-            />
-          </Button>
-          <Box>{values?.subtitle?.name} </Box>
-          <Box>
-            {subtitleFiles.map((file, i) => (
-              <p key={i}>{file.name}</p>
-            ))}
-          </Box>
-        </div>
-        <div>
-          {values.release_name.map((name, index) => (
-            <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
-              <TextField
-                id={`release_name_${index}`}
-                label="Release name"
-                variant="outlined"
-                size="small"
-                name={`release_name_${index}`}
-                fullWidth
-                value={name}
-                onChange={(e) => handleReleaseNameChange(index, e.target.value)}
-              />
-              {values.release_name.length === 1 ? null : (
-                <Button
-                  variant="outlined"
-                  onClick={() => handleRemoveReleaseName(index)}
-                  sx={{ marginLeft: "1rem" }}
-                >
-                  Remove
-                </Button>
-              )}
-            </Box>
-          ))}
-          <Button variant="outlined" onClick={handleAddReleaseName}>
-            Add
-          </Button>
-        </div>
-
-        <FormControl size="small" sx={{ width: "200px", my: "2" }}>
-          <InputLabel id="release_type">Release type</InputLabel>
-          <Select
-            labelId="release_type"
-            id="release_type"
-            name="release_type"
-            value={values.release_type}
-            label="Age"
-            onChange={handleChange}
+      <>
+        <Box>
+          <Typography
+            variant="h6"
+            textAlign="center"
+            marginLeft={{ xs: "0", lg: "-140px" }}
+            paddingY={2}
           >
-            <MenuItem value="">Don't Know</MenuItem>
-            <MenuItem value="CAM">CAM</MenuItem>
-            <MenuItem value="DVD">DVD</MenuItem>
-            <MenuItem value="HDR">HDR</MenuItem>
-            <MenuItem value="TV">TV</MenuItem>
-            <MenuItem value="WEB">WEB</MenuItem>
-            <MenuItem value="BR">BR</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
-          </Select>
-        </FormControl>
-        <div>
-          <TextField
-            id="description"
-            label="Description"
-            variant="outlined"
-            name="description"
-            multiline
-            rows={3}
-            value={values.description}
-            onChange={handleChange}
-          />
-        </div>
+            Upload Subtitle
+          </Typography>
+          <Divider variant="middle" />
 
-        <h1>Name: {shortFilm.title}</h1>
-        <h2>Year: {moment(shortFilm.release_date).year()}</h2>
-        <Button variant="outlined" type="submit">
-          Upload
-        </Button>
-      </Box>
+          <Grid container spacing={2} padding={2}>
+            <Grid item md={6} xs={12}>
+              <Box component="form" onSubmit={handleSubmit}>
+                <Box marginBottom={1}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<UploadFileOutlined />}
+                    component="label"
+                    sx={{ fontWeight: "600" }}
+                  >
+                    Select Subtitle
+                    <input
+                      hidden
+                      multiple
+                      accept="application/x-zip-compressed"
+                      type="file"
+                      name="subtitle"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
+                </Box>
+                <Box
+                  boxShadow={1}
+                  borderRadius={1}
+                  padding={1}
+                  bgcolor="#BDBDBD"
+                  // bgcolor="#f7f7f7"
+                  sx={{ minHeight: "90px" }}
+                >
+                  <Typography
+                    display="flex"
+                    alignItems="center"
+                    variant="subtitle2"
+                    noWrap
+                    fontSize="16px"
+                    color="#1976D2"
+                  >
+                    <AttachFileOutlined
+                      sx={{ fontSize: "16px", marginRight: "3px" }}
+                    />
+                    {values?.subtitle?.name}
+                  </Typography>
+
+                  {subtitleFiles.map((file, i) => (
+                    <Typography
+                      display="flex"
+                      alignItems="center"
+                      noWrap
+                      title={file.name}
+                      variant="body2"
+                      key={i}
+                      marginLeft={2}
+                    >
+                      <ArrowForwardOutlined
+                        sx={{ fontSize: "13px", marginRight: "3px" }}
+                      />
+                      {file.name}
+                    </Typography>
+                  ))}
+                </Box>
+
+                <Box marginY={3}>
+                  {values.release_name.map((name, index) => (
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      key={index}
+                      sx={{ display: "flex", alignItems: "center" }}
+                      marginBottom={1}
+                    >
+                      <TextField
+                        id={`release_name_${index}`}
+                        label="Release name"
+                        variant="outlined"
+                        size="small"
+                        name={`release_name_${index}`}
+                        fullWidth
+                        value={name}
+                        onChange={(e) =>
+                          handleReleaseNameChange(index, e.target.value)
+                        }
+                        required
+                      />
+                      {values.release_name.length === 1 ? null : (
+                        <Button
+                          variant="contained"
+                          onClick={() => handleRemoveReleaseName(index)}
+                          color="secondary"
+                          startIcon={<Delete />}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </Stack>
+                  ))}
+                  <Button variant="contained" onClick={handleAddReleaseName}>
+                    Add more name
+                  </Button>
+                </Box>
+
+                <Box marginY={3}>
+                  <FormControl size="small" sx={{ width: "100%", my: "2" }}>
+                    <InputLabel id="release_type">Release type</InputLabel>
+                    <Select
+                      labelId="release_type"
+                      id="release_type"
+                      name="release_type"
+                      value={values.release_type}
+                      label="Release type"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="">Don't Know</MenuItem>
+                      <MenuItem value="CAM">CAM</MenuItem>
+                      <MenuItem value="DVD">DVD</MenuItem>
+                      <MenuItem value="HDR">HDR</MenuItem>
+                      <MenuItem value="TV">TV</MenuItem>
+                      <MenuItem value="WEB">WEB</MenuItem>
+                      <MenuItem value="BR">BR</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                <Box marginY={3}>
+                  <TextField
+                    id="description"
+                    label="Description"
+                    variant="outlined"
+                    name="description"
+                    multiline
+                    rows={4}
+                    value={values.description}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Box>
+
+                <Button variant="contained" type="submit">
+                  Submit Subtitle
+                </Button>
+              </Box>
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <SingleMedia media={shortFilm} />
+            </Grid>
+          </Grid>
+        </Box>
+      </>
     )
   );
 };

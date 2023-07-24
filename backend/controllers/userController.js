@@ -65,6 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
       token: user.generateToken(),
     });
   } else {
@@ -78,6 +79,25 @@ const profile = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
 
+// update profile
+const updateProfile = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const avatar_link = req.avatar_link;
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { avatar: avatar_link },
+    { new: true, useFindAndModify: false }
+  );
+
+  if (!updatedUser) {
+    res.status(400);
+    throw new Error("Invalid credentials");
+  }
+
+  res.status(200).json(updatedUser);
+});
+
 // get all user
 const getAllUser = asyncHandler(async (req, res) => {
   const users = await User.find({}).populate("subtitles");
@@ -87,7 +107,9 @@ const getAllUser = asyncHandler(async (req, res) => {
 // get single user
 const singleUser = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  const user = await User.findById({ _id: id }).select("-password -email");
+  const user = await User.findById({ _id: id })
+    .populate({ path: "subtitles", options: { sort: { createdAt: -1 } } })
+    .select("-password -email -role");
 
   if (!user) {
     res.status(400);
@@ -96,20 +118,32 @@ const singleUser = asyncHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
-// get single user subtitle
-const singleUserSubtitle = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+// follow user
+const followUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
 
-  const subtitles = await Subtitle.find({ user: id });
+  // add user follow
+  if (!user.followers.includes(req.user._id)) {
+    const updatedUser = await user.updateOne({
+      $push: { followers: req.user._id },
+    });
 
-  res.status(200).json(subtitles);
+    res.status(200).json(updatedUser);
+  } else {
+    const updatedUser = await user.updateOne({
+      $pull: { followers: req.user._id },
+    });
+
+    res.status(200).json(updatedUser);
+  }
 });
 
 module.exports = {
   registerUser,
   loginUser,
   profile,
+  updateProfile,
   getAllUser,
   singleUser,
-  singleUserSubtitle,
+  followUser,
 };

@@ -27,6 +27,37 @@ export const subtitleApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Subtitles"],
     }),
 
+    downloadSubtitle: builder.query({
+      query: (subtitleId) => ({
+        url: `/subtitles/download/${subtitleId}`,
+        method: "GET",
+      }),
+    }),
+
+    countDownloadSubtitle: builder.mutation({
+      query: (subtitleId) => ({
+        url: `/subtitles/download/${subtitleId}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Subtitles", "Subtitle"],
+    }),
+
+    likeSubtitle: builder.mutation({
+      query: (subtitleId) => ({
+        url: `/subtitles/like/${subtitleId}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Subtitle"],
+    }),
+
+    disLikeSubtitle: builder.mutation({
+      query: (subtitleId) => ({
+        url: `/subtitles/dislike/${subtitleId}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Subtitle"],
+    }),
+
     patchSubtitle: builder.mutation({
       query: ({ id, data }) => ({
         url: `/subtitle/${id}`,
@@ -56,5 +87,9 @@ export const {
   useGetSubtitleQuery,
   usePostSubtitleMutation,
   usePatchSubtitleMutation,
+  useLikeSubtitleMutation,
+  useDisLikeSubtitleMutation,
+  useDownloadSubtitleQuery,
+  useCountDownloadSubtitleMutation,
   useDeleteSubtitleMutation,
 } = subtitleApi;

@@ -5,7 +5,7 @@ const SubtitleItemSkeleton = () => {
     <Grid item>
       <Card
         sx={{
-          width: { xs: "138px", sm: "150px" },
+          width: { xs: "138px", sm: "160px" },
           height: { xs: "271px", sm: "290px" },
         }}
       >

@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
-import { Card, CardMedia, Grid, Typography, Box, Divider } from "@mui/material";
-import { DownloadRounded, AccessTimeRounded } from "@mui/icons-material";
+import {
+  Card,
+  CardMedia,
+  Grid,
+  Typography,
+  Box,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import {
+  DownloadRounded,
+  AccessTimeRounded,
+  BookmarkAdded,
+  BookmarkAddOutlined,
+} from "@mui/icons-material";
 import wordsToNumbers from "words-to-numbers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addSubtitle,
+  removeSubtitle,
+} from "../../../features/subtitle/subtitleSlice";
 
 const img_url = process.env.REACT_APP_IMG_API;
 
 const SubtitleItem = ({ subtitle }) => {
+  const { user } = useSelector((state) => state.auth);
+  const { subtitles } = useSelector((state) => state.subtitles);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   // format number
   const formatNumber = (number = 0) => {
     if (Math.abs(number) >= 1e9) {
@@ -25,15 +49,35 @@ const SubtitleItem = ({ subtitle }) => {
     return wordsToNumbers(title?.split("-")[1].split(" ")[1]);
   };
 
+  // handle bookmark
+  const handleAddBookmark = () => {
+    if (user) {
+      dispatch(addSubtitle(subtitle));
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleRemoveBookmark = () => {
+    if (user) {
+      dispatch(removeSubtitle(subtitle));
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const isSubtitleBookmarked = subtitles.some(
+    (bookmarkSub) => bookmarkSub._id === subtitle._id
+  );
+
   return (
     <Grid item>
       <Card
         sx={{
-          width: { xs: "138px", sm: "150px" },
+          width: { xs: "138px", sm: "160px" },
           transition: "transform 0.3s",
           zIndex: "1",
           position: "relative",
-          // "&:hover": { transform: "scale(1.1)" },
         }}
       >
         <Typography
@@ -50,7 +94,36 @@ const SubtitleItem = ({ subtitle }) => {
         >
           {subtitle?.release_date}
         </Typography>
-        {subtitle?.media_type === "series" ? (
+
+        <Tooltip
+          title={
+            isSubtitleBookmarked ? "Remove form bookmarks" : "Add to bookmarks"
+          }
+        >
+          <IconButton
+            sx={{
+              fontSize: "20px",
+              position: "absolute",
+              right: "0",
+              top: "0",
+              padding: "1px",
+              background: "#0000006f",
+              color: "#ffffff",
+              borderRadius: "0px",
+            }}
+            onClick={
+              isSubtitleBookmarked ? handleRemoveBookmark : handleAddBookmark
+            }
+          >
+            {isSubtitleBookmarked ? (
+              <BookmarkAdded fontSize="20px" />
+            ) : (
+              <BookmarkAddOutlined fontSize="20px" />
+            )}
+          </IconButton>
+        </Tooltip>
+
+        {/* {subtitle?.media_type === "series" ? (
           <Typography
             sx={{
               position: "absolute",
@@ -66,56 +139,84 @@ const SubtitleItem = ({ subtitle }) => {
           >
             S-{formatSeason(subtitle?.title)}
           </Typography>
-        ) : null}
-        <CardMedia
-          component="img"
-          image={`${img_url}${subtitle?.poster_path}`}
-          // sx={{ height: "200px" }}
-          alt={subtitle?.title}
-        />
-        <Link to={`/subtitles/${subtitle?._id}`}>
-          <Typography
-            variant="subtitle2"
-            paddingX="3px"
-            noWrap
-            title={subtitle?.title}
-          >
-            {subtitle?.title}
-          </Typography>
-        </Link>
+        ) : null} */}
 
-        <Typography variant="body2" paddingX="3px" noWrap>
-          {subtitle?.user?.name}
-        </Typography>
-
-        <Box
-          sx={{
-            paddingX: "3px",
-            paddingBottom: "3px",
-            fontSize: "13px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        {/* subtile poster */}
+        <Box component={Link} to={`/subtitles/${subtitle?._id}`}>
+          <CardMedia
+            component="img"
+            image={`${img_url}${subtitle?.poster_path}`}
+            // sx={{ height: "200px" }}
+            alt={subtitle?.title}
+          />
+        </Box>
+        <Box position="relative">
+          {/* title */}
           <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-            title={`${subtitle?.downloads} time downloads`}
+            component={Link}
+            to={`/subtitles/${subtitle?._id}`}
+            sx={{ textDecoration: "none", color: "#000000" }}
           >
-            <DownloadRounded sx={{ fontSize: "13px", marginRight: "3px" }} />
-            {formatNumber(subtitle?.downloads)}
+            <Typography
+              variant="subtitle2"
+              paddingX="3px"
+              noWrap
+              title={subtitle?.title}
+            >
+              {subtitle?.title}
+            </Typography>
           </Box>
+
+          {/* traslator name */}
+          <Box
+            component={Link}
+            to={`/user/${subtitle.user._id}`}
+            sx={{ textDecoration: "none", color: "#000000" }}
+          >
+            <Typography
+              variant="subtitle2"
+              paddingX="5px"
+              fontSize={12}
+              // fontWeight={500}
+              noWrap
+            >
+              {subtitle?.user?.name}
+            </Typography>
+          </Box>
+
+          {/* downloaded & time */}
           <Box
             sx={{
+              paddingX: "3px",
+              paddingBottom: "3px",
+              fontSize: "13px",
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
             }}
           >
-            <AccessTimeRounded sx={{ fontSize: "13px", marginRight: "3px" }} />
-            {moment(subtitle.createdAt).startOf("m").fromNow()}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              title={`${subtitle?.downloads} time downloads`}
+            >
+              <DownloadRounded sx={{ fontSize: "13px", marginRight: "3px" }} />
+              {formatNumber(subtitle?.downloads)}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              noWrap
+            >
+              <AccessTimeRounded
+                sx={{ fontSize: "13px", marginRight: "3px" }}
+              />
+              {moment(subtitle.createdAt).startOf("m").fromNow()}
+            </Box>
           </Box>
         </Box>
       </Card>

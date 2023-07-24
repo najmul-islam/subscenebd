@@ -7,6 +7,7 @@ export const userApi = apiSlice.injectEndpoints({
         url: "/user/all",
         method: "GET",
       }),
+      providesTags: ["Users"],
     }),
 
     getUser: builder.query({
@@ -14,15 +15,18 @@ export const userApi = apiSlice.injectEndpoints({
         url: `/user/${id}`,
         method: "GET",
       }),
+      providesTags: ["User"],
     }),
 
-    getUserSubtitle: builder.query({
+    putFollower: builder.mutation({
       query: (id) => ({
-        url: `/user/${id}/subtiles`,
+        url: `/user/follow/${id}`,
+        method: "PUT",
       }),
+      invalidatesTags: ["User", "Subtitle"],
     }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserQuery, useGetUserSubtitleQuery } =
+export const { useGetUsersQuery, useGetUserQuery, usePutFollowerMutation } =
   userApi;

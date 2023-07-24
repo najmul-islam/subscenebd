@@ -18,6 +18,8 @@ import SeriesPage from "../pages/public/SeriesPage";
 import ShortFilmsPage from "../pages/public/ShortFilmsPage";
 import MusicsPage from "../pages/public/MusicsPage";
 import SingleSubtitlePage from "../pages/public/SingleSubtitlePage";
+import GenreSubtitlePage from "../pages/public/GenreSubtitlePage";
+import UserProfilePage from "../pages/public/UserProfilePage";
 // user/profile pages
 import ProfilePage from "../pages/user/profile/ProfilePage";
 import SubtitlesPage from "../pages/user/profile/SubtitlesPage";
@@ -65,6 +67,11 @@ const Router = () => {
         </Route>
 
         <Route path="/subtitles/:subtitleId" element={<SingleSubtitlePage />} />
+        <Route
+          path="/subtitles/genres/:genreName"
+          element={<GenreSubtitlePage />}
+        />
+        <Route path="/user/:userId" element={<UserProfilePage />} />
       </Route>
 
       {/* user route */}

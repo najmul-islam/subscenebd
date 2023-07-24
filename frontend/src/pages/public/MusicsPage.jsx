@@ -3,7 +3,7 @@ import SubtitleList from "../../components/public/subtitles/SubtitleList";
 
 const MusicsPage = () => {
   return (
-    <Box>
+    <Box minHeight="90vh">
       <SubtitleList />
     </Box>
   );

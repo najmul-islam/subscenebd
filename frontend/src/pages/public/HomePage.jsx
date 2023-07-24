@@ -3,7 +3,7 @@ import Home from "../../components/public/home/Home";
 
 const HomePage = () => {
   return (
-    <Box>
+    <Box minHeight="90vh">
       <Home />
     </Box>
   );

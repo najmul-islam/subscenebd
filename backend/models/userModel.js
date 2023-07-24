@@ -23,11 +23,19 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "moderator", "user"],
       default: "user",
     },
-
+    avatar: { type: String },
+    followers: { type: Array, default: [] },
     subtitles: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subtitle",
+      },
+    ],
+
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
       },
     ],
   },
@@ -43,7 +51,7 @@ userSchema.pre("save", async function (next) {
       const hanshedPassword = await bcrypt.hash(this.password, salt);
       this.password = hanshedPassword;
 
-      if (this.email === process.env.ADMIN_EMAIL.toLowerCase()) {
+      if (this.email === process.env.ADMIN_EMAIL) {
         this.role = "admin";
       }
       next();

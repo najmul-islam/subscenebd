@@ -19,7 +19,7 @@ const SubtitleList = () => {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const thirtyDaysSubtitles = subtitles.filter(
+  const thirtyDaysSubtitles = subtitles?.filter(
     (subtitle) => new Date(subtitle.createdAt) >= thirtyDaysAgo
   );
 
@@ -72,17 +72,18 @@ const SubtitleList = () => {
       .catch((error) => {
         setIsLoading(false);
         setIsError(true);
-        setError(error.message);
+        setError(error);
       });
   }, [dispatch]);
 
-  console.log(subtitles);
+  // console.log(subtitles);
+  // console.log(error);
 
   let content;
   if (isLoading)
     content = (
-      <Box padding={2}>
-        <Grid container spacing={2}>
+      <Box paddingY={2}>
+        <Grid container spacing={2} justifyContent="center">
           {[...Array(30)].map((subtitle, i) => (
             <Grid item key={i}>
               <SubtitleItemSkeleton />
@@ -95,7 +96,7 @@ const SubtitleList = () => {
   if (!isLoading && isError)
     content = (
       <Box>
-        <Typography>{error?.error}</Typography>
+        <Typography>{error}</Typography>
       </Box>
     );
 
@@ -107,8 +108,8 @@ const SubtitleList = () => {
 
   if (!isLoading && !isError && subtitles?.length > 0) {
     content =
-      filterdSubtitle.length > 0 ? (
-        filterdSubtitle.map((subtitle) => (
+      filterdSubtitle?.length > 0 ? (
+        filterdSubtitle?.map((subtitle) => (
           <SubtitleItem key={subtitle._id} subtitle={subtitle} />
         ))
       ) : (
@@ -124,7 +125,7 @@ const SubtitleList = () => {
 
   return (
     <Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} display="flex" justifyContent="center">
         {content}
       </Grid>
     </Box>

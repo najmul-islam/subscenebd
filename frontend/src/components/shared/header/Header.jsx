@@ -25,7 +25,7 @@ const Header = () => {
       position="fixed"
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        boxShadow: { md: 0 },
+        boxShadow: 0,
       }}
     >
       {showSerachBox ? (

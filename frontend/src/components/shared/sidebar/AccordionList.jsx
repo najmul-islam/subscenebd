@@ -23,6 +23,8 @@ import { useLocation } from "react-router-dom";
 const MuiAccordion = styled((props) => <Accordion {...props} />)(
   ({ theme }) => ({
     border: `1px solid ${theme.palette.divider}`,
+    borderLeft: 0,
+    borderRight: 0,
     "&:not(:last-child)": {
       borderBottom: 0,
     },

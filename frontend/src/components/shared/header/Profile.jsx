@@ -27,6 +27,7 @@ import {
   LightModeOutlined,
 } from "@mui/icons-material";
 // import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+const avatar_url = process.env.REACT_APP_AVATAR_URL;
 const Profile = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
@@ -58,8 +59,8 @@ const Profile = () => {
     <>
       <IconButton onClick={handleOpenUserMenu}>
         <Avatar
-          alt={user.name.toUpperCase()}
-          src="/static/images/avatar/2.jpg"
+          alt={user?.name.toUpperCase()}
+          src={`${avatar_url}/${user?.avatar}`}
         />
       </IconButton>
       <Menu
@@ -81,8 +82,8 @@ const Profile = () => {
         <ListItem disablePadding sx={{ paddingTop: "0", paddingBottom: "0" }}>
           <ListItemButton>
             <Avatar
-              alt={user.name.toUpperCase()}
-              src="/static/images/avatar/2.jpg"
+              alt={user?.name.toUpperCase()}
+              src={`${avatar_url}/${user?.avatar}`}
             />
             <ListItemText sx={{ ml: 2 }}>{user.name}</ListItemText>
           </ListItemButton>

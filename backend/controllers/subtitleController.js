@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 // get all sub
 const getAllSubtitle = asyncHandler(async (req, res) => {
   const subtitles = await Subtitle.find({})
-    .populate("user", "_id name")
+    .populate("user", "_id name avatar followers createdAt")
     .sort({ createdAt: -1 });
 
   res.status(200).json(subtitles);
@@ -16,7 +16,9 @@ const getAllSubtitle = asyncHandler(async (req, res) => {
 const getSingleSubtitle = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const subtitle = await Subtitle.findById({ _id: id });
+  const subtitle = await Subtitle.findById(id)
+    .populate("user", "_id name avatar followers createdAt")
+    .exec();
 
   res.status(200).json(subtitle);
 });
