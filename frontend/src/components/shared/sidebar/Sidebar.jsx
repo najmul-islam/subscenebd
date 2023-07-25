@@ -66,6 +66,7 @@ const Sidebar = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              borderRight: "0",
             },
           }}
         >

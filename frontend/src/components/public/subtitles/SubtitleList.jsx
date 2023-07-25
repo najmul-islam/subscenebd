@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { subtitleApi } from "../../../features/subtitle/subtitleApi";
 import { Box, Grid, Typography } from "@mui/material";
 import SubtitleItem from "./SubtitleItem";
@@ -12,6 +12,7 @@ const SubtitleList = () => {
   const [error, setError] = useState(null);
   const [subtitles, setSubtitles] = useState([]);
 
+  const { searchSubtitle } = useSelector((state) => state.subtitles);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
 
@@ -61,6 +62,11 @@ const SubtitleList = () => {
       ? subtitles?.filter(filterSubtitles)
       : popularSubtitles?.filter(filterSubtitles);
 
+  // searchd subtitle
+  const searchedSubtitle = subtitles.filter((subtitle) =>
+    subtitle?.title.toLowerCase().includes(searchSubtitle)
+  );
+
   // get subtitle
   useEffect(() => {
     dispatch(subtitleApi.endpoints.getSubtitles.initiate())
@@ -109,9 +115,15 @@ const SubtitleList = () => {
   if (!isLoading && !isError && subtitles?.length > 0) {
     content =
       filterdSubtitle?.length > 0 ? (
-        filterdSubtitle?.map((subtitle) => (
-          <SubtitleItem key={subtitle._id} subtitle={subtitle} />
-        ))
+        searchSubtitle === "" ? (
+          filterdSubtitle?.map((subtitle) => (
+            <SubtitleItem key={subtitle._id} subtitle={subtitle} />
+          ))
+        ) : (
+          searchedSubtitle.map((subtitle) => (
+            <SubtitleItem key={subtitle._id} subtitle={subtitle} />
+          ))
+        )
       ) : (
         <Box>
           <Grid item>
@@ -125,7 +137,7 @@ const SubtitleList = () => {
 
   return (
     <Box>
-      <Grid container spacing={2} display="flex" justifyContent="center">
+      <Grid container spacing={2}>
         {content}
       </Grid>
     </Box>

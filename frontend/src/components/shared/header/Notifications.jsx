@@ -29,9 +29,9 @@ const Notifications = () => {
       <Tooltip title="Notification">
         <IconButton onClick={handleOpenNotificationsMenu}>
           {open ? (
-            <NotificationsIcon sx={{ fontSize: "25px", color: "white" }} />
+            <NotificationsIcon sx={{ fontSize: "25px" }} />
           ) : (
-            <NotificationsNone sx={{ fontSize: "25px", color: "white" }} />
+            <NotificationsNone sx={{ fontSize: "25px" }} />
           )}
         </IconButton>
       </Tooltip>

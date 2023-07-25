@@ -11,6 +11,24 @@ const Themeprovider = ({ children }) => {
   // #f1f1f1
   // gray #8e8e8c
 
+  // const darkColors = {
+  //   primary: "#FF0000",
+  //   secondary: "#909090",
+  //   background: "#1F1F1F",
+  //   text: "#EFEFEF",
+  // };
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+      primary: {
+        main: "#ff0000",
+        light: "#ff9999",
+        dark: "#990000",
+        contrastText: "#ffffff",
+      },
+    },
+  });
+
   // const lightColors = {
   //   primary: "#FF0000",
   //   secondary: "#606060",
@@ -18,34 +36,16 @@ const Themeprovider = ({ children }) => {
   //   text: "#3C3C3C",
   // };
 
-  // const darkColors = {
-  //   primary: "#FF0000",
-  //   secondary: "#909090",
-  //   background: "#1F1F1F",
-  //   text: "#EFEFEF",
-  // };
-  const youtubeDark = createTheme({
-    palette: {
-      mode: "dark",
-      primary: {
-        main: "#FF0000",
-      },
-      secondary: {
-        main: "#FFFFFF",
-      },
-    },
-  });
-
   // YouTube light theme
-  const youtubeLight = createTheme({
+  const lightTheme = createTheme({
     palette: {
       mode: "light",
-      // primary: {
-      //   main: "#ffffff",
-      // },
-      // secondary: {
-      //   main: "#8e8e8c",
-      // },
+      primary: {
+        main: "#ffffff",
+        light: "#f7f7f7",
+        dark: "#dcdcdc",
+        contrastText: "#3C3C3C",
+      },
     },
   });
 
@@ -68,7 +68,7 @@ const Themeprovider = ({ children }) => {
   // }, [mode]);
 
   return (
-    <ThemeProvider theme={mode === "dark" ? youtubeDark : youtubeLight}>
+    <ThemeProvider theme={mode === "dark" ? darkTheme : lightTheme}>
       {children}
     </ThemeProvider>
   );
