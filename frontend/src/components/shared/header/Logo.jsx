@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../features/theme/themeSlice";
 import { IconButton, Typography } from "@mui/material";
 import { Menu } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const Logo = () => {
   const { sidebar } = useSelector((state) => state.theme);
@@ -14,7 +15,6 @@ const Logo = () => {
   return (
     <>
       <IconButton
-        color="inherit"
         aria-label="open drawer"
         edge="start"
         onClick={() => handleSidebar(!sidebar)}
@@ -23,14 +23,19 @@ const Logo = () => {
         <Menu />
       </IconButton>
       <IconButton
-        color="inherit"
         aria-label="open drawer"
         edge="start"
         sx={{ mr: 2, p: "10px", display: { lg: "inline-flex", xs: "none" } }}
       >
         <Menu />
       </IconButton>
-      <Typography variant="h6" noWrap component="div">
+      <Typography
+        component={Link}
+        to={`/`}
+        sx={{ color: "#000000", textDecoration: "none" }}
+        variant="h6"
+        noWrap
+      >
         Logo
       </Typography>
     </>

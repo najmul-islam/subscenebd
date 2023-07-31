@@ -5,6 +5,7 @@ import PublicLayout from "../layouts/PublicLayout";
 import UsersLayout from "../layouts/UsersLayout";
 import LatestLayout from "../layouts/LatestLayout";
 import PopularLayout from "../layouts/PopularLayout";
+import MessageLayout from "../layouts/MessageLayout";
 
 // auth page
 import RegisterPage from "../pages/shared/RegisterPage";
@@ -23,7 +24,7 @@ import UserProfilePage from "../pages/public/UserProfilePage";
 // user/profile pages
 import ProfilePage from "../pages/user/profile/ProfilePage";
 import SubtitlesPage from "../pages/user/profile/SubtitlesPage";
-import MessagesPage from "../pages/user/profile/MessagesPage";
+import MessagesPage from "../pages/user/message/MessagesPage";
 import BookmarksPage from "../pages/user/profile/BookmarksPage";
 import DownloadsPage from "../pages/user/profile/DownloadsPage";
 // user/movie pages
@@ -81,6 +82,12 @@ const Router = () => {
         <Route path="messages" element={<MessagesPage />} />
         <Route path="bookmarks" element={<BookmarksPage />} />
         <Route path="downloads" element={<DownloadsPage />} />
+      </Route>
+
+      {/* message route */}
+      <Route path="/messages" element={<MessageLayout roles={["user"]} />}>
+        <Route path="/messages" element={<MessagesPage />} />
+        <Route path="/messages/user/:userId" element={<MessagesPage />} />
       </Route>
 
       {/* user upload */}

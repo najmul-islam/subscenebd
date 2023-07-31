@@ -57,6 +57,30 @@ export const subtitleApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Subtitle"],
     }),
+    postComment: builder.mutation({
+      query: ({ subtitleId, data }) => ({
+        url: `/subtitles/comments/${subtitleId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Subtitle"],
+    }),
+    editComment: builder.mutation({
+      query: ({ subtitleId, commentId, data }) => ({
+        url: `/subtitles/comments/${subtitleId}/${commentId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Subtitle"],
+    }),
+
+    deleteComment: builder.mutation({
+      query: ({ subtitleId, commentId }) => ({
+        url: `/subtitles/comments/${subtitleId}/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Subtitle"],
+    }),
 
     patchSubtitle: builder.mutation({
       query: ({ id, data }) => ({
@@ -92,4 +116,7 @@ export const {
   useDownloadSubtitleQuery,
   useCountDownloadSubtitleMutation,
   useDeleteSubtitleMutation,
+  usePostCommentMutation,
+  useEditCommentMutation,
+  useDeleteCommentMutation,
 } = subtitleApi;

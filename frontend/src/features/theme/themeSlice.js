@@ -5,7 +5,7 @@ const initialState = {
   mode: color ? color : "light",
   sidebar: false,
   selectedUrl: window.location.pathname,
-  drawerWidth: 240,
+  drawerWidth: 280,
 };
 
 export const themeSlice = createSlice({

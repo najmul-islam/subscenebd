@@ -20,12 +20,6 @@ const Themeprovider = ({ children }) => {
   const darkTheme = createTheme({
     palette: {
       mode: "dark",
-      primary: {
-        main: "#ff0000",
-        light: "#ff9999",
-        dark: "#990000",
-        contrastText: "#ffffff",
-      },
     },
   });
 
@@ -40,12 +34,6 @@ const Themeprovider = ({ children }) => {
   const lightTheme = createTheme({
     palette: {
       mode: "light",
-      primary: {
-        main: "#ffffff",
-        light: "#f7f7f7",
-        dark: "#dcdcdc",
-        contrastText: "#3C3C3C",
-      },
     },
   });
 

@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useCountDownloadSubtitleMutation,
   useDisLikeSubtitleMutation,
-  useDownloadSubtitleQuery,
   useGetSubtitleQuery,
   useLikeSubtitleMutation,
 } from "../../../features/subtitle/subtitleApi";
@@ -10,21 +9,18 @@ import {
   Avatar,
   Box,
   Button,
+  ButtonGroup,
   Card,
-  CardActions,
-  CardContent,
   CardMedia,
   Chip,
   Container,
   Divider,
-  Grid,
-  IconButton,
   Stack,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
 import {
-  AccessTimeRounded,
   ThumbUp,
   ThumbUpAltOutlined,
   ThumbDownAltOutlined,
@@ -34,7 +30,16 @@ import {
 } from "@mui/icons-material";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { usePutFollowerMutation } from "../../../features/user/userApi";
+import {
+  usePutFollowerMutation,
+  usePutUserDownloadSubMutation,
+} from "../../../features/user/userApi";
+import { useRef, useState } from "react";
+import Comments from "./CommentList";
+import AboutSubtitle from "./AboutSubtitle";
+import ReleaseInfo from "./ReleaseInfo";
+import UserInfo from "./UserInfo";
+import ActionButtons from "./ActionButtons";
 
 const img_url = process.env.REACT_APP_IMG_API;
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
@@ -42,6 +47,7 @@ const avatar_url = process.env.REACT_APP_AVATAR_URL;
 const SingleSubtitle = () => {
   const { user } = useSelector((state) => state.auth);
   // const {data } = useDownloadSubtitleQuery()
+  const [putUserDownloadSub] = usePutUserDownloadSubMutation();
   const [putFollower] = usePutFollowerMutation();
   const [likeSubtitle] = useLikeSubtitleMutation();
   const [dislikeSubtitle] = useDisLikeSubtitleMutation();
@@ -83,6 +89,9 @@ const SingleSubtitle = () => {
 
   const handleDownload = (subtitleId) => {
     countDownload(subtitleId);
+    if (user) {
+      putUserDownloadSub(subtitleId);
+    }
   };
 
   const handleUsername = (userId) => {
@@ -92,7 +101,9 @@ const SingleSubtitle = () => {
   const handleGenres = (genre) => {
     navigate(`/subtitles/genres/${genre}`);
   };
+
   if (isLoading) return <h1>Loading...</h1>;
+
   console.log("single subtitle", subtitle);
   console.log("single user", user);
 
@@ -167,171 +178,20 @@ const SingleSubtitle = () => {
               </Stack>
 
               {/* user info */}
-
-              <Stack
-                direction="row"
-                spacing={1}
-                marginTop={3}
-                alignItems="center"
-              >
-                <Avatar
-                  alt={subtitle?.user.name}
-                  src={`${avatar_url}/${subtitle?.user.avatar}`}
-                  variant="rounded"
-                  sx={{ width: "40px", height: "40px", cursor: "pointer" }}
-                  onClick={() => handleUsername(subtitle?.user._id)}
-                />
-                <Stack direction="column">
-                  <Box alignContent="center">
-                    <Typography
-                      onClick={() => handleUsername(subtitle?.user._id)}
-                      component="span"
-                      variant="subtitle2"
-                      sx={{ cursor: "pointer" }}
-                    >
-                      {subtitle?.user.name}
-                    </Typography>
-                    {user?._id !== subtitle?.user._id && (
-                      <>
-                        <FiberManualRecord
-                          sx={{
-                            fontSize: "5px",
-                            marginBottom: "2px",
-                            marginX: "2px",
-                          }}
-                        />
-                        <Typography
-                          component="span"
-                          variant="subtitle2"
-                          sx={{ color: "#1976D2", cursor: "pointer" }}
-                          onClick={() => handleFollow(subtitle?.user._id)}
-                        >
-                          {subtitle?.user.followers.includes(user?._id)
-                            ? "Following"
-                            : "Follow"}
-                        </Typography>
-                      </>
-                    )}
-                  </Box>
-
-                  <Typography variant="caption">
-                    {subtitle?.user.followers.length >= 2
-                      ? `${subtitle?.user.followers.length} followers`
-                      : `${subtitle?.user.followers.length} follower`}
-                  </Typography>
-                </Stack>
-              </Stack>
+              <UserInfo subtitle={subtitle} />
             </Box>
 
             {/* download like dislike*/}
-            <Box>
-              <Stack direction="row" spacing={2} marginTop="25px">
-                <Tooltip title="download subtitle">
-                  <Button
-                    size="small"
-                    variant="contained"
-                    download
-                    startIcon={<Download />}
-                    href={`${avatar_url}/${subtitle?.subtitle_link}`}
-                    onClick={() => handleDownload(subtitle?._id)}
-                  >
-                    Download
-                  </Button>
-                </Tooltip>
 
-                <Tooltip title="downloaded">
-                  <Button
-                    variant="outlined"
-                    startIcon={<Download />}
-                    sx={{ cursor: "default" }}
-                  >
-                    {subtitle?.downloads}
-                  </Button>
-                </Tooltip>
-
-                <Tooltip title="like subtitle">
-                  <Button
-                    onClick={() => handleLike(subtitle?._id)}
-                    variant="outlined"
-                    startIcon={
-                      subtitle?.likes.includes(user?._id) ? (
-                        <ThumbUp />
-                      ) : (
-                        <ThumbUpAltOutlined />
-                      )
-                    }
-                  >
-                    {subtitle?.likes.length}
-                  </Button>
-                </Tooltip>
-
-                <Tooltip title="dislike subtitle">
-                  <Button
-                    onClick={() => handleDislike(subtitle?._id)}
-                    variant="outlined"
-                    startIcon={
-                      subtitle?.dislikes.includes(user?._id) ? (
-                        <ThumbDown />
-                      ) : (
-                        <ThumbDownAltOutlined />
-                      )
-                    }
-                  >
-                    {subtitle?.dislikes.length}
-                  </Button>
-                </Tooltip>
-              </Stack>
-            </Box>
+            <ActionButtons subtitle={subtitle} />
           </Box>
         </Stack>
       </Container>
 
       <Container>
-        <Box
-          minHeight="200px"
-          sx={{ maxWidth: "100%", overflow: "hidden", whiteSpace: "normal" }}
-        >
-          <Divider
-            sx={{
-              fontSize: "18px",
-              fontWeight: "600",
-              marginBottom: "5px",
-            }}
-          >
-            Release info
-          </Divider>
-
-          {subtitle?.release_name.map((name, id) => (
-            <Typography variant="body2" key={id}>
-              {name}
-            </Typography>
-          ))}
-        </Box>
-
-        <Box
-          minHeight="200px"
-          sx={{ maxWidth: "100%", overflow: "hidden", whiteSpace: "normal" }}
-        >
-          <Divider
-            sx={{
-              fontSize: "18px",
-              fontWeight: "600",
-              marginBottom: "5px",
-            }}
-          >
-            About subtitle
-          </Divider>
-          <Typography
-            component="p"
-            dangerouslySetInnerHTML={{ __html: subtitle?.description }}
-            variant="body1"
-            width="100%"
-            overflow="hidden"
-            whiteSpace="pre-wrap"
-          >
-            {subtitle?.description}
-          </Typography>
-        </Box>
+        <ReleaseInfo releaseName={subtitle?.release_name} />
+        <AboutSubtitle description={subtitle?.description} />
+        <Comments subtitle={subtitle} />
       </Container>
     </>
   );

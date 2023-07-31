@@ -43,7 +43,7 @@ const SearchBox = () => {
         <Box width="100%" sx={{ position: "relative" }}>
           <InputBase
             fullWidth
-            placeholder="Search"
+            placeholder="Search subtitle"
             name="search"
             value={searchQuery}
             onChange={handleSearch}

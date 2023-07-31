@@ -28,11 +28,11 @@ import {
 } from "@mui/icons-material";
 // import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
-const Profile = () => {
+const Profile = ({ user }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
 
-  const { user } = useSelector((state) => state.auth);
+  // const { user } = useSelector((state) => state.auth);
   const { mode } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const Profile = () => {
     <>
       <IconButton onClick={handleOpenUserMenu}>
         <Avatar
-          alt={user?.name.toUpperCase()}
+          alt={user?.name?.toUpperCase()}
           src={`${avatar_url}/${user?.avatar}`}
         />
       </IconButton>
@@ -82,7 +82,7 @@ const Profile = () => {
         <ListItem disablePadding sx={{ paddingTop: "0", paddingBottom: "0" }}>
           <ListItemButton>
             <Avatar
-              alt={user?.name.toUpperCase()}
+              alt={user?.name?.toUpperCase()}
               src={`${avatar_url}/${user?.avatar}`}
             />
             <ListItemText sx={{ ml: 2 }}>{user.name}</ListItemText>
@@ -102,7 +102,7 @@ const Profile = () => {
         />
 
         <HeaderListItem
-          link="/user/messages"
+          link="/messages"
           icon={<EmailOutlined />}
           text="Messages"
         />

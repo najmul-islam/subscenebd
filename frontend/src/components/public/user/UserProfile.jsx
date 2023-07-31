@@ -17,7 +17,6 @@ const UserProfile = () => {
   const { userId } = useParams();
 
   const { data: user, isLoading, isError, error } = useGetUserQuery(userId);
-  console.log(user);
 
   if (isLoading) return <h1>Loading...</h1>;
 
@@ -59,7 +58,7 @@ const UserProfile = () => {
       </Box>
 
       <Divider sx={{ fontSize: "20px", fontWeight: "700", marginY: "20px" }}>
-        Subtitle List
+        {user?.name} Subtitle List
       </Divider>
 
       <Box>

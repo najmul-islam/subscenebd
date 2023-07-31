@@ -1,16 +1,20 @@
-import React from "react";
+import { Box, Typography } from "@mui/material";
+import DownloadList from "../../../components/user/download/DownloadList";
 
 const DownloadsPage = () => {
   return (
-    <div>
-      <h1>DownloadsPage</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates est
-        iusto, ducimus consequatur, molestias officiis provident optio totam,
-        iure itaque animi atque architecto ullam aspernatur dolor dolore laborum
-        ad tenetur!
-      </p>
-    </div>
+    <Box>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        paddingY={3}
+        marginBottom={2}
+        sx={{ marginLeft: { lg: "-270px" } }}
+      >
+        My Downloads List
+      </Typography>
+      <DownloadList />
+    </Box>
   );
 };
 
