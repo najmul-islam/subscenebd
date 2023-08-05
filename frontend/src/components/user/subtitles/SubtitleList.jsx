@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import SubtitleItemSkeleton from "../../public/subtitles/SubtitleItemSkeleton";
 import { useSelector } from "react-redux";
 import SubtitleItem from "./SubttitleItem";
-import { useGetUserQuery } from "../../../features/user/userApi";
+import { useGetUserQuery } from "../../../features/user/usersApi";
 
 const SubtitleList = () => {
   const { user } = useSelector((state) => state.auth);

@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import { Box, Button, Stack, Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
-import { usePutUserDownloadSubMutation } from "../../../features/user/userApi";
+import { usePutUserDownloadSubMutation } from "../../../features/user/usersApi";
 import {
   useCountDownloadSubtitleMutation,
   useDisLikeSubtitleMutation,

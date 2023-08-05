@@ -18,6 +18,7 @@ const getSingleSubtitle = asyncHandler(async (req, res) => {
 
   const subtitle = await Subtitle.findById(id)
     .populate("user", "_id name avatar followers createdAt")
+    .populate("comments.commentBy", "_id name avatar")
     .exec();
 
   res.status(200).json(subtitle);
@@ -176,9 +177,11 @@ const deleteSubtitle = asyncHandler(async (req, res) => {
 });
 
 // download subtitle count
-const downloadSubtitleCount = asyncHandler(async (req, res) => {
+const downloadSubtitle = asyncHandler(async (req, res) => {
+  const subtitleId = req.params.id;
+
   const subtitle = await Subtitle.findByIdAndUpdate(
-    req.params.id,
+    subtitleId,
     {
       $inc: { downloads: 1 },
     },
@@ -188,14 +191,74 @@ const downloadSubtitleCount = asyncHandler(async (req, res) => {
   res.status(200).json(subtitle);
 });
 
-// download sub
-const downloadSubtitle = asyncHandler(async (req, res) => {
-  const subtitle = await Subtitle.findById(req.params.id);
-  res.set({
-    "Content-Type": subtitle.mime_type,
-  });
-  res.sendFile(path.join(__dirname, "../public", subtitle.sublink));
+const commentSubtitle = asyncHandler(async (req, res) => {
+  const comment = req.body.comment;
+
+  const newComment = { text: comment, commentBy: req.user._id };
+
+  const updatedSubtitle = await Subtitle.findByIdAndUpdate(
+    req.params.id,
+    {
+      $push: { comments: newComment },
+    },
+    { new: true }
+  ).populate("comments.commentBy", "_id name avatar");
+
+  res.status(200).json(updatedSubtitle);
 });
+
+const editCommentSubtitle = asyncHandler(async (req, res) => {
+  const newCommentText = req.body.text;
+  const commentId = req.params.commentId;
+  const subtitle = await Subtitle.findById(req.params.id);
+
+  const commentIndex = subtitle.comments.findIndex(
+    (comment) => comment._id.toString() === commentId
+  );
+
+  if (commentIndex === -1) {
+    return res.status(404).json({ error: "Comment not found" });
+  }
+
+  subtitle.comments[commentIndex].text = newCommentText;
+
+  const updatedSubtitle = await subtitle.save();
+
+  res.status(200).json(updatedSubtitle);
+});
+
+const delteCommentSubtitle = asyncHandler(async (req, res) => {
+  const commentId = req.params.commentId;
+
+  const subtitle = await Subtitle.findById(req.params.id);
+
+  if (!subtitle) {
+    return res.status(404).json({ error: "Subtitle not found" });
+  }
+
+  const commentIndex = subtitle.comments.findIndex(
+    (comment) => comment._id.toString() === commentId
+  );
+  if (commentIndex === -1) {
+    return res.status(404).json({ error: "comment not found" });
+  }
+
+  // remove the comment from the comment array
+  subtitle.comments.splice(commentIndex, 1);
+
+  const updatedSubtitle = await subtitle.save();
+
+  res.status(200).json(updatedSubtitle);
+});
+
+// download sub
+// const downloadSubtitle = asyncHandler(async (req, res) => {
+//   const subtitle = await Subtitle.findById(req.params.id);
+//   res.set({
+//     "Content-Type": subtitle.mime_type,
+//   });
+//   res.sendFile(path.join(__dirname, "../public", subtitle.sublink));
+// });
 
 module.exports = {
   getAllSubtitle,
@@ -206,5 +269,8 @@ module.exports = {
   dislikeSubtitle,
   deleteSubtitle,
   downloadSubtitle,
-  downloadSubtitleCount,
+  commentSubtitle,
+  editCommentSubtitle,
+  delteCommentSubtitle,
+  // downloadSubtitleCount,
 };

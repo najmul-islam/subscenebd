@@ -13,7 +13,7 @@ import {
   useGetUserProfileQuery,
   usePutUserAvatarMutation,
   usePutUserProfileMutation,
-} from "../../../features/user/userApi";
+} from "../../../features/user/usersApi";
 import { Image } from "mui-image";
 import moment from "moment";
 import {

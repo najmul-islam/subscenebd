@@ -33,7 +33,7 @@ import { useSelector } from "react-redux";
 import {
   usePutFollowerMutation,
   usePutUserDownloadSubMutation,
-} from "../../../features/user/userApi";
+} from "../../../features/user/usersApi";
 import { useRef, useState } from "react";
 import Comments from "./CommentList";
 import AboutSubtitle from "./AboutSubtitle";

@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema(
       require: true,
       unique: true,
     },
+    nameChanged: {
+      type: Boolean,
+      default: false,
+    },
     email: {
       type: String,
       require: true,
@@ -25,6 +29,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: { type: String },
     followers: { type: Array, default: [] },
+    downloads: { type: Array, default: [] },
     subtitles: [
       {
         type: mongoose.Schema.Types.ObjectId,

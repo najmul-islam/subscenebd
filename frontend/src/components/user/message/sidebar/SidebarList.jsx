@@ -8,6 +8,8 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
+  ListItemButton,
+  Stack,
 } from "@mui/material";
 
 import {
@@ -18,18 +20,54 @@ import {
   SmartDisplayOutlined,
   MovieFilterOutlined,
   MusicVideoOutlined,
+  Search,
 } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import SearchBox from "./SearchBox";
+import { useGetConversationsQuery } from "../../../../features/conversations/conversationApi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useGetUsersBySearchQuery,
+  userApi,
+} from "../../../../features/user/usersApi";
+import SearchedList from "./SearchedList";
 
 const SidebarList = () => {
+  const [searchUsers, setSearchUsers] = useState([]);
+  const { isUserSearchFocus } = useSelector((state) => state.theme);
+  const { searchUserQuery } = useSelector((state) => state.users);
+  const { user } = useSelector((state) => state.auth);
+
+  const {
+    data: conversations,
+    isLoading,
+    isError,
+  } = useGetConversationsQuery();
+  // const { data: searchUsers } = useGetUsersBySearchQuery(searchUser);
+
   const [list, setList] = useState("latest");
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
   const handleList = (e, newList) => {
     setList(newList);
   };
+
+  // console.log("conversation", conversations);
+  // console.log("user", user);
+  // console.log("search query", searchUserQuery);
+  // console.log("search user", searchUsers);
+
+  useEffect(() => {
+    dispatch(userApi.endpoints.getUsersBySearch.initiate(searchUserQuery))
+      .unwrap()
+      .then((data) => setSearchUsers(data));
+  }, [dispatch, searchUserQuery]);
+
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <Box>
@@ -39,48 +77,31 @@ const SidebarList = () => {
 
       <SearchBox />
 
-      <List sx={{ paddingTop: "0" }}>
-        <ListItem>
-          <ListItemAvatar sx={{ width: "50px", height: "50px" }}>
-            <Avatar sx={{ width: "50px", height: "50px" }} />
-          </ListItemAvatar>
-          <ListItemText
-            primary="Brunch this weekend?"
-            secondary={
-              <Typography
-                sx={{ display: "inline" }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Ali Connors
+      {isUserSearchFocus ? (
+        <Box>
+          {searchUserQuery ? (
+            <Stack
+              paddingLeft={3}
+              paddingY={1}
+              direction="row"
+              spacing={2}
+              alignItems="center"
+            >
+              <Search sx={{ width: "24px", height: "24px" }} />
+              <Typography variant="subtitle2" noWrap>
+                Search for "{searchUserQuery}"
               </Typography>
-            }
-          />
-        </ListItem>
-        {/* <ListItem>
-          <ListItemAvatar>
-            <Avatar />
-          </ListItemAvatar>
-          <ListItemText
-            primary={
-              <Typography noWrap>
-                Brunch this weekend Brunch this weekend
-              </Typography>
-            }
-            secondary={
-              <Typography
-                sx={{ display: "inline" }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Ali Connors
-              </Typography>
-            }
-          />
-        </ListItem> */}
-      </List>
+            </Stack>
+          ) : null}
+          <SearchedList searchUsers={searchUsers} />
+        </Box>
+      ) : (
+        <List sx={{ paddingY: "10px" }}>
+          {conversations?.map((conversation) => (
+            <SidebarItem key={conversation._id} conversation={conversation} />
+          ))}
+        </List>
+      )}
     </Box>
   );
 };

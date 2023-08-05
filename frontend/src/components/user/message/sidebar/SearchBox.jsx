@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,23 +6,35 @@ import {
   IconButton,
   InputAdornment,
   InputBase,
+  Stack,
   Tooltip,
 } from "@mui/material";
-import { Clear, Search as SearchIcon } from "@mui/icons-material";
+import {
+  ArrowBackOutlined,
+  Clear,
+  Search as SearchIcon,
+} from "@mui/icons-material";
+import { toggleUserSearchFocus } from "../../../../features/theme/themeSlice";
+import { searchUser } from "../../../../features/user/userSlice";
 
 const SearchBox = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // dispatch(searchUser(e.target.value));
     // dispatch(searchSubtitle(searchQuery));
     // if (searchQuery !== "") {
     //   navigate("/latest/all");
     // }
   };
+  useEffect(() => {
+    dispatch(searchUser(searchQuery));
+  }, [dispatch, searchQuery]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -31,6 +43,19 @@ const SearchBox = () => {
   const handleClear = () => {
     setSearchQuery("");
   };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    dispatch(toggleUserSearchFocus(true));
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    dispatch(toggleUserSearchFocus(false));
+    setSearchQuery("");
+    dispatch(searchUser(searchQuery));
+  };
+
   return (
     <Box
       component="form"
@@ -40,22 +65,37 @@ const SearchBox = () => {
       alignItems="center"
       borderRadius={2}
       paddingX={2}
-      sx={{ display: { xs: "none", sm: "flex" } }}
+      // sx={{ display: { xs: "none", sm: "flex" } }}
     >
-      <Box width="100%" sx={{ position: "relative" }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        // width="100%"
+        sx={{ position: "relative" }}
+      >
+        {isFocused ? (
+          <IconButton size="small">
+            <ArrowBackOutlined />
+          </IconButton>
+        ) : null}
         <InputBase
           fullWidth
           placeholder="Search User"
           name="search"
           value={searchQuery}
           onChange={handleSearch}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon sx={{ fontSize: "22px" }} />
-            </InputAdornment>
+            isFocused ? null : (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ fontSize: "22px" }} />
+              </InputAdornment>
+            )
           }
           sx={{
-            paddingLeft: "5px",
+            paddingRight: "30px",
+            paddingLeft: "10px",
             height: "35px",
             borderRadius: "40px",
             boxShadow: "inset 0 1px 5px #eee",
@@ -79,25 +119,7 @@ const SearchBox = () => {
             </IconButton>
           </Tooltip>
         )}
-      </Box>
-      {/* <Box
-        type="submit"
-        display="flex"
-        height="40px"
-        width="64px"
-        alignItems="center"
-        justifyContent="center"
-        sx={{
-          color: "#1a1a1a",
-        }}
-      > */}
-      {/* <SearchIcon
-        sx={{
-          fontSize: "20px",
-          fontWeight: "400",
-        }} 
-      />*/}
-      {/* </Box> */}
+      </Stack>
     </Box>
   );
 };

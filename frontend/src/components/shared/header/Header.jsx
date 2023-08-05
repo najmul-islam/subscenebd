@@ -13,7 +13,7 @@ import MobileSearchBox from "./MobileSearchBox";
 import {
   useGetUserProfileQuery,
   userApi,
-} from "../../../features/user/userApi";
+} from "../../../features/user/usersApi";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);

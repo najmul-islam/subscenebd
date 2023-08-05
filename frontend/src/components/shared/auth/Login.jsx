@@ -84,13 +84,25 @@ const Login = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(error.error);
+      console.log(error);
+      toast.error(
+        <Box>
+          <Typography dangerouslySetInnerHTML={{ __html: error.error }} />
+          <Typography dangerouslySetInnerHTML={{ __html: error.data }} />
+        </Box>
+      );
     }
     if (isSuccess || user) {
       navigate("/");
+      if (isSuccess && user) {
+        toast.success("login successfully");
+      }
     }
   }, [user, isError, isSuccess, navigate, dispatch, error]);
 
+  // useEffect(() => {
+  //   toast.success("Login Successfully");
+  // }, [isSuccess]);
   // destructior formik value
   const {
     values,

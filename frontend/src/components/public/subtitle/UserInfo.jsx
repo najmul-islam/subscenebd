@@ -1,7 +1,7 @@
 import { FiberManualRecord } from "@mui/icons-material";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { usePutFollowerMutation } from "../../../features/user/userApi";
+import { usePutFollowerMutation } from "../../../features/user/usersApi";
 import { useSelector } from "react-redux";
 
 const avatar_url = process.env.REACT_APP_AVATAR_URL;

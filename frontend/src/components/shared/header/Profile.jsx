@@ -28,6 +28,7 @@ import {
 } from "@mui/icons-material";
 // import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
+
 const Profile = ({ user }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
@@ -85,7 +86,7 @@ const Profile = ({ user }) => {
               alt={user?.name?.toUpperCase()}
               src={`${avatar_url}/${user?.avatar}`}
             />
-            <ListItemText sx={{ ml: 2 }}>{user.name}</ListItemText>
+            <ListItemText sx={{ ml: 2 }}>{user?.name}</ListItemText>
           </ListItemButton>
         </ListItem>
 

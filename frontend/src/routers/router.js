@@ -24,9 +24,11 @@ import UserProfilePage from "../pages/public/UserProfilePage";
 // user/profile pages
 import ProfilePage from "../pages/user/profile/ProfilePage";
 import SubtitlesPage from "../pages/user/profile/SubtitlesPage";
-import MessagesPage from "../pages/user/message/MessagesPage";
 import BookmarksPage from "../pages/user/profile/BookmarksPage";
 import DownloadsPage from "../pages/user/profile/DownloadsPage";
+// user/message
+import ConversationsPage from "../pages/user/message/ConversationsPage";
+import ConversationPage from "../pages/user/message/ConversationPage";
 // user/movie pages
 import MovieSearchPage from "../pages/user/movie/MovieSearchPage";
 import MovieSubCreatePage from "../pages/user/movie/MovieSubCreatePage";
@@ -79,15 +81,15 @@ const Router = () => {
       <Route path="/user/*" element={<UsersLayout roles={["user"]} />}>
         <Route path="profile" element={<ProfilePage />} />
         <Route path="subtitles" element={<SubtitlesPage />} />
-        <Route path="messages" element={<MessagesPage />} />
+        {/* <Route path="messages" element={<MessagesPage />} /> */}
         <Route path="bookmarks" element={<BookmarksPage />} />
         <Route path="downloads" element={<DownloadsPage />} />
       </Route>
 
       {/* message route */}
       <Route path="/messages" element={<MessageLayout roles={["user"]} />}>
-        <Route path="/messages" element={<MessagesPage />} />
-        <Route path="/messages/user/:userId" element={<MessagesPage />} />
+        <Route path="/messages" element={<ConversationsPage />} />
+        <Route path="/messages/:partnerId" element={<ConversationPage />} />
       </Route>
 
       {/* user upload */}

@@ -22,11 +22,12 @@ const UsersLayout = ({ roles = [] }) => {
       >
         <CssBaseline />
         <Toolbar sx={{ height: "65px" }} />
-        <Box padding={2}>
+        <Toolbar sx={{ height: "65px" }} />
+        <Box>
           <Outlet />
         </Box>
-        <GoToTop />
-        <Footer />
+        {/* <GoToTop />
+        <Footer /> */}
       </Box>
     </Box>
   ) : (

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetUserQuery } from "../../../features/user/userApi";
+import { useGetUserQuery } from "../../../features/user/usersApi";
 import {
   Box,
   Card,

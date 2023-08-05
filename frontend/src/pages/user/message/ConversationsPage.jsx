@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
 
-const MessagesPage = () => {
+const ConversationsPage = () => {
   return (
     <Box
       minHeight="90Vh"
@@ -16,4 +15,4 @@ const MessagesPage = () => {
   );
 };
 
-export default MessagesPage;
+export default ConversationsPage;
