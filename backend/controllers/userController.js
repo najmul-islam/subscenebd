@@ -79,7 +79,16 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // profile
 const profile = asyncHandler(async (req, res) => {
-  res.status(200).json();
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  res.status(200).json(user);
 });
 
 // update profile
@@ -154,7 +163,6 @@ const getSingleUser = asyncHandler(async (req, res) => {
 
 const getSearchUser = asyncHandler(async (req, res) => {
   const { name } = req.query;
-  const userId = req.user._id;
 
   if (name !== "") {
     const users = await User.find({
@@ -164,49 +172,12 @@ const getSearchUser = asyncHandler(async (req, res) => {
         "subtitles",
         "_id title relase_date poster_path downloads createdAt"
       )
-      // .populate({
-      //   path: "conversations",
-      //   populate: { path: "participants", select: "_id name" },
-      //   match: { participants: userId },
-      // })
       .select("-password -role -email");
 
     res.status(200).json(users);
-
-    // const response =[]
-
-    // users.forEach((user) =>{
-    //   if(user.conversations.length>0){
-
-    //   }
-    // })
   } else {
     res.status(200).json([]);
   }
-});
-
-// get single user
-// const singleUser = asyncHandler(async (req, res) => {
-//   const id = req.params.id;
-//   const user = await User.findById({ _id: id })
-//     .populate({ path: "subtitles", options: { sort: { createdAt: -1 } } })
-//     .select("-password -email -role");
-
-//   if (!user) {
-//     res.status(400);
-//     throw new Error("There no user with this id");
-//   }
-//   res.status(200).json(user);
-// });
-
-// get user by search
-// const searchUser = asyncHandler(async(req, res) => {
-//   const
-// })
-
-// get user subtitle
-const getUserSubtitles = asyncHandler(async (req, res) => {
-  res.status(200).json("Experimental");
 });
 
 // get user downloads subtitles
@@ -261,14 +232,13 @@ const followUser = asyncHandler(async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-  profile,
-  updateProfile,
-  updateAvatar,
   getUsers,
   getSingleUser,
   getSearchUser,
+  profile,
+  updateProfile,
+  updateAvatar,
   followUser,
-  getUserSubtitles,
   getUserDownloadsSubtitles,
   putUserDownloadsSubtitles,
 };

@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 const ConversationsPage = () => {
   return (
     <Box
-      minHeight="90Vh"
+      minHeight="80Vh"
       display="flex"
       justifyContent="center"
       alignItems="center"

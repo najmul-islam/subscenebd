@@ -1,7 +1,5 @@
-const { Types } = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
-const User = require("../models/userModel");
 const Conversation = require("../models/conversationModel");
 
 const allMessages = asyncHandler(async (req, res) => {
@@ -17,12 +15,13 @@ const allMessages = asyncHandler(async (req, res) => {
   })
     .populate("sender", "_id name avatar")
     .populate("receiver", "_id name avatar");
+
   res.status(200).json(messages);
 });
 
 const createMessage = asyncHandler(async (req, res) => {
-  const userId = Types.ObjectId(req.user._id);
-  const partnerId = Types.ObjectId(req.params.partnerId);
+  const userId = req.user._id;
+  const partnerId = req.params.partnerId;
   const { text } = req.body;
 
   const conversation = await Conversation.findOne({
@@ -42,8 +41,6 @@ const createMessage = asyncHandler(async (req, res) => {
   });
 
   conversation.lastMessage = newMessage._id;
-  conversation.lastMessageTime = newMessage.createdAt;
-
   await conversation.save();
 
   res.status(200).json(newMessage);

@@ -12,10 +12,7 @@ const conversationSchema = mongoose.Schema(
     lastMessage: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
-      // required: true,
-    },
-    lastMessageTime: {
-      type: Date,
+      required: true,
     },
   },
   { timestamps: true }

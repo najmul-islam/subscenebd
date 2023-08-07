@@ -22,18 +22,20 @@ const SearchedList = ({ searchUsers }) => {
   const dispatch = useDispatch();
 
   const handleUserItem = (userId) => {
-    setUserId(userId);
+    // setUserId(userId);
+    console.log("userId", userId);
     navigate(`/messages/${userId}`);
   };
 
-  useEffect(() => {
-    if (userId) {
-      dispatch(conversationApi.endpoints.getConversations.initiate(userId))
-        .unwrap()
-        .then((data) => setConversations(data));
-    }
-  }, [dispatch, userId]);
-  console.log(conversations);
+  // useEffect(() => {
+  //   if (userId) {
+  //     dispatch(conversationApi.endpoints.getConversations.initiate(userId))
+  //       .unwrap()
+  //       .then((data) => setConversations(data));
+  //   }
+  // }, [dispatch, userId]);
+
+  // console.log(conversations);
   return (
     <List>
       {searchUsers?.map((user) => (

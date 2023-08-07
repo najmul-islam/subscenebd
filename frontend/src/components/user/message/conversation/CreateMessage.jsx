@@ -1,27 +1,18 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  InputBase,
-  Tooltip,
-} from "@mui/material";
-import { Clear, Search as SearchIcon, Send } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+import { Send } from "@mui/icons-material";
+import { Box, IconButton, InputBase, Tooltip } from "@mui/material";
 import { useCreateMessageMutation } from "../../../../features/messages/messageApi";
 
-const MessageBox = () => {
+const CreateMessage = () => {
   const [messageValue, setMessageValue] = useState("");
   const [createMessage] = useCreateMessageMutation();
-  const { conversationId } = useParams();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { partnerId } = useParams();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (messageValue !== "") {
-      createMessage({ conversationId, data: { text: messageValue } });
+      createMessage({ partnerId, data: { text: messageValue } });
       setMessageValue("");
     }
   };
@@ -56,10 +47,17 @@ const MessageBox = () => {
         }}
       />
 
-      <IconButton type="submit" disabled={messageValue === "" ? true : false}>
-        <Send />
-      </IconButton>
+      <Tooltip title="Send">
+        <Box component="span">
+          <IconButton
+            type="submit"
+            disabled={messageValue === "" ? true : false}
+          >
+            <Send />
+          </IconButton>
+        </Box>
+      </Tooltip>
     </Box>
   );
 };
-export default MessageBox;
+export default CreateMessage;

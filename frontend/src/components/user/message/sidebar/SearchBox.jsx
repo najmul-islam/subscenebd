@@ -50,10 +50,10 @@ const SearchBox = () => {
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
-    dispatch(toggleUserSearchFocus(false));
-    setSearchQuery("");
-    dispatch(searchUser(searchQuery));
+    // dispatch(searchUser(searchQuery));
+    // dispatch(toggleUserSearchFocus(false));
+    // setSearchQuery("");
+    // setIsFocused(false);
   };
 
   return (

@@ -1,20 +1,8 @@
 import { AppBar, Avatar, Stack, Toolbar, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useGetUserProfileQuery } from "../../../../features/user/usersApi";
+
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
-const TopBar = () => {
-  const { parterId } = useParams();
-  const { user } = useSelector((state) => state.auth);
-
-  const { data: partner, isLoading } = useGetUserProfileQuery(parterId);
-
-  // const otherParticipants = conversation?.participants?.find(
-  //   (participant) => participant._id !== user._id
-  // );
-
-  console.log("partner", partner);
+const TopBar = ({ partner }) => {
   return (
     <AppBar
       sx={{
@@ -23,6 +11,8 @@ const TopBar = () => {
         left: { lg: "280px", xm: "0" },
         width: "100%",
         background: "#ffffff",
+        boxShadow: 0,
+        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
       }}
     >
       <Toolbar
@@ -34,18 +24,19 @@ const TopBar = () => {
           //   justifyContent: "space-between",
         }}
       >
-        {/* <Stack
-          key={otherParticipants?._id}
+        <Stack
+          key={partner?._id}
           direction="row"
           spacing={1}
           alignItems="center"
+          // sx={{ background: "#000000" }}
         >
           <Avatar
-            alt={otherParticipants?.name}
-            src={`${avatar_url}/${otherParticipants?.avatar}`}
+            alt={partner?.name}
+            src={`${avatar_url}/${partner?.avatar}`}
           />
-          <Typography color="#000000">{otherParticipants?.name}</Typography>
-        </Stack> */}
+          <Typography color="#000000">{partner?.name}</Typography>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

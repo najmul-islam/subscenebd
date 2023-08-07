@@ -1,19 +1,33 @@
-import { Box, Toolbar, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userApi } from "../../../../features/user/usersApi";
+import { useGetMessagesQuery } from "../../../../features/messages/messageApi";
+import { Box } from "@mui/material";
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 import Messages from "./Messages";
-import { useSelector } from "react-redux";
-import { useGetMessagesQuery } from "../../../../features/messages/messageApi";
-import { useGetConversationQuery } from "../../../../features/conversations/conversationApi";
 
 const Conversation = () => {
-  // const { partnerId } = useParams();
-  // const { data: conversation, isLoading } = useGetConversationQuery(partnerId);
+  const [partner, setPartner] = useState({});
+  const { partnerId } = useParams();
+  const dispatch = useDispatch();
 
-  // console.log("conversation", conversation);
-  // if (isLoading) return <h1>Loading...</h1>;
+  const {
+    data: messages,
+    isLoading,
+    isError,
+    error,
+  } = useGetMessagesQuery(partnerId);
 
+  useEffect(() => {
+    dispatch(userApi.endpoints.getUser.initiate(partnerId))
+      .unwrap()
+      .then((data) => setPartner(data));
+  }, [dispatch, partnerId]);
+
+  console.log(messages);
+  if (isLoading) return <h1>Loading...</h1>;
   return (
     <Box
       position="relative"
@@ -21,11 +35,11 @@ const Conversation = () => {
       paddingBottom={2}
       paddingX={2}
     >
-      <TopBar />
+      <TopBar partner={partner} />
 
-      <Messages />
+      <Messages partner={partner} messages={messages} />
 
-      <BottomBar />
+      <BottomBar messages={messages} />
     </Box>
   );
 };

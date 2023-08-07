@@ -7,16 +7,15 @@ export const messageApi = apiSlice.injectEndpoints({
         url: `/messages/${partnerId}`,
         method: "GET",
       }),
-      providesTags: ["Messages"],
     }),
 
     createMessage: builder.mutation({
-      query: ({ conversationId, data }) => ({
-        url: `/messages/${conversationId}`,
+      query: ({ partnerId, data }) => ({
+        url: `/messages/${partnerId}`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Messages", "Conversations"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {},
     }),
   }),
 });

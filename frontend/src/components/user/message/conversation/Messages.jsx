@@ -1,40 +1,96 @@
-import { useParams } from "react-router-dom";
-import { useGetMessagesQuery } from "../../../../features/messages/messageApi";
-import { Box, Typography } from "@mui/material";
+import moment from "moment";
 import { useSelector } from "react-redux";
-import Message from "./Message";
+import { Avatar, Box, Stack, Tooltip, Typography } from "@mui/material";
 
-const Messages = () => {
-  const { partnerId } = useParams();
-  const {
-    data: messages,
-    isLoading,
-    isError,
-    error,
-  } = useGetMessagesQuery(partnerId);
+const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
-  console.log("messages", messages);
-  if (isLoading) return <h1>Loading...</h1>;
+const Messages = ({ partner, messages }) => {
+  const { user } = useSelector((state) => state.auth);
 
   if (messages && messages.length === 0) {
     return (
-      <Box display="flex" justifyContent="center" alignContent="center">
-        <Typography>There are no message with this user</Typography>
-      </Box>
+      <Stack
+        direction="column"
+        spacing={2}
+        alignContent="center"
+        alignItems="center"
+      >
+        <Avatar
+          sx={{ width: "60px", height: "60px" }}
+          src={`${avatar_url}/${partner.avatar}`}
+        />
+        <Typography>{partner?.name}</Typography>
+      </Stack>
     );
   }
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {messages.map((message) => {
-        // const justify = message.sender._id !== user._id ? "start" : "end";
-        return <Message key={message?._id} message={message} />;
-      })}
-    </Box>
+    <Stack direction="column" spacing={2} paddingY={2}>
+      <Stack
+        direction="column"
+        spacing={2}
+        alignContent="center"
+        alignItems="center"
+      >
+        <Avatar
+          sx={{ width: "60px", height: "60px" }}
+          src={`${avatar_url}/${partner.avatar}`}
+        />
+        <Typography>{partner?.name}</Typography>
+      </Stack>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {messages?.map((message) => {
+          const justify = message.sender._id === user._id ? "end" : "start";
+          return (
+            <Box
+              key={message._id}
+              sx={{ display: "flex", justifyContent: `${justify}` }}
+            >
+              <Tooltip
+                title={moment(message?.createdAt).format(
+                  "MMMM D, YYYY [at] h:mm A"
+                )}
+                placement={justify === "start" ? "right" : "left"}
+              >
+                <Box
+                  sx={{
+                    marginY: "1px",
+                    color: `${justify === "start" ? "#000000" : "#ffffff"}`,
+                    borderRadius: `${
+                      justify === "start"
+                        ? "5px 50px 50px 5px"
+                        : "50px 5px 5px 50px"
+                    }`,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      background: `${
+                        justify === "start" ? "#E4E6EB" : "#0084FF"
+                      }`,
+                      padding: "5px 10px",
+                      marginY: "1px",
+                      color: `${justify === "start" ? "#000000" : "#ffffff"}`,
+                      borderRadius: `${
+                        justify === "start"
+                          ? "5px 50px 50px 5px"
+                          : "50px 5px 5px 50px"
+                      }`,
+                    }}
+                  >
+                    {message.text}
+                  </Typography>
+                </Box>
+              </Tooltip>
+            </Box>
+          );
+        })}
+      </Box>
+    </Stack>
   );
 };
 export default Messages;

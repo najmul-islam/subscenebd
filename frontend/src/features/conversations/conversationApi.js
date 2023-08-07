@@ -1,4 +1,5 @@
 import { apiSlice } from "../api/apiSlice";
+import { messageApi } from "../messages/messageApi";
 
 export const conversationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,28 +8,35 @@ export const conversationApi = apiSlice.injectEndpoints({
         url: `/conversations`,
         method: "GET",
       }),
-      providesTags: ["Conversations"],
     }),
-    getConversation: builder.query({
-      query: (conversationId) => ({
-        url: `/conversations/${conversationId}`,
-        method: "GET",
-      }),
-      providesTags: ["Conversation"],
-    }),
+
     createConversation: builder.mutation({
-      query: (participantId) => ({
+      query: (data) => ({
         url: `/conversations`,
         method: "POST",
-        body: participantId,
+        body: data,
       }),
-      invalidatesTags: ["Conversations"],
+      // on query started
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const conversation = await queryFulfilled;
+        console.log("conversation.data", conversation.data);
+        if (conversation && conversation?.data) {
+          dispatch(
+            conversationApi.util.updateQueryData(
+              "getConversations",
+              undefined,
+              (draft) => {
+                console.log("draft", JSON.stringify(draft));
+                return [conversation.data, ...draft];
+              }
+            )
+          );
+        }
+      },
+      // on query end
     }),
   }),
 });
 
-export const {
-  useGetConversationsQuery,
-  useGetConversationQuery,
-  useCreateConversationMutation,
-} = conversationApi;
+export const { useGetConversationsQuery, useCreateConversationMutation } =
+  conversationApi;

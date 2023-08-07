@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Conversation = require("../models/conversationModel");
 const User = require("../models/userModel");
+const Message = require("../models/messageModel");
 
 const getAllConversations = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -10,37 +11,10 @@ const getAllConversations = asyncHandler(async (req, res) => {
   })
     .populate("participants", "_id name avatar")
     .populate("lastMessage")
-    .sort({ lastMessageTime: -1 });
+    .sort({ updatedAt: -1 });
 
   res.status(200).json(conversations);
 });
-
-// const getSearchConversations = asyncHandler(async (req, res) => {
-//   const userId = req.user._id;
-//   const partnerId = req.params.partnerId;
-
-//   const conversations = await Conversation.find({
-//     participants: { $all: [loggedInUserId, userId] },
-//   })
-//     .populate("participants", "_id name avatar")
-//     .populate("lastMessage")
-//     .sort({ lastMessageTime: -1 });
-
-//   res.status(200).json(conversations);
-// });
-
-// const getSingleConversations = asyncHandler(async (req, res) => {
-//   const userId = req.user._id;
-
-//   const conversations = await Conversation.find({
-//     participants: userId,
-//   })
-//     .populate("participants", "_id name avatar")
-//     .populate("lastMessage")
-//     .sort({ lastMessageTime: -1 });
-
-//   res.status(200).json(conversations);
-// });
 
 const getSingleConversations = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -60,11 +34,13 @@ const getSingleConversations = asyncHandler(async (req, res) => {
 });
 
 const createConversation = asyncHandler(async (req, res) => {
-  const { participantId } = req.body;
+  const { participantId, text } = req.body;
   const userId = req.user._id;
 
-  const participant = await User.findById(userId);
-  const user = await User.findById(userId);
+  if (!text) {
+    res.status(401);
+    throw new Error("Please write one message");
+  }
 
   const existingConversation = await Conversation.findOne({
     participants: { $all: [userId, participantId] },
@@ -74,33 +50,35 @@ const createConversation = asyncHandler(async (req, res) => {
     return res.status(200).json(existingConversation);
   }
 
-  const newConversation = await Conversation.create({
-    participants: [userId, participantId],
+  const newMessage = await Message.create({
+    sender: userId,
+    receiver: participantId,
+    text,
   });
 
-  // if (newConversation) {
-  //   const participant = await User.findByIdAndUpdate(
-  //     participantId,
-  //     {
-  //       $push: { conversations: newConversation._id },
-  //     },
-  //     { new: true, useFindAndModify: false }
-  //   );
-  //   const user = await User.findByIdAndUpdate(
-  //     userId,
-  //     {
-  //       $push: { conversations: newConversation._id },
-  //     },
-  //     { new: true, useFindAndModify: false }
-  //   );
-  // }
+  const newConversation = await Conversation.create({
+    participants: [userId, participantId],
+    lastMessage: newMessage._id,
+  });
+
+  await newConversation.populate("lastMessage");
 
   res.status(200).json(newConversation);
 });
 
+const editConversation = asyncHandler(async (req, res) => {
+  const { participantId, text } = req.body;
+  const { conversationId } = req.params;
+
+  // const updatedConversation = await Conversation.findOneAndUpdate(conversationId,{
+  //   lastMessage
+  // })
+  res.status(200).json({ message: "expirementel" });
+});
+
 module.exports = {
   getAllConversations,
-  // getSearchConversations,
   getSingleConversations,
   createConversation,
+  editConversation,
 };

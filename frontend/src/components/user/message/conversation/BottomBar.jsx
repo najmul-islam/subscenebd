@@ -1,7 +1,8 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import MessageBox from "./MessageBox";
+import { AppBar, Toolbar } from "@mui/material";
+import CreateMessage from "./CreateMessage";
+import CreateConversation from "./CreateConversation";
 
-const BottomBar = () => {
+const BottomBar = ({ messages }) => {
   return (
     <AppBar
       sx={{
@@ -19,11 +20,9 @@ const BottomBar = () => {
         sx={{
           height: "65px",
           paddingX: "18px",
-          //   display: "flex",
-          //   justifyContent: "space-between",
         }}
       >
-        <MessageBox />
+        {messages?.length === 0 ? <CreateConversation /> : <CreateMessage />}
       </Toolbar>
     </AppBar>
   );

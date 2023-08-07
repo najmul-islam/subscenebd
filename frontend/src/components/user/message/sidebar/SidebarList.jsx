@@ -1,65 +1,29 @@
-import SidebarItem from "./SidebarItem";
-import {
-  List,
-  Divider,
-  Box,
-  Typography,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  ListItemButton,
-  Stack,
-} from "@mui/material";
-
-import {
-  AccessTimeOutlined,
-  BarChartOutlined,
-  VideoLibraryOutlined,
-  MovieOutlined,
-  SmartDisplayOutlined,
-  MovieFilterOutlined,
-  MusicVideoOutlined,
-  Search,
-} from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { useLocation, useMatch, useNavigate } from "react-router-dom";
-import SearchBox from "./SearchBox";
-import { useGetConversationsQuery } from "../../../../features/conversations/conversationApi";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetUsersBySearchQuery,
-  userApi,
-} from "../../../../features/user/usersApi";
+import { List, Box, Typography, Stack } from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { useGetConversationsQuery } from "../../../../features/conversations/conversationApi";
+import { userApi } from "../../../../features/user/usersApi";
+
 import SearchedList from "./SearchedList";
+import SidebarItem from "./SidebarItem";
+import SearchBox from "./SearchBox";
 
 const SidebarList = () => {
   const [searchUsers, setSearchUsers] = useState([]);
   const { isUserSearchFocus } = useSelector((state) => state.theme);
   const { searchUserQuery } = useSelector((state) => state.users);
-  const { user } = useSelector((state) => state.auth);
 
+  // const { user } = useSelector((state) => state.auth);
   const {
     data: conversations,
     isLoading,
     isError,
   } = useGetConversationsQuery();
-  // const { data: searchUsers } = useGetUsersBySearchQuery(searchUser);
-
-  const [list, setList] = useState("latest");
 
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
-
-  const handleList = (e, newList) => {
-    setList(newList);
-  };
-
-  // console.log("conversation", conversations);
-  // console.log("user", user);
-  // console.log("search query", searchUserQuery);
-  // console.log("search user", searchUsers);
 
   useEffect(() => {
     dispatch(userApi.endpoints.getUsersBySearch.initiate(searchUserQuery))

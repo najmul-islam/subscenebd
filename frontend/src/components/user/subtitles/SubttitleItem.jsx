@@ -168,9 +168,9 @@ const SubtitleItem = ({ subtitle }) => {
           </Box>
 
           {/* traslator name */}
-          <Box
+          {/* <Box
             component={Link}
-            to={`/user/${subtitle.user._id}`}
+            to={`/user/${subtitle?.user._id}`}
             sx={{ textDecoration: "none", color: "#000000" }}
           >
             <Typography
@@ -182,7 +182,7 @@ const SubtitleItem = ({ subtitle }) => {
             >
               {subtitle?.user?.name}
             </Typography>
-          </Box>
+          </Box> */}
 
           {/* downloaded & time */}
           <Box
