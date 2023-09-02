@@ -155,7 +155,10 @@ const DownloadItem = ({ subtitle }) => {
           <Box
             component={Link}
             to={`/subtitles/${subtitle?._id}`}
-            sx={{ textDecoration: "none", color: "#000000" }}
+            sx={{
+              textDecoration: "none",
+              color: (theme) => theme.palette.text.primary,
+            }}
           >
             <Typography
               variant="subtitle2"
@@ -171,7 +174,10 @@ const DownloadItem = ({ subtitle }) => {
           <Box
             component={Link}
             to={`/user/${subtitle.user._id}`}
-            sx={{ textDecoration: "none", color: "#000000" }}
+            sx={{
+              textDecoration: "none",
+              color: (theme) => theme.palette.text.secondary,
+            }}
           >
             <Typography
               variant="subtitle2"
@@ -193,6 +199,7 @@ const DownloadItem = ({ subtitle }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              color: (theme) => theme.palette.text.secondary,
             }}
           >
             <Box

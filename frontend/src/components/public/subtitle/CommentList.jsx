@@ -1,33 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import moment from "moment";
+import { useRef, useState } from "react";
 import {
   Avatar,
   Box,
   Button,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
   Stack,
   TextField,
-  Typography,
+  Divider,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  useDeleteCommentMutation,
-  useEditCommentMutation,
-  usePostCommentMutation,
-} from "../../../features/subtitle/subtitleApi";
-import { DeleteOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
+import { usePostCommentMutation } from "../../../features/subtitle/subtitleApi";
+
 import CommentItem from "./CommentItem";
 // import CommentItem from "./CommentItem";
 
@@ -87,7 +71,7 @@ const CommentList = ({ subtitle }) => {
           alt={user?.name}
           src={`${avatar_url}/${user?.avatar}`}
           sx={{ width: "40px", height: "40px", cursor: "pointer" }}
-          onClick={() => navigate(`/user/${subtitle?.user._id}`)}
+          onClick={user ? () => navigate(`/user/${user?._id}`) : null}
         />
 
         {/* comment form */}
@@ -129,14 +113,26 @@ const CommentList = ({ subtitle }) => {
                   Cancel
                 </Button>
               )}
-              <Button
-                variant="contained"
-                type="submit"
-                sx={{ borderRadius: "50px", textTransform: "none" }}
-                disabled={commentValue ? false : true}
-              >
-                {isEdit ? "Save" : "Comment"}
-              </Button>
+              {user ? (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{ borderRadius: "50px", textTransform: "none" }}
+                  disabled={commentValue ? false : true}
+                >
+                  {isEdit ? "Save" : "Comment"}
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{ borderRadius: "50px", textTransform: "none" }}
+                  onClick={() => navigate("/login")}
+                  disabled={commentValue ? false : true}
+                >
+                  Comment
+                </Button>
+              )}
             </Box>
           </Box>
         )}

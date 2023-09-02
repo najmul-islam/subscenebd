@@ -2,13 +2,10 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCreateConversationMutation } from "../../../../features/conversations/conversationApi";
 import { Send } from "@mui/icons-material";
-import { Box, IconButton, InputBase, Tooltip } from "@mui/material";
-import { useSelector } from "react-redux";
+import { Box, IconButton, InputBase } from "@mui/material";
 
 const CreateConversation = () => {
   const [messageValue, setMessageValue] = useState("");
-
-  const { user } = useSelector((state) => state.auth);
   const { partnerId } = useParams();
 
   const [createConversation] = useCreateConversationMutation();
@@ -17,7 +14,13 @@ const CreateConversation = () => {
     e.preventDefault();
 
     if (messageValue !== "") {
-      createConversation({ participantId: partnerId, text: messageValue });
+      createConversation({
+        partnerId,
+        data: {
+          participantId: partnerId,
+          text: messageValue,
+        },
+      });
       setMessageValue("");
     }
   };
@@ -42,21 +45,32 @@ const CreateConversation = () => {
         value={messageValue}
         onChange={handleMessage}
         // multiline
+        // sx={{
+        //   paddingX: "10px",
+        //   minHeight: "40px",
+        //   borderRadius: "40px",
+        //   boxShadow: "inset 0 1px 5px #eee",
+        //   border: "1px solid #cccccc",
+        //   "&:focus": { border: "1px solid #2395D3" },
+        // }}
         sx={{
-          paddingX: "10px",
-          minHeight: "40px",
-          borderRadius: "40px",
-          boxShadow: "inset 0 1px 5px #eee",
-          border: "1px solid #cccccc",
-          "&:focus": { border: "1px solid #2395D3" },
+          paddingLeft: "20px",
+          height: "40px",
+          borderRadius: "40px 0px 0px 40px",
+          boxShadow: (theme) =>
+            `inset 0 1px 5px ${theme.palette.background.secondary}`,
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          "&:focus-within": { border: "1px solid #2962B7" },
         }}
       />
 
-      <Tooltip title="Create conversation">
-        <IconButton type="submit" disabled={messageValue === "" ? true : false}>
-          <Send />
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        type="submit"
+        title="Create conversation"
+        disabled={messageValue === "" ? true : false}
+      >
+        <Send />
+      </IconButton>
     </Box>
   );
 };

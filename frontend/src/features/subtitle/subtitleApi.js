@@ -3,8 +3,8 @@ import { apiSlice } from "../api/apiSlice";
 export const subtitleApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSubtitles: builder.query({
-      query: () => ({
-        url: "/subtitles",
+      query: ({ page, limit }) => ({
+        url: `/subtitles?page=${page}&limit=${limit}`,
         method: "GET",
       }),
       providesTags: ["Subtitles"],

@@ -1,14 +1,10 @@
-// import useHeader from "../../../hooks/HeaderHook";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import SidebarList from "./SidebarList";
-import Header from "../header/Header";
-import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../features/theme/themeSlice";
 import AccordionList from "./AccordionList";
 
 const Sidebar = () => {
-  // const { toggleSidebar, setToggleSidebar, drawerWidth } = useHeader();
   const { sidebar, drawerWidth } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
@@ -20,7 +16,10 @@ const Sidebar = () => {
     <>
       <Box
         component="nav"
-        sx={{ width: { lg: drawerWidth }, flexShrink: { lg: 0 } }}
+        sx={{
+          width: { lg: drawerWidth },
+          flexShrink: { lg: 0 },
+        }}
         aria-label="mailbox folders"
       >
         {/* mobile view */}
@@ -36,6 +35,7 @@ const Sidebar = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              background: (theme) => theme.palette.background.default,
             },
           }}
         >
@@ -66,7 +66,7 @@ const Sidebar = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              borderRight: "0",
+              // borderRight: "",
             },
           }}
         >

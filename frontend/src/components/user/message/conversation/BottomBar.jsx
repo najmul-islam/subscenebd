@@ -12,7 +12,8 @@ const BottomBar = ({ messages }) => {
         left: { lg: "280px", xm: "0" },
         width: "100%",
         boxShadow: "0",
-        background: "#ffffff",
+        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+        background: (theme) => theme.palette.background.default,
       }}
     >
       <Toolbar
@@ -22,7 +23,11 @@ const BottomBar = ({ messages }) => {
           paddingX: "18px",
         }}
       >
-        {messages?.length === 0 ? <CreateConversation /> : <CreateMessage />}
+        {messages?.length === 0 ? (
+          <CreateConversation />
+        ) : (
+          <CreateMessage messages={messages} />
+        )}
       </Toolbar>
     </AppBar>
   );

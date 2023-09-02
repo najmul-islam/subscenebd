@@ -6,6 +6,7 @@ import {
   Typography,
   Divider,
   Tooltip,
+  Badge,
 } from "@mui/material";
 
 import {
@@ -28,11 +29,13 @@ const Notifications = () => {
     <>
       <Tooltip title="Notification">
         <IconButton onClick={handleOpenNotificationsMenu}>
-          {open ? (
-            <NotificationsIcon sx={{ fontSize: "25px" }} />
-          ) : (
-            <NotificationsNone sx={{ fontSize: "25px" }} />
-          )}
+          <Badge color="error" badgeContent={12} max={9}>
+            {open ? (
+              <NotificationsIcon sx={{ fontSize: "25px" }} />
+            ) : (
+              <NotificationsNone sx={{ fontSize: "25px" }} />
+            )}
+          </Badge>
         </IconButton>
       </Tooltip>
       <Menu

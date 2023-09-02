@@ -23,18 +23,27 @@ const SeriesDetails = () => {
   console.log("series: ", series);
 
   return (
-    <Box padding={2}>
+    <Box>
       <Typography
         variant="h5"
+        padding={2}
         fontWeight="700"
         textAlign="center"
         marginBottom={3}
+        sx={{
+          width: { xs: "100%", lg: "calc(100% - 280px)" },
+          marginBottom: "30px",
+        }}
       >
         Select a season
       </Typography>
 
       <Box>
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={2}
+          justifyContent={{ xs: "center", sm: "start" }}
+        >
           {series?.seasons.map((season) => (
             <Grid item key={season.id}>
               <Box
@@ -54,14 +63,14 @@ const SeriesDetails = () => {
                     <CardMedia
                       component="img"
                       // image={`${img_url}${movie?.poster_path}`}
-                      sx={{ height: { xs: "207", sm: "225px" } }}
+                      sx={{ height: { xs: "207px", sm: "225px" } }}
                       // alt={movie?.title}
                     />
                   ) : (
                     <CardMedia
                       component="img"
                       image={`${img_url}${season?.poster_path}`}
-                      sx={{ height: { xs: "207", sm: "225px" } }}
+                      sx={{ height: { xs: "207px", sm: "225px" } }}
                       alt={season?.title}
                     />
                   )}

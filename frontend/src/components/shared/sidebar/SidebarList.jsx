@@ -1,6 +1,6 @@
+import { useLocation } from "react-router-dom";
 import SidebarListItem from "./SidebarListItem";
 import { List, Divider, Box } from "@mui/material";
-
 import {
   AccessTimeOutlined,
   BarChartOutlined,
@@ -10,16 +10,9 @@ import {
   MovieFilterOutlined,
   MusicVideoOutlined,
 } from "@mui/icons-material";
-import { useState } from "react";
-import { useLocation, useMatch, useNavigate } from "react-router-dom";
 
 const SidebarList = () => {
-  const [list, setList] = useState("latest");
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const handleList = (e, newList) => {
-    setList(newList);
-  };
 
   return (
     <>
@@ -43,7 +36,7 @@ const SidebarList = () => {
               link="/latest/all"
               icon={<VideoLibraryOutlined />}
               text="All"
-              onClick={() => setList("latest")}
+              // onClick={() => setList("latest")}
             />
             <SidebarListItem
               link="/latest/movies"

@@ -37,7 +37,8 @@ const MovieSubCreate = () => {
   const dispatch = useDispatch();
 
   // post subtitle api
-  const [postSubtitle, { data: subtitle }] = usePostSubtitleMutation();
+  const [postSubtitle, { data: subtitle, isLoading, isSuccess }] =
+    usePostSubtitleMutation();
 
   // formik initial value obj
   const initialValues = {
@@ -161,6 +162,12 @@ const MovieSubCreate = () => {
       .then((data) => setMovie(data));
   }, [dispatch, movieId]);
 
+  useEffect(() => {
+    if (subtitle && isSuccess) {
+      navigate("/latest/all");
+    }
+  }, [isSuccess, subtitle, navigate]);
+
   return (
     movie && (
       <Box>
@@ -183,7 +190,7 @@ const MovieSubCreate = () => {
                   variant="outlined"
                   startIcon={<UploadFileOutlined />}
                   component="label"
-                  sx={{ fontWeight: "600" }}
+                  sx={{ fontWeight: "600", textTransform: "none" }}
                 >
                   Select Subtitle
                   <input
@@ -273,7 +280,11 @@ const MovieSubCreate = () => {
                     )}
                   </Stack>
                 ))}
-                <Button variant="contained" onClick={handleAddReleaseName}>
+                <Button
+                  variant="contained"
+                  onClick={handleAddReleaseName}
+                  sx={{ textTransform: "none" }}
+                >
                   Add more name
                 </Button>
               </Box>
@@ -317,8 +328,12 @@ const MovieSubCreate = () => {
                 />
               </Box>
 
-              <Button variant="contained" type="submit">
-                Submit Subtitle
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ textTransform: "none" }}
+              >
+                {isLoading ? "Submitting..." : "Submit subtitle"}
               </Button>
             </Box>
           </Grid>

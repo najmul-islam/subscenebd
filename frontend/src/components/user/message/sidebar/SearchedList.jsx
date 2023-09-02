@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
   List,
@@ -7,35 +9,21 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useEffect, useId } from "react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { conversationApi } from "../../../../features/conversations/conversationApi";
+import { toggleUserSearchFocus } from "../../../../features/theme/themeSlice";
+import { userSearch } from "../../../../features/user/userSlice";
+
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const SearchedList = ({ searchUsers }) => {
-  const [userId, setUserId] = useState("");
-  const [conversations, setConversations] = useState([]);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleUserItem = (userId) => {
-    // setUserId(userId);
-    console.log("userId", userId);
     navigate(`/messages/${userId}`);
+    dispatch(toggleUserSearchFocus(false));
+    dispatch(userSearch(""));
   };
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     dispatch(conversationApi.endpoints.getConversations.initiate(userId))
-  //       .unwrap()
-  //       .then((data) => setConversations(data));
-  //   }
-  // }, [dispatch, userId]);
-
-  // console.log(conversations);
   return (
     <List>
       {searchUsers?.map((user) => (

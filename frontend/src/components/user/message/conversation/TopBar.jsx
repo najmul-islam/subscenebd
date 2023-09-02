@@ -1,4 +1,5 @@
 import { AppBar, Avatar, Stack, Toolbar, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
@@ -10,9 +11,9 @@ const TopBar = ({ partner }) => {
         top: "65px",
         left: { lg: "280px", xm: "0" },
         width: "100%",
-        background: "#ffffff",
-        boxShadow: 0,
-        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+        boxShadow: "0",
+        background: (theme) => theme.palette.background.default,
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
       <Toolbar
@@ -29,13 +30,24 @@ const TopBar = ({ partner }) => {
           direction="row"
           spacing={1}
           alignItems="center"
-          // sx={{ background: "#000000" }}
+          padding={1}
+          component={Link}
+          to={`/user/${partner?._id}`}
+          sx={{
+            textDecoration: "none",
+            "&:hover": {
+              background: (theme) => theme.palette.background.secondary,
+              borderRadius: "10px",
+            },
+          }}
         >
           <Avatar
             alt={partner?.name}
             src={`${avatar_url}/${partner?.avatar}`}
           />
-          <Typography color="#000000">{partner?.name}</Typography>
+          <Typography color={(theme) => theme.palette.text.primary}>
+            {partner?.name}
+          </Typography>
         </Stack>
       </Toolbar>
     </AppBar>

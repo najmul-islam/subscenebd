@@ -14,6 +14,7 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemButton,
+  Badge,
 } from "@mui/material";
 
 import {
@@ -76,11 +77,19 @@ const Profile = ({ user }) => {
             width: "300px",
             paddingTop: "0",
             paddingBottom: "0",
+            background: (theme) => theme.palette.background.secondery,
           },
         }}
         sx={{ paddingTop: "0", paddingBottom: "0" }}
       >
-        <ListItem disablePadding sx={{ paddingTop: "0", paddingBottom: "0" }}>
+        <ListItem
+          onClick={() => navigate("/user/profile")}
+          disablePadding
+          sx={{
+            paddingTop: "0",
+            paddingBottom: "0",
+          }}
+        >
           <ListItemButton>
             <Avatar
               alt={user?.name?.toUpperCase()}

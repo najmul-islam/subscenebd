@@ -155,7 +155,10 @@ const SubtitleItem = ({ subtitle }) => {
           <Box
             component={Link}
             to={`/subtitles/${subtitle?._id}`}
-            sx={{ textDecoration: "none", color: "#000000" }}
+            sx={{
+              textDecoration: "none",
+              color: (theme) => theme.palette.text.primary,
+            }}
           >
             <Typography
               variant="subtitle2"
@@ -199,6 +202,7 @@ const SubtitleItem = ({ subtitle }) => {
               sx={{
                 display: "flex",
                 alignItems: "center",
+                color: (theme) => theme.palette.text.secondary,
               }}
               title={`${subtitle?.downloads} time downloads`}
             >
@@ -209,6 +213,7 @@ const SubtitleItem = ({ subtitle }) => {
               sx={{
                 display: "flex",
                 alignItems: "center",
+                color: (theme) => theme.palette.text.secondary,
               }}
               noWrap
             >

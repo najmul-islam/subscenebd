@@ -76,7 +76,10 @@ const UserSubtitleItem = ({ subtitle }) => {
         <Box
           component={Link}
           to={`/subtitles/${subtitle?._id}`}
-          sx={{ textDecoration: "none", color: "#000000" }}
+          sx={{
+            textDecoration: "none",
+            color: (theme) => theme.palette.text.primary,
+          }}
         >
           <Typography
             variant="subtitle2"
@@ -112,6 +115,7 @@ const UserSubtitleItem = ({ subtitle }) => {
             sx={{
               display: "flex",
               alignItems: "center",
+              color: (theme) => theme.palette.text.secondary,
             }}
             title={`${subtitle?.downloads} time downloads`}
           >
@@ -122,6 +126,7 @@ const UserSubtitleItem = ({ subtitle }) => {
             sx={{
               display: "flex",
               alignItems: "center",
+              color: (theme) => theme.palette.text.secondary,
             }}
           >
             <AccessTimeRounded sx={{ fontSize: "13px", marginRight: "3px" }} />

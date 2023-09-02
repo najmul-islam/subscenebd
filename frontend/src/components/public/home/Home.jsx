@@ -67,9 +67,14 @@
 // export default Home;
 
 import React from "react";
-
+import AllSubtitle from "./AllSubtitle";
+import { Box } from "@mui/material";
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <Box>
+      <AllSubtitle />
+    </Box>
+  );
 };
 
 export default Home;

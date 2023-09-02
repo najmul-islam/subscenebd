@@ -23,6 +23,8 @@ import {
   Typography,
   Link,
   Box,
+  CircularProgress,
+  useMediaQuery,
 } from "@mui/material";
 // assets
 
@@ -34,6 +36,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   // state and mutation
+  const { drawerWidth } = useSelector((state) => state.theme);
   const { user } = useSelector((state) => state.auth);
   const [login, { isLoading, isError, isSuccess, error }] = useLoginMutation();
 
@@ -85,12 +88,7 @@ const Login = () => {
   useEffect(() => {
     if (isError) {
       console.log(error);
-      toast.error(
-        <Box>
-          <Typography dangerouslySetInnerHTML={{ __html: error.error }} />
-          <Typography dangerouslySetInnerHTML={{ __html: error.data }} />
-        </Box>
-      );
+      toast.error(<Box>{error?.data?.message}</Box>);
     }
     if (isSuccess || user) {
       navigate("/");
@@ -115,14 +113,26 @@ const Login = () => {
   } = formik;
 
   return (
-    <Box display="flex" justifyContent="center" paddingY={5}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      paddingY={5}
+      sx={{
+        // width: isLgOrUp ? `calc(100% - ${drawerWidth}px)` : "100%",
+        width: {
+          lg: `calc(100% - ${drawerWidth}px)`,
+          xs: "100%",
+        },
+      }}
+    >
       <Box
         sx={{
           borderRadius: "10px",
           paddingY: "20px",
           paddingX: "30px",
+          // maxWidth: "500px",
+          border: (theme) => `1px solid ${theme.palette.divider}`,
         }}
-        boxShadow={3}
       >
         <Stack
           direction="row"
@@ -136,7 +146,7 @@ const Login = () => {
           <Typography
             component={RouterLink}
             to="/register"
-            variant="body2"
+            variant="subtitle2"
             sx={{ textDecoration: "none" }}
             color="primary"
           >
@@ -244,14 +254,14 @@ const Login = () => {
 
           <Button
             disableElevation
-            disabled={isSubmitting}
+            disabled={isLoading}
             fullWidth
             size="large"
             type="submit"
             variant="contained"
             color="primary"
           >
-            Login
+            {isLoading ? <CircularProgress /> : " Login"}
           </Button>
 
           <Stack marginY={3}>

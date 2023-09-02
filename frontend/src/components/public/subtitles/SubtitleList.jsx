@@ -6,6 +6,8 @@ import { Box, Grid, Typography } from "@mui/material";
 import SubtitleItem from "./SubtitleItem";
 import SubtitleItemSkeleton from "./SubtitleItemSkeleton";
 
+import InfiniteScroll from "react-infinite-scroll-component";
+
 const SubtitleList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -16,6 +18,10 @@ const SubtitleList = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
 
+  // pagination
+  let page = 1;
+  let limit = 12;
+
   // get last 30 days popular subtitle
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -24,7 +30,7 @@ const SubtitleList = () => {
     (subtitle) => new Date(subtitle.createdAt) >= thirtyDaysAgo
   );
 
-  const popularSubtitles = thirtyDaysSubtitles.sort(
+  const popularSubtitles = thirtyDaysSubtitles?.sort(
     (a, b) => b.downloads - a.downloads
   );
 
@@ -63,34 +69,40 @@ const SubtitleList = () => {
       : popularSubtitles?.filter(filterSubtitles);
 
   // searchd subtitle
-  const searchedSubtitle = subtitles.filter((subtitle) =>
+  const searchedSubtitle = subtitles?.filter((subtitle) =>
     subtitle?.title.toLowerCase().includes(searchSubtitle)
   );
 
   // get subtitle
   useEffect(() => {
-    dispatch(subtitleApi.endpoints.getSubtitles.initiate())
+    dispatch(subtitleApi.endpoints.getSubtitles.initiate({ page, limit }))
       .unwrap()
       .then((data) => {
-        setSubtitles(data);
+        setSubtitles(data.subtitles);
         setIsLoading(false);
       })
       .catch((error) => {
         setIsLoading(false);
+        console.log(error);
         setIsError(true);
         setError(error);
       });
-  }, [dispatch]);
+  }, [dispatch, limit, page]);
 
   // console.log(subtitles);
   // console.log(error);
-
+  // console.log(isError);
   let content;
   if (isLoading)
     content = (
-      <Box paddingY={2}>
-        <Grid container spacing={2} justifyContent="center">
-          {[...Array(30)].map((subtitle, i) => (
+      <Box paddingY={2} sx={{ verflowY: "hidden" }}>
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          sx={{ height: "89vh", overflowY: "hidden" }}
+        >
+          {[...Array(36)].map((subtitle, i) => (
             <Grid item key={i}>
               <SubtitleItemSkeleton />
             </Grid>
@@ -120,7 +132,7 @@ const SubtitleList = () => {
             <SubtitleItem key={subtitle._id} subtitle={subtitle} />
           ))
         ) : (
-          searchedSubtitle.map((subtitle) => (
+          searchedSubtitle?.map((subtitle) => (
             <SubtitleItem key={subtitle._id} subtitle={subtitle} />
           ))
         )

@@ -12,11 +12,18 @@ const connectDB = require("./config/db");
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-  pingTimeout: 60000,
   cors: {
-    origin: process.env.CORS_ORIGIN,
-    // credentials: true,
+    origin: "*",
   },
+});
+
+io.on("connection", (socket) => {
+  console.log("user connected...", socket.id);
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
 });
 
 app.use(cors());
@@ -51,26 +58,6 @@ if (process.env.NODE_ENV === "production") {
 app.use(errorHandler);
 
 const port = process.env.PORT;
-
-io.on("connection", (socket) => {
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    socket.emit("connected");
-  });
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-  });
-
-  socket.on("typing", (room) => socket.io(room).emit("typing"));
-
-  socket.on("new message", (newMessageReceived) => {
-    const { chat, sender, recipient } = newMessageReceived;
-
-    io.to(recipient._id).emit("message received", newMessageReceived);
-  });
-});
-
 const start = async () => {
   try {
     // connectDB

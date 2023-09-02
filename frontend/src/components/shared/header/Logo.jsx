@@ -32,11 +32,14 @@ const Logo = () => {
       <Typography
         component={Link}
         to={`/`}
-        sx={{ color: "#000000", textDecoration: "none" }}
+        sx={{
+          color: (theme) => theme.palette.text.primary,
+          textDecoration: "none",
+        }}
         variant="h6"
         noWrap
       >
-        Logo
+        Subscenebd
       </Typography>
     </>
   );

@@ -22,6 +22,8 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ProfileSkeleton from "./ProfileSkeleton";
 
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 const Profile = () => {
@@ -30,7 +32,9 @@ const Profile = () => {
   const [isImgChange, setIsImgChange] = useState(false);
   const [isNameChange, setIsNameChange] = useState(false);
 
+  const { drawerWidth } = useSelector((state) => state.theme);
   const { data: profile, isLoading, isError, error } = useGetUserProfileQuery();
+
   const [putUserAvatar, { isLoading: avatarIsLoading }] =
     usePutUserAvatarMutation();
   const [putUserProfile, { isLoading: nameIsLoading }] =
@@ -60,17 +64,24 @@ const Profile = () => {
     setNameValue(profile?.name);
   }, [profile]);
 
-  console.log(profile);
-  if (isLoading) return <h3>Loading...</h3>;
+  // console.log(profile);
+  if (isLoading) return <ProfileSkeleton />;
 
   return (
-    <Container maxWidth="md">
+    <Box
+      display="flex"
+      justifyContent="center"
+      sx={{
+        width: {
+          lg: `calc(100% - ${drawerWidth}px)`,
+          xs: "100%",
+        },
+      }}
+    >
       <Box
         // borderRadius={2}
-        minHeight="90vh"
+
         sx={{
-          marginLeft: { lg: "-140px" },
-          marginRight: { lg: "140px" },
           textTransform: "none",
         }}
       >
@@ -262,7 +273,7 @@ const Profile = () => {
           </Box>
         </Stack>
       </Box>
-    </Container>
+    </Box>
   );
 };
 export default Profile;

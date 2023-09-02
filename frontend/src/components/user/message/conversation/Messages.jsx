@@ -1,11 +1,16 @@
+import { useEffect, useRef } from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { Avatar, Box, Stack, Tooltip, Typography } from "@mui/material";
-
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const Messages = ({ partner, messages }) => {
   const { user } = useSelector((state) => state.auth);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   if (messages && messages.length === 0) {
     return (
@@ -17,12 +22,13 @@ const Messages = ({ partner, messages }) => {
       >
         <Avatar
           sx={{ width: "60px", height: "60px" }}
-          src={`${avatar_url}/${partner.avatar}`}
+          src={`${avatar_url}/${partner?.avatar}`}
         />
         <Typography>{partner?.name}</Typography>
       </Stack>
     );
   }
+
   return (
     <Stack direction="column" spacing={2} paddingY={2}>
       <Stack
@@ -33,7 +39,7 @@ const Messages = ({ partner, messages }) => {
       >
         <Avatar
           sx={{ width: "60px", height: "60px" }}
-          src={`${avatar_url}/${partner.avatar}`}
+          src={`${avatar_url}/${partner?.avatar}`}
         />
         <Typography>{partner?.name}</Typography>
       </Stack>
@@ -44,10 +50,11 @@ const Messages = ({ partner, messages }) => {
         }}
       >
         {messages?.map((message) => {
-          const justify = message.sender._id === user._id ? "end" : "start";
+          const justify = message?.sender?._id === user?._id ? "end" : "start";
           return (
             <Box
-              key={message._id}
+              ref={scrollRef}
+              key={message?._id}
               sx={{ display: "flex", justifyContent: `${justify}` }}
             >
               <Tooltip
@@ -69,12 +76,20 @@ const Messages = ({ partner, messages }) => {
                 >
                   <Typography
                     sx={{
-                      background: `${
-                        justify === "start" ? "#E4E6EB" : "#0084FF"
-                      }`,
+                      background: (theme) =>
+                        `${
+                          justify === "start"
+                            ? theme.palette.background.secondary
+                            : "#0084FF"
+                        }`,
                       padding: "5px 10px",
                       marginY: "1px",
-                      color: `${justify === "start" ? "#000000" : "#ffffff"}`,
+                      color: (theme) =>
+                        `${
+                          justify === "start"
+                            ? theme.palette.text.primary
+                            : "#ffffff"
+                        }`,
                       borderRadius: `${
                         justify === "start"
                           ? "5px 50px 50px 5px"

@@ -12,6 +12,7 @@ const {
   getUserDownloadsSubtitles,
   putUserDownloadsSubtitles,
   followUser,
+  putUserNotification,
 } = require("../controllers/userController");
 
 const { isUser } = require("../middlewares/authMiddleware");
@@ -29,6 +30,9 @@ router.route("/profile/avatar").put(isUser, avatarUpload, updateAvatar);
 router.route("/downloads").get(isUser, getUserDownloadsSubtitles);
 router.route("/downloads/:id").put(isUser, putUserDownloadsSubtitles);
 router.put("/follow/:id", isUser, followUser);
+
+// notification
+router.put("/notification/:id", isUser, putUserNotification);
 
 // public route
 router.get("/", getUsers);

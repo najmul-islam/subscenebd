@@ -95,7 +95,8 @@ const BookmarkItem = ({ subtitle }) => {
       <Card
         sx={{
           // width: { xs: "138px", sm: "180px" },
-          width: "180px",
+          // width: "180px",
+          width: { xs: "138px", sm: "160px" },
           transition: "transform 0.3s",
           zIndex: "1",
           position: "relative",
@@ -205,7 +206,10 @@ const BookmarkItem = ({ subtitle }) => {
           <Box
             component={Link}
             to={`/subtitles/${subtitle?._id}`}
-            sx={{ textDecoration: "none", color: "#000000" }}
+            sx={{
+              textDecoration: "none",
+              color: (theme) => theme.palette.text.primary,
+            }}
           >
             <Typography
               variant="subtitle2"
@@ -222,7 +226,10 @@ const BookmarkItem = ({ subtitle }) => {
           <Box
             component={Link}
             to={`/user/${subtitle.user._id}`}
-            sx={{ textDecoration: "none", color: "#000000" }}
+            sx={{
+              textDecoration: "none",
+              color: (theme) => theme.palette.text.secondary,
+            }}
           >
             <Typography variant="body2" paddingX="3px" noWrap>
               {subtitle?.user?.name}
@@ -238,6 +245,7 @@ const BookmarkItem = ({ subtitle }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              color: (theme) => theme.palette.text.secondary,
             }}
           >
             <Box

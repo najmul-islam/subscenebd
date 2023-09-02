@@ -21,6 +21,7 @@ import {
   OutlinedInput,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 
 const Register = () => {
@@ -29,7 +30,10 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // check breckpoint up to lg
+  const isLgOrUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   // rtk
+  const { drawerWidth } = useSelector((state) => state.theme);
   const { user } = useSelector((state) => state.auth);
   const [register, { isError, isSuccess, error }] = useRegisterMutation();
 
@@ -99,14 +103,26 @@ const Register = () => {
   } = formik;
 
   return (
-    <Box display="flex" justifyContent="center" paddingY={5}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      paddingY={5}
+      sx={{
+        // width: isLgOrUp ? `calc(100% - ${drawerWidth}px)` : "100%",
+        width: {
+          lg: `calc(100% - ${drawerWidth}px)`,
+          xs: "100%",
+        },
+      }}
+    >
       <Box
         sx={{
           borderRadius: "10px",
           paddingY: "20px",
           paddingX: "30px",
+          // minWidth: "500px",
+          border: (theme) => `1px solid ${theme.palette.divider}`,
         }}
-        boxShadow={3}
       >
         <Stack
           direction="row"
@@ -120,14 +136,14 @@ const Register = () => {
           <Typography
             component={RouterLink}
             to="/login"
-            variant="body2"
+            variant="subtitle2"
             sx={{ textDecoration: "none" }}
             color="primary"
           >
-            Allready have an account?
+            All ready have an account?
           </Typography>
         </Stack>
-        <form noValidate onSubmit={handleSubmit}>
+        <Box component="form" noValidate onSubmit={handleSubmit}>
           <Stack spacing={1} marginBottom={3}>
             <InputLabel htmlFor="name-signup">User name*</InputLabel>
             <OutlinedInput
@@ -216,13 +232,23 @@ const Register = () => {
             spacing={2}
             marginBottom={3}
           >
-            <Typography variant="body2">
+            <Typography variant="caption">
               By Signing up, you agree to our &nbsp;
-              <Link variant="subtitle2" component={RouterLink} to="#">
+              <Link
+                variant="caption"
+                fontWeight="bold"
+                component={RouterLink}
+                to="#"
+              >
                 Terms of Service
               </Link>
               &nbsp; and &nbsp;
-              <Link variant="subtitle2" component={RouterLink} to="#">
+              <Link
+                variant="caption"
+                fontWeight="bold"
+                component={RouterLink}
+                to="#"
+              >
                 Privacy Policy
               </Link>
             </Typography>
@@ -250,7 +276,7 @@ const Register = () => {
           </Stack>
 
           <SocialLogin />
-        </form>
+        </Box>
       </Box>
     </Box>
   );

@@ -9,7 +9,7 @@ const BookmarksPage = () => {
         textAlign="center"
         paddingY={3}
         marginBottom={2}
-        sx={{ marginLeft: { lg: "-240px" } }}
+        sx={{ width: { lg: "calc(100% - 280px)", xs: "100%" } }}
       >
         My Bookmarks List
       </Typography>

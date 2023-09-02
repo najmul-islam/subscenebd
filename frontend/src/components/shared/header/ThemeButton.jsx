@@ -1,4 +1,3 @@
-import React from "react";
 import { IconButton } from "@mui/material";
 import {
   NightlightRoundOutlined,
@@ -7,7 +6,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toggleColor } from "../../../features/theme/themeSlice";
 
-const ToggleColorButton = () => {
+const ThemeButton = () => {
   const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   const handleColor = () => {
@@ -15,13 +14,10 @@ const ToggleColorButton = () => {
   };
 
   return (
-    <IconButton
-      sx={{ minWidth: "35px", marginLeft: "20px" }}
-      onClick={handleColor}
-    >
+    <IconButton sx={{}} onClick={handleColor}>
       {mode === "dark" ? <LightModeOutlined /> : <NightlightRoundOutlined />}
     </IconButton>
   );
 };
 
-export default ToggleColorButton;
+export default ThemeButton;

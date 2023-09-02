@@ -7,7 +7,6 @@ const allMessages = asyncHandler(async (req, res) => {
   const partnerId = req.params.partnerId;
 
   const messages = await Message.find({
-    // conversation_id: req.params.conversationId,
     $or: [
       { $and: [{ sender: userId }, { receiver: partnerId }] },
       { $and: [{ sender: partnerId }, { receiver: userId }] },
@@ -22,7 +21,7 @@ const allMessages = asyncHandler(async (req, res) => {
 const createMessage = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const partnerId = req.params.partnerId;
-  const { text } = req.body;
+  const { text, createdAt } = req.body;
 
   const conversation = await Conversation.findOne({
     $and: [{ participants: userId }, { participants: partnerId }],
@@ -38,10 +37,30 @@ const createMessage = asyncHandler(async (req, res) => {
     sender: userId,
     receiver: partnerId,
     text,
+    createdAt,
   });
 
   conversation.lastMessage = newMessage._id;
-  await conversation.save();
+  const newConversation = await conversation.save();
+
+  await newMessage.populate("sender", "_id name avatar");
+  await newMessage.populate("receiver", "_id name avatar");
+
+  await newConversation.populate("participants", "_id name avatar");
+  await newConversation.populate(
+    "lastMessage",
+    "sender receiver text createdAt"
+  );
+
+  req.io.emit("message", {
+    conversation: newConversation,
+    message: newMessage,
+  });
+
+  req.io.emit("conversation", {
+    conversation: newConversation,
+    message: newMessage,
+  });
 
   res.status(200).json(newMessage);
 });

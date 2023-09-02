@@ -189,7 +189,7 @@ const getUserDownloadsSubtitles = asyncHandler(async (req, res) => {
 
   const downloadedSubtitles = await Subtitle.find({
     _id: { $in: subtitlesIds },
-  });
+  }).populate("user", "_id name avatar followers createdAt");
 
   res.status(200).json(downloadedSubtitles);
 });
@@ -229,6 +229,25 @@ const followUser = asyncHandler(async (req, res) => {
   }
 });
 
+//notification
+const putUserNotification = asyncHandler(async (req, res) => {
+  const { type } = req.body;
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  const newNotification = {
+    type: type,
+    createdAt: new Date(),
+  };
+
+  const updatedUser = await user.notifications.push(newNotification);
+
+  res.status(200).json(updatedUser);
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -241,4 +260,5 @@ module.exports = {
   followUser,
   getUserDownloadsSubtitles,
   putUserDownloadsSubtitles,
+  putUserNotification,
 };

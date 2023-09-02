@@ -20,7 +20,7 @@ const GoToTop = () => {
       <Box
         onClick={scrollToTop}
         role="presentation"
-        sx={{ position: "fixed", bottom: 16, right: 16 }}
+        sx={{ position: "fixed", bottom: 16, right: 16, zIndex: "10" }}
       >
         <Fab size="small" aria-label="scroll back to top">
           <KeyboardArrowUp />

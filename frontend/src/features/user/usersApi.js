@@ -57,15 +57,6 @@ export const userApi = apiSlice.injectEndpoints({
       providesTags: ["User"],
     }),
 
-    // not neccery
-    getUserSubtitle: builder.query({
-      query: (userId) => ({
-        url: `/users/subtitles/${userId}`,
-        method: "GET",
-        providesTags: ["UserSubtitles"],
-      }),
-    }),
-
     getUserDownloadSub: builder.query({
       query: () => ({
         url: `/users/downloads`,

@@ -12,6 +12,7 @@ import {
   Stack,
   OutlinedInput,
 } from "@mui/material";
+import ShortFilmSearchSkeleton from "./ShortFilmSearchSkeleton";
 
 // movie_poster url
 const img_url = process.env.REACT_APP_IMG_API;
@@ -41,11 +42,16 @@ const ShortFilmSearch = () => {
   };
 
   console.log(shortFilms);
-  if (isLoading) return <h2>Loading...</h2>;
+
   return (
     <>
       <Box>
-        <Box marginLeft={{ lg: "-140px" }}>
+        <Box
+          sx={{
+            width: { xs: "100%", lg: "calc(100% - 280px)" },
+            textTransform: "none",
+          }}
+        >
           <Typography
             variant="h4"
             paddingY={2}
@@ -85,80 +91,90 @@ const ShortFilmSearch = () => {
         </Box>
 
         <Box padding={2}>
-          <Grid container spacing={2}>
-            {shortFilms?.results?.map((film) => (
-              <Grid item key={film.id}>
-                <Box
-                  sx={{ textDecoration: "none" }}
-                  component={Link}
-                  to={`/upload/short-film/${film.id}`}
-                >
-                  <Card
-                    sx={{
-                      width: { xs: "138px", sm: "150px" },
-                      transition: "transform 0.3s",
-                      zIndex: "1",
-                      position: "relative",
-                      // "&:hover": { transform: "scale(1.1)" },
-                    }}
+          {isLoading ? (
+            <Grid container spacing={2} justifyContent="center">
+              {[...Array(30)].map((subtitle, i) => (
+                <Grid item key={i}>
+                  <ShortFilmSearchSkeleton />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Grid container spacing={2}>
+              {shortFilms?.results?.map((film) => (
+                <Grid item key={film.id}>
+                  <Box
+                    sx={{ textDecoration: "none" }}
+                    component={Link}
+                    to={`/upload/short-film/${film.id}`}
                   >
-                    {film?.poster_path === null ? (
-                      <CardMedia
-                        component="img"
-                        // image={`${img_url}${movie?.poster_path}`}
-                        sx={{ height: { xs: "207", sm: "225px" } }}
-                        // alt={movie?.title}
-                      />
-                    ) : (
-                      <CardMedia
-                        component="img"
-                        image={`${img_url}${film?.poster_path}`}
-                        sx={{ height: { xs: "207", sm: "225px" } }}
-                        alt={film?.title}
-                      />
-                    )}
-                    <Typography
-                      variant="subtitle2"
-                      paddingX="3px"
-                      noWrap
-                      title={film?.title}
-                    >
-                      {film?.title}
-                    </Typography>
-
-                    <Box
+                    <Card
                       sx={{
-                        paddingX: "3px",
-                        paddingBottom: "3px",
-                        fontSize: "13px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        width: { xs: "138px", sm: "150px" },
+                        transition: "transform 0.3s",
+                        zIndex: "1",
+                        position: "relative",
+                        // "&:hover": { transform: "scale(1.1)" },
                       }}
                     >
-                      <Box display="flex" alignItems="center">
-                        <CalendarMonth
-                          sx={{ fontSize: "13px", marginRight: "3px" }}
+                      {film?.poster_path === null ? (
+                        <CardMedia
+                          component="img"
+                          // image={`${img_url}${movie?.poster_path}`}
+                          sx={{ height: { xs: "207", sm: "225px" } }}
+                          // alt={movie?.title}
                         />
-                        {film?.release_date === ""
-                          ? "Unknown"
-                          : new Date(film?.release_date).getFullYear()}
-                      </Box>
+                      ) : (
+                        <CardMedia
+                          component="img"
+                          image={`${img_url}${film?.poster_path}`}
+                          sx={{ height: { xs: "207", sm: "225px" } }}
+                          alt={film?.title}
+                        />
+                      )}
+                      <Typography
+                        variant="subtitle2"
+                        paddingX="3px"
+                        noWrap
+                        title={film?.title}
+                      >
+                        {film?.title}
+                      </Typography>
 
-                      <Box display="flex" alignItems="center">
-                        <StarBorderRounded
-                          sx={{ fontSize: "13px", marginRight: "3px" }}
-                        />
-                        {film?.vote_average === ""
-                          ? "Unknown"
-                          : film?.vote_average.toFixed(1)}
+                      <Box
+                        sx={{
+                          paddingX: "3px",
+                          paddingBottom: "3px",
+                          fontSize: "13px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box display="flex" alignItems="center">
+                          <CalendarMonth
+                            sx={{ fontSize: "13px", marginRight: "3px" }}
+                          />
+                          {film?.release_date === ""
+                            ? "Unknown"
+                            : new Date(film?.release_date).getFullYear()}
+                        </Box>
+
+                        <Box display="flex" alignItems="center">
+                          <StarBorderRounded
+                            sx={{ fontSize: "13px", marginRight: "3px" }}
+                          />
+                          {film?.vote_average === ""
+                            ? "Unknown"
+                            : film?.vote_average.toFixed(1)}
+                        </Box>
                       </Box>
-                    </Box>
-                  </Card>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
+                    </Card>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </Box>
 
         {isError && (

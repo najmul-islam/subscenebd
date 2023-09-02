@@ -26,8 +26,6 @@ const UsersLayout = ({ roles = [] }) => {
         <Box>
           <Outlet />
         </Box>
-        {/* <GoToTop />
-        <Footer /> */}
       </Box>
     </Box>
   ) : (

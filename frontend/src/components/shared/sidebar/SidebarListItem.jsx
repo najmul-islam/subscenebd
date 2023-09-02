@@ -24,7 +24,10 @@ const SidebarListItem = ({ link, icon, text, ...props }) => {
   return (
     <>
       <ListItem onClick={() => handleListItem(link)} disablePadding>
-        <ListItemButton selected={selectedUrl === link}>
+        <ListItemButton
+          selected={selectedUrl === link}
+          sx={{ borderRadius: "10px" }}
+        >
           <ListItemIcon sx={{ minWidth: "30px" }}>{icon}</ListItemIcon>
           <ListItemText {...props}>{text}</ListItemText>
         </ListItemButton>

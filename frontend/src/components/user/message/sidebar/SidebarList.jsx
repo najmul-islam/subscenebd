@@ -9,13 +9,13 @@ import { userApi } from "../../../../features/user/usersApi";
 import SearchedList from "./SearchedList";
 import SidebarItem from "./SidebarItem";
 import SearchBox from "./SearchBox";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 const SidebarList = () => {
   const [searchUsers, setSearchUsers] = useState([]);
+  const { userSearchQuery } = useSelector((state) => state.users);
   const { isUserSearchFocus } = useSelector((state) => state.theme);
-  const { searchUserQuery } = useSelector((state) => state.users);
 
-  // const { user } = useSelector((state) => state.auth);
   const {
     data: conversations,
     isLoading,
@@ -26,12 +26,16 @@ const SidebarList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userApi.endpoints.getUsersBySearch.initiate(searchUserQuery))
+    dispatch(userApi.endpoints.getUsersBySearch.initiate(userSearchQuery))
       .unwrap()
       .then((data) => setSearchUsers(data));
-  }, [dispatch, searchUserQuery]);
+  }, [dispatch, userSearchQuery]);
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <SidebarSkeleton />;
+
+  const sortedConversations = [...conversations].sort((a, b) =>
+    b?.lastMessage?.createdAt.localeCompare(a?.lastMessage?.createdAt)
+  );
 
   return (
     <Box>
@@ -43,7 +47,7 @@ const SidebarList = () => {
 
       {isUserSearchFocus ? (
         <Box>
-          {searchUserQuery ? (
+          {userSearchQuery ? (
             <Stack
               paddingLeft={3}
               paddingY={1}
@@ -53,7 +57,7 @@ const SidebarList = () => {
             >
               <Search sx={{ width: "24px", height: "24px" }} />
               <Typography variant="subtitle2" noWrap>
-                Search for "{searchUserQuery}"
+                Search for "{userSearchQuery}"
               </Typography>
             </Stack>
           ) : null}
@@ -61,7 +65,7 @@ const SidebarList = () => {
         </Box>
       ) : (
         <List sx={{ paddingY: "10px" }}>
-          {conversations?.map((conversation) => (
+          {sortedConversations.map((conversation) => (
             <SidebarItem key={conversation._id} conversation={conversation} />
           ))}
         </List>

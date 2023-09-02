@@ -11,7 +11,9 @@ import {
   Typography,
   Card,
   CardMedia,
+  Skeleton,
 } from "@mui/material";
+import MovieSearchSkeleton from "./MovieSearchSkeleton";
 
 // movie_poster url
 const img_url = process.env.REACT_APP_IMG_API;
@@ -40,13 +42,19 @@ const MovieSearch = () => {
     setSearchParams({ title: searchQuery });
   };
 
-  if (isLoading) return <h2>Loading...</h2>;
+  // if (isLoading) return <h2>Loading...</h2>;
 
-  console.log(error);
-  console.log(isError);
   return (
     <Box>
-      <Box marginLeft={{ lg: "-140px" }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        sx={{
+          width: { xs: "100%", lg: "calc(100% - 280px)" },
+          textTransform: "none",
+        }}
+      >
         <Typography
           variant="h4"
           paddingY={2}
@@ -70,14 +78,19 @@ const MovieSearch = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               value={searchQuery}
               fullWidth
-              sx={{ height: "45px" }}
+              sx={{ height: "40px", borderRadius: "50px 0 0 50px" }}
               placeholder="Search Movie"
             />
             <Button
               variant="contained"
               type="submit"
               // onClick={handleSearch}
-              sx={{ paddingX: "30px" }}
+              sx={{
+                // paddingX: "30px",
+                textTransform: "none",
+                borderRadius: "0 50px 50px 0",
+                boxShadow: "0",
+              }}
             >
               Search
             </Button>
@@ -86,80 +99,90 @@ const MovieSearch = () => {
       </Box>
 
       <Box padding={2}>
-        <Grid container spacing={2}>
-          {movies?.results?.map((movie) => (
-            <Grid item key={movie.id}>
-              <Box
-                sx={{ textDecoration: "none" }}
-                component={Link}
-                to={`/upload/movie/${movie.id}`}
-              >
-                <Card
-                  sx={{
-                    width: { xs: "138px", sm: "150px" },
-                    transition: "transform 0.3s",
-                    zIndex: "1",
-                    position: "relative",
-                    // "&:hover": { transform: "scale(1.1)" },
-                  }}
+        {isLoading ? (
+          <Grid container spacing={2} justifyContent="center">
+            {[...Array(30)].map((subtitle, i) => (
+              <Grid item key={i}>
+                <MovieSearchSkeleton />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Grid container spacing={2}>
+            {movies?.results?.map((movie) => (
+              <Grid item key={movie.id}>
+                <Box
+                  sx={{ textDecoration: "none" }}
+                  component={Link}
+                  to={`/upload/movie/${movie.id}`}
                 >
-                  {movie?.poster_path === null ? (
-                    <CardMedia
-                      component="img"
-                      // image={`${img_url}${movie?.poster_path}`}
-                      sx={{ height: { xs: "207", sm: "225px" } }}
-                      // alt={movie?.title}
-                    />
-                  ) : (
-                    <CardMedia
-                      component="img"
-                      image={`${img_url}${movie?.poster_path}`}
-                      sx={{ height: { xs: "207", sm: "225px" } }}
-                      alt={movie?.title}
-                    />
-                  )}
-                  <Typography
-                    variant="subtitle2"
-                    paddingX="3px"
-                    noWrap
-                    title={movie?.title}
-                  >
-                    {movie?.title}
-                  </Typography>
-
-                  <Box
+                  <Card
                     sx={{
-                      paddingX: "3px",
-                      paddingBottom: "3px",
-                      fontSize: "13px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      width: { xs: "138px", sm: "150px" },
+                      transition: "transform 0.3s",
+                      zIndex: "1",
+                      position: "relative",
+                      // "&:hover": { transform: "scale(1.1)" },
                     }}
                   >
-                    <Box display="flex" alignItems="center">
-                      <CalendarMonth
-                        sx={{ fontSize: "13px", marginRight: "3px" }}
+                    {movie?.poster_path === null ? (
+                      <CardMedia
+                        component="img"
+                        // image={`${img_url}${movie?.poster_path}`}
+                        sx={{ height: { xs: "207", sm: "225px" } }}
+                        // alt={movie?.title}
                       />
-                      {movie?.release_date === ""
-                        ? "Unknown"
-                        : new Date(movie?.release_date).getFullYear()}
-                    </Box>
+                    ) : (
+                      <CardMedia
+                        component="img"
+                        image={`${img_url}${movie?.poster_path}`}
+                        sx={{ height: { xs: "207", sm: "225px" } }}
+                        alt={movie?.title}
+                      />
+                    )}
+                    <Typography
+                      variant="subtitle2"
+                      paddingX="3px"
+                      noWrap
+                      title={movie?.title}
+                    >
+                      {movie?.title}
+                    </Typography>
 
-                    <Box display="flex" alignItems="center">
-                      <StarBorderRounded
-                        sx={{ fontSize: "13px", marginRight: "3px" }}
-                      />
-                      {movie?.vote_average === ""
-                        ? "Unknown"
-                        : movie?.vote_average.toFixed(1)}
+                    <Box
+                      sx={{
+                        paddingX: "3px",
+                        paddingBottom: "3px",
+                        fontSize: "13px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box display="flex" alignItems="center">
+                        <CalendarMonth
+                          sx={{ fontSize: "13px", marginRight: "3px" }}
+                        />
+                        {movie?.release_date === ""
+                          ? "Unknown"
+                          : new Date(movie?.release_date).getFullYear()}
+                      </Box>
+
+                      <Box display="flex" alignItems="center">
+                        <StarBorderRounded
+                          sx={{ fontSize: "13px", marginRight: "3px" }}
+                        />
+                        {movie?.vote_average === ""
+                          ? "Unknown"
+                          : movie?.vote_average.toFixed(1)}
+                      </Box>
                     </Box>
-                  </Box>
-                </Card>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+                  </Card>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
 
       {isError && (

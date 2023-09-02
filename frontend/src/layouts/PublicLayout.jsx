@@ -25,7 +25,7 @@ const PublicLayout = () => {
           <Outlet />
         </Box>
         <GoToTop />
-        <Footer />
+        {/* <Footer /> */}
       </Box>
     </Box>
   );

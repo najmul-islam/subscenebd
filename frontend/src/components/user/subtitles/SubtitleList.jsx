@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import SubtitleItemSkeleton from "../../public/subtitles/SubtitleItemSkeleton";
+import SubtitleItemSkeleton from "./SubtitleItemSkeleton";
 import { useSelector } from "react-redux";
 import SubtitleItem from "./SubttitleItem";
 import { useGetUserQuery } from "../../../features/user/usersApi";
@@ -14,7 +14,7 @@ const SubtitleList = () => {
     isError,
     error,
   } = useGetUserQuery(user._id);
-
+  // const isLoading = true;
   let content;
   if (isLoading)
     content = (

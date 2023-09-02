@@ -1,12 +1,10 @@
-// import useHeader from "../../../hooks/HeaderHook";
-import { Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
-import { Menu } from "@mui/icons-material";
-import SidebarList from "./SidebarList";
 import { useDispatch, useSelector } from "react-redux";
+import { Menu } from "@mui/icons-material";
+import { Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
 import { toggleSidebar } from "../../../../features/theme/themeSlice";
+import SidebarList from "./SidebarList";
 
 const Sidebar = () => {
-  // const { toggleSidebar, setToggleSidebar, drawerWidth } = useHeader();
   const { sidebar, drawerWidth } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
@@ -34,8 +32,8 @@ const Sidebar = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              background: (theme) => theme.palette.background.default,
             },
-            // marginRight: "1px solid black",
           }}
         >
           <Toolbar sx={{ paddingX: "16px", height: "65px" }} disableGutters>
@@ -65,7 +63,7 @@ const Sidebar = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              // borderRight: "0",
+              background: (theme) => theme.palette.background.default,
               borderTop: "1px solid red",
             },
           }}

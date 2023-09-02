@@ -30,6 +30,18 @@ const userSchema = new mongoose.Schema(
     avatar: { type: String },
     followers: { type: Array, default: [] },
     downloads: { type: Array, default: [] },
+    notifications: [
+      {
+        type: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     subtitles: [
       {
         type: mongoose.Schema.Types.ObjectId,
