@@ -21,6 +21,7 @@ import MusicsPage from "../pages/public/MusicsPage";
 import SingleSubtitlePage from "../pages/public/SingleSubtitlePage";
 import GenreSubtitlePage from "../pages/public/GenreSubtitlePage";
 import UserProfilePage from "../pages/public/UserProfilePage";
+import SearchSubtitlePage from "../pages/public/SearchSubtitlePage";
 // user/profile pages
 import ProfilePage from "../pages/user/profile/ProfilePage";
 import SubtitlesPage from "../pages/user/profile/SubtitlesPage";
@@ -52,6 +53,8 @@ const Router = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+
+        <Route path="/search" element={<SearchSubtitlePage />} />
 
         <Route path="/latest/*" element={<LatestLayout />}>
           <Route path="all" element={<AllPage />} />

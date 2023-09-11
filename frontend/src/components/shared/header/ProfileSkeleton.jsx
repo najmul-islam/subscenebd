@@ -1,4 +1,4 @@
-import { Button, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 
 const ProfileSkeleton = () => {
   return <Skeleton variant="circular" width={40} height={40} />;

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import moment from "moment";
-import JSZip from "jszip";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
+import moment from "moment";
+import JSZip from "jszip";
 import {
   Box,
   Button,
@@ -174,8 +174,8 @@ const MovieSubCreate = () => {
         <Typography
           variant="h6"
           textAlign="center"
-          marginLeft={{ xs: "0", lg: "-140px" }}
           paddingY={2}
+          width={{ xs: "100%", lg: "calc(100% - 280px)" }}
         >
           Upload Subtitle
         </Typography>
@@ -328,11 +328,7 @@ const MovieSubCreate = () => {
                 />
               </Box>
 
-              <Button
-                variant="contained"
-                type="submit"
-                sx={{ textTransform: "none" }}
-              >
+              <Button variant="contained" type="submit" disabled={isSubmitting}>
                 {isLoading ? "Submitting..." : "Submit subtitle"}
               </Button>
             </Box>

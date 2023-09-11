@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getAllSubtitle,
   getSingleSubtitle,
+  searchSubtitle,
   createSubtitle,
   updateSubtitle,
   deleteSubtitle,
@@ -18,11 +19,19 @@ const {
 const subtitleUpload = require("../middlewares/subtitleMiddleware");
 const { isUser } = require("../middlewares/authMiddleware");
 
+// all route
 router
   .route("/")
   .get(getAllSubtitle)
   .post(isUser, subtitleUpload, createSubtitle);
+
+// downlaod
 router.route("/download/:id").get(downloadSubtitle).put(downloadSubtitle);
+
+// search
+router.route("/search").get(searchSubtitle);
+
+// single route
 router
   .route("/:id")
   .get(getSingleSubtitle)

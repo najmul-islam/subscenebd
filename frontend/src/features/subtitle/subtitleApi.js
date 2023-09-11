@@ -3,11 +3,51 @@ import { apiSlice } from "../api/apiSlice";
 export const subtitleApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSubtitles: builder.query({
-      query: ({ page, limit }) => ({
-        url: `/subtitles?page=${page}&limit=${limit}`,
+      query: ({ type, media_type }) => ({
+        url: `/subtitles?type=${type}&media_type=${media_type}&page=1&limit=36`,
         method: "GET",
       }),
       providesTags: ["Subtitles"],
+    }),
+
+    getMoreSubtitles: builder.query({
+      query: ({ type, media_type, page }) => ({
+        url: `/subtitles?type=${type}&media_type=${media_type}&page=${page}&limit=36`,
+        method: "GET",
+      }),
+      async onQueryStarted({ type, media_type }, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          // console.log("data.data.subtitles", data.data.subtitles);
+          if (result?.data?.subtitles.length > 0) {
+            // console.log("data?.data?.subtitles", result?.data?.subtitles);
+            dispatch(
+              apiSlice.util.updateQueryData(
+                "getSubtitles",
+                { type, media_type },
+                (draft) => {
+                  // console.log("draft", JSON.stringify(draft));
+                  draft.page = result.data.page;
+                  draft.subtitles = [
+                    ...draft.subtitles,
+                    ...result.data.subtitles,
+                  ];
+                  // console.log("updated draft", JSON.stringify(draft));
+                }
+              )
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+    getSearchSubtitle: builder.query({
+      query: (query) => ({
+        url: `/subtitles/search?title=${query}`,
+        method: "GET",
+      }),
+      providesTags: ["SearchSubtitles"],
     }),
 
     getSubtitle: builder.query({
@@ -39,7 +79,10 @@ export const subtitleApi = apiSlice.injectEndpoints({
         url: `/subtitles/download/${subtitleId}`,
         method: "PUT",
       }),
-      invalidatesTags: ["Subtitles", "Subtitle"],
+      invalidatesTags: (result, error, arg) => [
+        "Subtitles",
+        { type: "Subtitle", id: arg },
+      ],
     }),
 
     likeSubtitle: builder.mutation({
@@ -108,6 +151,8 @@ export const subtitleApi = apiSlice.injectEndpoints({
 
 export const {
   useGetSubtitlesQuery,
+  useGetMoreSubtitlesQuery,
+  useGetSearchSubtitleQuery,
   useGetSubtitleQuery,
   usePostSubtitleMutation,
   usePatchSubtitleMutation,

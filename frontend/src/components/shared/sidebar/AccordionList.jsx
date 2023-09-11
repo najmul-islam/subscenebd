@@ -127,6 +127,7 @@ const AccordionList = () => {
         >
           <Typography>Popular</Typography>
         </MuiAccordionSummary>
+
         <MuiAccordionDetails>
           <SidebarListItem
             link="/popular/all"

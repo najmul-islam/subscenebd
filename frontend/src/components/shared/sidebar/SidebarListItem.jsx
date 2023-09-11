@@ -1,7 +1,5 @@
-// import useHeader from "../../../hooks/HeaderHook";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
-  Box,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -28,8 +26,23 @@ const SidebarListItem = ({ link, icon, text, ...props }) => {
           selected={selectedUrl === link}
           sx={{ borderRadius: "10px" }}
         >
-          <ListItemIcon sx={{ minWidth: "30px" }}>{icon}</ListItemIcon>
-          <ListItemText {...props}>{text}</ListItemText>
+          <ListItemIcon
+            sx={{
+              minWidth: "30px",
+              marginRight: "10px",
+              color: (theme) => theme.palette.text.primary,
+            }}
+          >
+            {icon}
+          </ListItemIcon>
+          <ListItemText
+            {...props}
+            sx={{
+              color: (theme) => theme.palette.text.primary,
+            }}
+          >
+            {text}
+          </ListItemText>
         </ListItemButton>
       </ListItem>
     </>

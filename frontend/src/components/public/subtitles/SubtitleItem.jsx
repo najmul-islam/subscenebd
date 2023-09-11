@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import moment from "moment";
 import {
   Card,
@@ -217,6 +216,7 @@ const SubtitleItem = ({ subtitle }) => {
                 display: "flex",
                 alignItems: "center",
                 color: (theme) => theme.palette.text.secondary,
+                textOverflow: "ellipsis",
               }}
               noWrap
             >

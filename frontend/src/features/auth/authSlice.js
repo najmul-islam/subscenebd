@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 // get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -12,14 +11,13 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
+      // apiSlice.util.invalidateTags(["User", "Users"]);
       state.user = action.payload;
-
       // set auth info to the localStorage when loggedIn
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.user = undefined;
-
       // remove auth info from localStorage when loggedOut
       localStorage.removeItem("user");
     },

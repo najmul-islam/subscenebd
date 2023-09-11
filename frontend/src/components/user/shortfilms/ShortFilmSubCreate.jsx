@@ -165,7 +165,7 @@ const ShortFilmSubCreate = () => {
           <Typography
             variant="h6"
             textAlign="center"
-            marginLeft={{ xs: "0", lg: "-140px" }}
+            width={{ xs: "100%", lg: "calc(100% - 280px)" }}
             paddingY={2}
           >
             Upload Subtitle
@@ -309,7 +309,11 @@ const ShortFilmSubCreate = () => {
                   />
                 </Box>
 
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
                   Submit Subtitle
                 </Button>
               </Box>

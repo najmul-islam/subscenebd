@@ -1,41 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useGetSubtitleQuery } from "../../../features/subtitle/subtitleApi";
 import {
-  useCountDownloadSubtitleMutation,
-  useDisLikeSubtitleMutation,
-  useGetSubtitleQuery,
-  useLikeSubtitleMutation,
-} from "../../../features/subtitle/subtitleApi";
-import {
-  Avatar,
   Box,
-  Button,
-  ButtonGroup,
   Card,
   CardMedia,
   Chip,
   Container,
-  Divider,
   Skeleton,
   Stack,
-  TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  ThumbUp,
-  ThumbUpAltOutlined,
-  ThumbDownAltOutlined,
-  ThumbDown,
-  Download,
-  FiberManualRecord,
-} from "@mui/icons-material";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import {
-  usePutFollowerMutation,
-  usePutUserDownloadSubMutation,
-} from "../../../features/user/usersApi";
-import { useRef, useState } from "react";
 import Comments from "./CommentList";
 import AboutSubtitle from "./AboutSubtitle";
 import ReleaseInfo from "./ReleaseInfo";
@@ -49,11 +25,10 @@ const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const SingleSubtitle = () => {
   const { drawerWidth } = useSelector((state) => state.theme);
-  const { user } = useSelector((state) => state.auth);
 
   const { subtitleId } = useParams();
   const navigate = useNavigate();
-  // const isLoading = true;
+
   const { data: subtitle, isLoading } = useGetSubtitleQuery(subtitleId);
 
   const handleGenres = (genre) => {

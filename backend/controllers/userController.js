@@ -81,7 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const profile = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).select("-password");
 
   if (!user) {
     res.status(404);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../../features/auth/authSlice";
@@ -14,7 +14,6 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemButton,
-  Badge,
 } from "@mui/material";
 
 import {
@@ -27,6 +26,7 @@ import {
   NightlightRoundOutlined,
   LightModeOutlined,
 } from "@mui/icons-material";
+import { apiSlice } from "../../../features/api/apiSlice";
 // import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
@@ -49,6 +49,7 @@ const Profile = ({ user }) => {
   };
 
   const onLogout = () => {
+    dispatch(apiSlice.util.resetApiState());
     dispatch(logout());
     navigate("/");
   };

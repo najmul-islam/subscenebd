@@ -33,6 +33,7 @@ export const apiSlice = createApi({
     "DownloadSubtitles",
     "DownloadSubtitle",
     "SearchUsers",
+    "SearchSubtitles",
   ],
   endpoints: (builder) => ({}),
 });

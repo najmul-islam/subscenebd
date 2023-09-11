@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import JSZip from "jszip";
 import moment from "moment";
@@ -35,9 +35,11 @@ const SeriesSubCreate = () => {
 
   const { seriesId, seasonId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // post subtitle api
-  const [postSubtitle, { data: subtitle }] = usePostSubtitleMutation();
+  const [postSubtitle, { data: subtitle, isLoading, isSuccess }] =
+    usePostSubtitleMutation();
 
   // formik initial value obj
   const initialValues = {
@@ -146,16 +148,7 @@ const SeriesSubCreate = () => {
   };
 
   // destructior formik obj
-  const {
-    values,
-    touched,
-    errors,
-    handleSubmit,
-    handleChange,
-    handleBlur,
-    isSubmitting,
-    setFieldValue,
-  } = formik;
+  const { values, handleSubmit, handleChange, setFieldValue } = formik;
 
   useEffect(() => {
     // get series
@@ -169,9 +162,11 @@ const SeriesSubCreate = () => {
       .then((data) => setSeason(data));
   }, [dispatch, seriesId, seasonId]);
 
-  console.log("series: ", series);
-  console.log("season: ", season);
-  console.log("subtitle: ", subtitle);
+  useEffect(() => {
+    if (subtitle && isSuccess) {
+      navigate("/latest/all");
+    }
+  }, [isSuccess, subtitle, navigate]);
 
   return (
     series &&
@@ -307,7 +302,7 @@ const SeriesSubCreate = () => {
         <Typography
           variant="h6"
           textAlign="center"
-          marginLeft={{ xs: "0", lg: "-140px" }}
+          width={{ xs: "100%", lg: "calc(100% - 280px)" }}
           paddingY={2}
         >
           Upload Subtitle
@@ -451,8 +446,12 @@ const SeriesSubCreate = () => {
                 />
               </Box>
 
-              <Button variant="contained" type="submit">
-                Submit Subtitle
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={formik.isSubmitting}
+              >
+                {isLoading ? "Submitting..." : "Submit Subtitle"}
               </Button>
             </Box>
           </Grid>

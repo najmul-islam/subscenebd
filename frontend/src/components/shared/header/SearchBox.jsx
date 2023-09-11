@@ -1,21 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { Box, InputBase, IconButton, Tooltip } from "@mui/material";
-import { searchSubtitle } from "../../../features/subtitle/subtitleSlice";
 import { Search as SearchIcon, Clear } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchBox = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(searchSubtitle(searchQuery));
     if (searchQuery !== "") {
-      navigate("/latest/all");
+      const formattedQuery = searchQuery.replace(/ /g, "+");
+      navigate(`/search?title=${formattedQuery}`);
     }
   };
 
@@ -25,9 +22,16 @@ const SearchBox = () => {
 
   const handleClear = () => {
     setSearchQuery("");
+    setSearchParams("");
   };
 
-  // console.log(searchQuery);
+  useEffect(() => {
+    const isSearchParams = searchParams.get("title");
+    if (isSearchParams) {
+      setSearchQuery(searchParams.get("title"));
+    }
+  }, [searchParams]);
+  // console.log(searchParams);
   return (
     <Box
       component="form"
@@ -80,13 +84,13 @@ const SearchBox = () => {
           justifyContent="center"
           sx={{
             borderRadius: "0 40px 40px 0",
-            background: (theme) => theme.palette.background.secondary,
-            // "&:hover": { background: (theme) => theme.palette.background. },
-            color: (theme) => theme.palette.text.primary,
-            border: (theme) => `1px solid ${theme.palette.divider}`,
             borderLeft: "0",
             cursor: "pointer",
+            background: (theme) => theme.palette.background.secondary,
+            color: (theme) => theme.palette.text.primary,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
             // boxShadow: "inset 0 1px 2px #eee",
+            // "&:hover": { background: (theme) => theme.palette.background. },
             // "&:focus": { background: "#f0f0f0" },
           }}
         >

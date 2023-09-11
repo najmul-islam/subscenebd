@@ -261,7 +261,7 @@ const Login = () => {
             variant="contained"
             color="primary"
           >
-            {isLoading ? <CircularProgress /> : " Login"}
+            {isLoading ? <CircularProgress size={25} /> : " Login"}
           </Button>
 
           <Stack marginY={3}>

@@ -45,7 +45,7 @@ const Header = () => {
   }, [isXs, showSerachBox]);
 
   useEffect(() => {
-    if (user?._id) {
+    if (user) {
       dispatch(userApi.endpoints.getUserProfile.initiate())
         .unwrap()
         .then((data) => {
@@ -58,6 +58,9 @@ const Header = () => {
           // setError(error);
         });
     }
+    // if (!user) {
+    //   dispatch(apiSlice.util.invalidateTags(["User"]));
+    // }
   }, [dispatch, user]);
 
   return (
@@ -101,9 +104,19 @@ const Header = () => {
                 <SearchButton handleShowSearchBox={handleShowSearchBox} />
               </Box>
 
-              {isLoading ? <ProfileSkeleton /> : <Uploads />}
-              {isLoading ? <ProfileSkeleton /> : <Notifications />}
-              {isLoading ? <ProfileSkeleton /> : <Profile user={profile} />}
+              {isLoading ? (
+                <Stack direction="row" spacing={2}>
+                  <ProfileSkeleton />
+                  <ProfileSkeleton />
+                  <ProfileSkeleton />
+                </Stack>
+              ) : (
+                <>
+                  <Uploads />
+                  <Notifications />
+                  <Profile user={profile} />
+                </>
+              )}
             </Stack>
           ) : (
             <Stack direction="row" spacing={1} alignItems="center">

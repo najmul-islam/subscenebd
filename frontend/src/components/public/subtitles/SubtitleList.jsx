@@ -1,105 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { subtitleApi } from "../../../features/subtitle/subtitleApi";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import SubtitleItem from "./SubtitleItem";
 import SubtitleItemSkeleton from "./SubtitleItemSkeleton";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const SubtitleList = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [error, setError] = useState(null);
-  const [subtitles, setSubtitles] = useState([]);
-
-  const { searchSubtitle } = useSelector((state) => state.subtitles);
-  const { pathname } = useLocation();
-  const dispatch = useDispatch();
-
-  // pagination
-  let page = 1;
-  let limit = 12;
-
-  // get last 30 days popular subtitle
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  const thirtyDaysSubtitles = subtitles?.filter(
-    (subtitle) => new Date(subtitle.createdAt) >= thirtyDaysAgo
-  );
-
-  const popularSubtitles = thirtyDaysSubtitles?.sort(
-    (a, b) => b.downloads - a.downloads
-  );
-
-  // filter subtitle by url
-  const filterSubtitles = (subtitle) => {
-    switch (pathname) {
-      case "/latest/all":
-        return subtitle;
-      case "/latest/movies":
-        return subtitle.media_type === "movie";
-      case "/latest/series":
-        return subtitle.media_type === "series";
-      case "/latest/short-films":
-        return subtitle.media_type === "short-film";
-      case "/latest/musics":
-        return subtitle.music === "music";
-      case "/popular/all":
-        return subtitle;
-      case "/popular/movies":
-        return subtitle.media_type === "movie";
-      case "/popular/series":
-        return subtitle.media_type === "series";
-      case "/popular/short-films":
-        return subtitle.media_type === "short-film";
-      case "/popular/musics":
-        return subtitle.media_type === "music";
-      default:
-        return true;
-    }
-  };
-
-  // filterd subtitle
-  const filterdSubtitle =
-    pathname === "/latest/all"
-      ? subtitles?.filter(filterSubtitles)
-      : popularSubtitles?.filter(filterSubtitles);
-
-  // searchd subtitle
-  const searchedSubtitle = subtitles?.filter((subtitle) =>
-    subtitle?.title.toLowerCase().includes(searchSubtitle)
-  );
+const SubtitleList = ({
+  data,
+  isLoading,
+  isError,
+  error,
+  fetchMore,
+  hasMore,
+}) => {
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isError, setIsError] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [subtitles, setSubtitles] = useState([]);
 
   // get subtitle
-  useEffect(() => {
-    dispatch(subtitleApi.endpoints.getSubtitles.initiate({ page, limit }))
-      .unwrap()
-      .then((data) => {
-        setSubtitles(data.subtitles);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.log(error);
-        setIsError(true);
-        setError(error);
-      });
-  }, [dispatch, limit, page]);
+  // useEffect(() => {
+  //   dispatch(
+  //     subtitleApi.endpoints.getSubtitles.initiate({
+  //       type: getSubtitles.type,
+  //       media_type: getSubtitles.media_type,
+  //       page: getSubtitles.page,
+  //       limit: getSubtitles.limit,
+  //       search: "",
+  //     })
+  //   )
+  //     .unwrap()
+  //     .then((data) => {
+  //       setSubtitles(data.subtitles);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       setIsLoading(false);
+  //       console.log(error);
+  //       setIsError(true);
+  //       setError(error);
+  //     });
+  // }, [dispatch, getSubtitles]);
 
-  // console.log(subtitles);
-  // console.log(error);
-  // console.log(isError);
+  // console.log(data);
+
+  const subtitles = data?.subtitles;
+
   let content;
   if (isLoading)
     content = (
-      <Box paddingY={2} sx={{ verflowY: "hidden" }}>
+      <Box>
         <Grid
           container
           spacing={2}
-          justifyContent="center"
           sx={{ height: "89vh", overflowY: "hidden" }}
         >
           {[...Array(36)].map((subtitle, i) => (
@@ -119,41 +71,54 @@ const SubtitleList = () => {
     );
 
   if (!isLoading && !isError && subtitles?.length === 0) {
-    <Box>
+    <Box
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Typography>No Subtitle Found</Typography>
     </Box>;
   }
 
   if (!isLoading && !isError && subtitles?.length > 0) {
-    content =
-      filterdSubtitle?.length > 0 ? (
-        searchSubtitle === "" ? (
-          filterdSubtitle?.map((subtitle) => (
+    content = (
+      <InfiniteScroll
+        dataLength={subtitles.length}
+        next={fetchMore}
+        hasMore={hasMore}
+        loader={
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "50px",
+            }}
+          >
+            <CircularProgress
+              disableShrink
+              size={30}
+              sx={{ margin: "0 auto" }}
+            />
+          </Box>
+        }
+        endMessage={
+          <Typography sx={{ textAlign: "center", padding: "5px" }}>
+            <b>Yay! You have seen it all</b>
+          </Typography>
+        }
+      >
+        <Grid container spacing={2}>
+          {subtitles?.map((subtitle) => (
             <SubtitleItem key={subtitle._id} subtitle={subtitle} />
-          ))
-        ) : (
-          searchedSubtitle?.map((subtitle) => (
-            <SubtitleItem key={subtitle._id} subtitle={subtitle} />
-          ))
-        )
-      ) : (
-        <Box>
-          <Grid item>
-            <Typography variant="h3" sx={{ textAlign: "center" }}>
-              No Subtitle Found
-            </Typography>
-          </Grid>
-        </Box>
-      );
+          ))}
+        </Grid>
+      </InfiniteScroll>
+    );
   }
 
-  return (
-    <Box>
-      <Grid container spacing={2}>
-        {content}
-      </Grid>
-    </Box>
-  );
+  return <Box>{content}</Box>;
 };
 
 export default SubtitleList;

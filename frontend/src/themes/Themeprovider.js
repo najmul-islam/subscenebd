@@ -1,6 +1,6 @@
 import React from "react";
-import { ThemeProvider, createTheme, useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const Themeprovider = ({ children }) => {
   const { mode } = useSelector((state) => state.theme);
@@ -35,6 +35,15 @@ const Themeprovider = ({ children }) => {
         hover: "#272727",
       },
     },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+          },
+        },
+      },
+    },
   });
 
   // const lightColors = {
@@ -63,25 +72,16 @@ const Themeprovider = ({ children }) => {
         hover: "#f2f2f2",
       },
     },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+          },
+        },
+      },
+    },
   });
-
-  // const theme = useMemo(
-  //   () =>
-  //     createTheme({
-  //       palette: {
-  //         mode,
-  //         primary: {
-  //           main: "#ffffff",
-  //         },
-  //       },
-  //     }),
-  //   [mode]
-  // );
-
-  // useEffect(() => {
-  //   const localColor = window.localStorage.getItem("color");
-  //   localColor ? setColor(localColor) : setColor(mode);
-  // }, [mode]);
 
   return (
     <ThemeProvider theme={mode === "dark" ? darkTheme : lightTheme}>

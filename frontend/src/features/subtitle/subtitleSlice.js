@@ -5,12 +5,20 @@ const subtitles = JSON.parse(localStorage.getItem("subtitles"));
 const initialState = {
   subtitles: subtitles ? subtitles : [],
   searchSubtitle: "",
+  getSubtitles: {
+    page: 1,
+    limit: 36,
+  },
 };
 
 export const subtitleSlice = createSlice({
   name: "subtitle",
   initialState,
   reducers: {
+    getSubtitles: (state, action) => {
+      state.getSubtitles.type = action.payload.type;
+      state.getSubtitles.media_type = action.payload.media_type;
+    },
     searchSubtitle: (state, action) => {
       state.searchSubtitle = action.payload;
     },
@@ -44,6 +52,6 @@ export const subtitleSlice = createSlice({
   },
 });
 
-export const { searchSubtitle, addSubtitle, removeSubtitle } =
+export const { getSubtitles, searchSubtitle, addSubtitle, removeSubtitle } =
   subtitleSlice.actions;
 export default subtitleSlice.reducer;
