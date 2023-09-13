@@ -3,19 +3,22 @@ import { apiSlice } from "../api/apiSlice";
 export const subtitleApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSubtitles: builder.query({
-      query: ({ type, media_type }) => ({
-        url: `/subtitles?type=${type}&media_type=${media_type}&page=1&limit=36`,
+      query: ({ type, media_type, limit = 36 }) => ({
+        url: `/subtitles?type=${type}&media_type=${media_type}&page=1&limit=${limit}`,
         method: "GET",
       }),
       providesTags: ["Subtitles"],
     }),
 
     getMoreSubtitles: builder.query({
-      query: ({ type, media_type, page }) => ({
-        url: `/subtitles?type=${type}&media_type=${media_type}&page=${page}&limit=36`,
+      query: ({ type, media_type, page, limit = 36 }) => ({
+        url: `/subtitles?type=${type}&media_type=${media_type}&page=${page}&limit=${limit}`,
         method: "GET",
       }),
-      async onQueryStarted({ type, media_type }, { queryFulfilled, dispatch }) {
+      async onQueryStarted(
+        { type, media_type, limit },
+        { queryFulfilled, dispatch }
+      ) {
         try {
           const result = await queryFulfilled;
           // console.log("data.data.subtitles", data.data.subtitles);
@@ -24,7 +27,7 @@ export const subtitleApi = apiSlice.injectEndpoints({
             dispatch(
               apiSlice.util.updateQueryData(
                 "getSubtitles",
-                { type, media_type },
+                { type, media_type, limit },
                 (draft) => {
                   // console.log("draft", JSON.stringify(draft));
                   draft.page = result.data.page;

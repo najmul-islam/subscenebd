@@ -117,8 +117,6 @@ const SeriesSubCreate = () => {
         };
       })
     );
-
-    console.log(extractedFiles);
     setSubtitleFiles(extractedFiles);
   };
   // add release name field

@@ -66,7 +66,6 @@ const CommentItem = ({ subtitle, comment }) => {
   };
 
   const handleEditButton = (comment) => {
-    console.log("comment", comment);
     setAnchorEl(null);
     setIsEdit(true);
   };

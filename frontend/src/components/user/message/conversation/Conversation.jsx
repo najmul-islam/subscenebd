@@ -34,7 +34,6 @@ const Conversation = () => {
       .then((data) => setPartner(data));
   }, [dispatch, partnerId]);
 
-  // console.log(messages);
   if (isLoading) return <ConversationSkeleton />;
   return (
     <Box

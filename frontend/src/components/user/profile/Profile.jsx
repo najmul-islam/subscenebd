@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Container,
   FormControl,
   FormHelperText,
   Stack,
@@ -16,10 +15,7 @@ import {
 } from "../../../features/user/usersApi";
 import { Image } from "mui-image";
 import moment from "moment";
-import {
-  AddPhotoAlternateOutlined,
-  UploadFileOutlined,
-} from "@mui/icons-material";
+import { AddPhotoAlternateOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -64,7 +60,6 @@ const Profile = () => {
     setNameValue(profile?.name);
   }, [profile]);
 
-  // console.log(profile);
   if (isLoading) return <ProfileSkeleton />;
 
   return (

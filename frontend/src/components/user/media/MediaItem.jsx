@@ -3,7 +3,6 @@ import { Card, CardMedia, Grid, Typography } from "@mui/material";
 const img_url = process.env.REACT_APP_IMG_API;
 
 const MediaItem = ({ media }) => {
-  console.log("media", media);
   return (
     <Grid item>
       <Card

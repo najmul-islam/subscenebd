@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import SubtitleItemSkeleton from "../../public/subtitles/SubtitleItemSkeleton";
 import { useSelector } from "react-redux";
@@ -15,7 +14,6 @@ const DownloadList = () => {
     error,
   } = useGetUserDownloadSubQuery();
 
-  console.log(subtitles);
   let content;
 
   if (isLoading)

@@ -29,7 +29,7 @@ const Notifications = () => {
     <>
       <Tooltip title="Notification">
         <IconButton onClick={handleOpenNotificationsMenu}>
-          <Badge color="error" badgeContent={12} max={9}>
+          <Badge color="error" variant="dot" badgeContent={12} max={9}>
             {open ? (
               <NotificationsIcon sx={{ fontSize: "25px" }} />
             ) : (

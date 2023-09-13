@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { subtitleApi } from "../../../features/subtitle/subtitleApi";
 import { Box, Stack, Typography } from "@mui/material";
+import { toast } from "react-toastify";
 import SearchSubtitleItem from "./SearchSubtitleItem";
 import SearchSubtitleSkeleton from "./SearchSubtitleSkeleton";
 
@@ -25,7 +26,7 @@ const SearchSubtitleList = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        console.log(error);
+        toast.error(error);
         setIsError(true);
         setError(error);
       });
@@ -56,9 +57,11 @@ const SearchSubtitleList = () => {
     );
 
   if (!isLoading && !isError && subtitles?.length === 0) {
-    <Box>
-      <Typography>No Subtitle Found</Typography>
-    </Box>;
+    content = (
+      <Box>
+        <Typography>No Subtitle Found</Typography>
+      </Box>
+    );
   }
 
   if (!isLoading && !isError && subtitles?.length > 0) {

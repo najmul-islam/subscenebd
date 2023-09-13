@@ -12,37 +12,6 @@ const SubtitleList = ({
   fetchMore,
   hasMore,
 }) => {
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [isError, setIsError] = useState(false);
-  // const [error, setError] = useState(null);
-  // const [subtitles, setSubtitles] = useState([]);
-
-  // get subtitle
-  // useEffect(() => {
-  //   dispatch(
-  //     subtitleApi.endpoints.getSubtitles.initiate({
-  //       type: getSubtitles.type,
-  //       media_type: getSubtitles.media_type,
-  //       page: getSubtitles.page,
-  //       limit: getSubtitles.limit,
-  //       search: "",
-  //     })
-  //   )
-  //     .unwrap()
-  //     .then((data) => {
-  //       setSubtitles(data.subtitles);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       setIsLoading(false);
-  //       console.log(error);
-  //       setIsError(true);
-  //       setError(error);
-  //     });
-  // }, [dispatch, getSubtitles]);
-
-  // console.log(data);
-
   const subtitles = data?.subtitles;
 
   let content;
@@ -71,14 +40,16 @@ const SubtitleList = ({
     );
 
   if (!isLoading && !isError && subtitles?.length === 0) {
-    <Box
-      height="100%"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Typography>No Subtitle Found</Typography>
-    </Box>;
+    content = (
+      <Box
+        height="80vh"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography variant="h6">No Subtitle Found</Typography>
+      </Box>
+    );
   }
 
   if (!isLoading && !isError && subtitles?.length > 0) {

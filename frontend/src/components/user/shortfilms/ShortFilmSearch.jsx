@@ -40,9 +40,6 @@ const ShortFilmSearch = () => {
     setSearchValue(searchQuery);
     setSearchParams({ title: searchQuery });
   };
-
-  console.log(shortFilms);
-
   return (
     <>
       <Box>

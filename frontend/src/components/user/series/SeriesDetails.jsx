@@ -20,8 +20,6 @@ const SeriesDetails = () => {
       .then((data) => setSeries(data));
   }, [dispatch, seriesId]);
 
-  console.log("series: ", series);
-
   return (
     <Box>
       <Typography

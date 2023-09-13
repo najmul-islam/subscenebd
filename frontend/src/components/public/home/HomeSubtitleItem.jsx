@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import moment from "moment";
 import {
   Card,
@@ -25,7 +24,7 @@ import {
 
 const img_url = process.env.REACT_APP_IMG_API;
 
-const BookmarkItem = ({ subtitle }) => {
+const HomeSubtitleItem = ({ subtitle }) => {
   const { user } = useSelector((state) => state.auth);
   const { subtitles } = useSelector((state) => state.subtitles);
 
@@ -47,16 +46,6 @@ const BookmarkItem = ({ subtitle }) => {
   // format season -> word to number
   const formatSeason = (title) => {
     return wordsToNumbers(title?.split("-")[1].split(" ")[1]);
-  };
-
-  //more option
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleMoreOption = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-  const handleMoreClose = () => {
-    setAnchorEl(null);
   };
 
   // handle bookmark
@@ -84,13 +73,10 @@ const BookmarkItem = ({ subtitle }) => {
     <Grid item>
       <Card
         sx={{
-          // width: { xs: "138px", sm: "180px" },
-          // width: "180px",
           width: { xs: "138px", sm: "160px" },
           transition: "transform 0.3s",
           zIndex: "1",
           position: "relative",
-          // "&:hover": { transform: "scale(1.1)" },
         }}
       >
         <Typography
@@ -164,34 +150,6 @@ const BookmarkItem = ({ subtitle }) => {
           />
         </Box>
         <Box position="relative">
-          {/* more option start*/}
-          {/* <IconButton
-            onClick={handleMoreOption}
-            sx={{
-              fontSize: "20px",
-              position: "absolute",
-              right: "0",
-              padding: "0",
-            }}
-          >
-            <MoreVert fontSize="20px" />
-          </IconButton> */}
-
-          {/* <Menu open={open} onClose={handleMoreClose} anchorEl={anchorEl}>
-            <MenuItem>
-              <ListItemIcon>
-                <BookmarksOutlined fontSize="small" />
-              </ListItemIcon>
-              <Typography variant="inherit">Bookmark</Typography>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <ShareOutlined fontSize="small" />
-              </ListItemIcon>
-              <Typography variant="inherit">Share</Typography>
-            </MenuItem>
-          </Menu> */}
-          {/* more option end*/}
           {/* title */}
           <Box
             component={Link}
@@ -204,7 +162,6 @@ const BookmarkItem = ({ subtitle }) => {
             <Typography
               variant="subtitle2"
               paddingX="3px"
-              paddingRight="15px"
               noWrap
               title={subtitle?.title}
             >
@@ -221,7 +178,13 @@ const BookmarkItem = ({ subtitle }) => {
               color: (theme) => theme.palette.text.secondary,
             }}
           >
-            <Typography variant="body2" paddingX="3px" noWrap>
+            <Typography
+              variant="subtitle2"
+              paddingX="5px"
+              fontSize={12}
+              // fontWeight={500}
+              noWrap
+            >
               {subtitle?.user?.name}
             </Typography>
           </Box>
@@ -235,13 +198,13 @@ const BookmarkItem = ({ subtitle }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              color: (theme) => theme.palette.text.secondary,
             }}
           >
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
+                color: (theme) => theme.palette.text.secondary,
               }}
               title={`${subtitle?.downloads} time downloads`}
             >
@@ -252,6 +215,8 @@ const BookmarkItem = ({ subtitle }) => {
               sx={{
                 display: "flex",
                 alignItems: "center",
+                color: (theme) => theme.palette.text.secondary,
+                textOverflow: "ellipsis",
               }}
               noWrap
             >
@@ -267,4 +232,4 @@ const BookmarkItem = ({ subtitle }) => {
   );
 };
 
-export default BookmarkItem;
+export default HomeSubtitleItem;

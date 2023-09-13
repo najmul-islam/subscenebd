@@ -2,7 +2,6 @@ import { Box, Card, CardMedia, Typography } from "@mui/material";
 const img_url = process.env.REACT_APP_IMG_API;
 
 const SingleMedia = ({ media }) => {
-  console.log("media", media);
   return (
     <Box>
       <Card

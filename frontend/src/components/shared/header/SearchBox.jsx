@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Box, InputBase, IconButton, Tooltip } from "@mui/material";
 import { Search as SearchIcon, Clear } from "@mui/icons-material";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchBox = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
+
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,12 +28,14 @@ const SearchBox = () => {
   };
 
   useEffect(() => {
-    const isSearchParams = searchParams.get("title");
-    if (isSearchParams) {
-      setSearchQuery(searchParams.get("title"));
+    if (pathname === "/search") {
+      const isSearchParams = searchParams.get("title");
+      if (isSearchParams) {
+        setSearchQuery(searchParams.get("title"));
+      }
     }
-  }, [searchParams]);
-  // console.log(searchParams);
+  }, [searchParams, pathname]);
+
   return (
     <Box
       component="form"

@@ -40,7 +40,6 @@ const AllPage = () => {
   useEffect(() => {
     if (data?.total > 0) {
       const more = Math.ceil(data?.total / Number(36)) > page;
-      console.log("more", more);
       setHasMore(more);
     }
   }, [data, page]);
