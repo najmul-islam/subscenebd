@@ -14,6 +14,7 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemButton,
+  Badge,
 } from "@mui/material";
 
 import {
@@ -58,13 +59,16 @@ const Profile = ({ user }) => {
     dispatch(toggleColor(mode));
   };
 
+  const invisible = true;
   return (
     <>
       <IconButton onClick={handleOpenUserMenu}>
-        <Avatar
-          alt={user?.name?.toUpperCase()}
-          src={`${avatar_url}/${user?.avatar}`}
-        />
+        <Badge color="error" variant="dot" invisible={invisible}>
+          <Avatar
+            alt={user?.name?.toUpperCase()}
+            src={`${avatar_url}/${user?.avatar}`}
+          />
+        </Badge>
       </IconButton>
       <Menu
         anchorEl={anchorElUser}

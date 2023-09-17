@@ -45,6 +45,7 @@ export const subtitleApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
     getSearchSubtitle: builder.query({
       query: (query) => ({
         url: `/subtitles/search?title=${query}`,
@@ -89,27 +90,30 @@ export const subtitleApi = apiSlice.injectEndpoints({
     }),
 
     likeSubtitle: builder.mutation({
-      query: (subtitleId) => ({
+      query: ({ subtitleId, data }) => ({
         url: `/subtitles/like/${subtitleId}`,
         method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["Subtitle"],
     }),
 
     disLikeSubtitle: builder.mutation({
-      query: (subtitleId) => ({
+      query: ({ subtitleId, data }) => ({
         url: `/subtitles/dislike/${subtitleId}`,
         method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["Subtitle"],
     }),
+
     postComment: builder.mutation({
       query: ({ subtitleId, data }) => ({
         url: `/subtitles/comments/${subtitleId}`,
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["Subtitle"],
+      invalidatesTags: ["Subtitle", "Notifications"],
     }),
     editComment: builder.mutation({
       query: ({ subtitleId, commentId, data }) => ({

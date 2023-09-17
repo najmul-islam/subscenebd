@@ -12,7 +12,13 @@ const notificationSchema = new mongoose.Schema(
     },
     action: {
       type: String,
-      enum: ["likeSubtitle", "commentSubtitle", "likePost", "commentPost"],
+      enum: [
+        "likeSubtitle",
+        "dislikeSubtitle",
+        "commentSubtitle",
+        "likePost",
+        "commentPost",
+      ],
     },
 
     post: {

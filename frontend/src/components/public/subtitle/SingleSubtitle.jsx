@@ -149,7 +149,7 @@ const SingleSubtitle = () => {
                   </>
                 ) : (
                   <>
-                    {subtitle?.genres.map((genre, i) => (
+                    {subtitle?.genres?.map((genre, i) => (
                       <Chip
                         key={i}
                         variant="outlined"

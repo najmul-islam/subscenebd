@@ -34,6 +34,7 @@ export const apiSlice = createApi({
     "DownloadSubtitle",
     "SearchUsers",
     "SearchSubtitles",
+    "Notifications",
   ],
   endpoints: (builder) => ({}),
 });

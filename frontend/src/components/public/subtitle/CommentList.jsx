@@ -32,7 +32,10 @@ const CommentList = ({ subtitle }) => {
   // post comment
   const handleCommentSubmit = (e) => {
     e.preventDefault();
-    postCommnet({ subtitleId: subtitle._id, data: { comment: commentValue } });
+    postCommnet({
+      subtitleId: subtitle._id,
+      data: { comment: commentValue, receiverId: subtitle.user._id },
+    });
     setCommentValue("");
   };
 
@@ -52,7 +55,7 @@ const CommentList = ({ subtitle }) => {
     setCommentValue("");
     setIsEdit(false);
   };
-
+  console.log(subtitle);
   return (
     <Box minHeight="200px" paddingY={5} sx={{ wordBreak: "break-word" }}>
       <Divider

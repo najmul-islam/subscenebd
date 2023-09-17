@@ -41,6 +41,7 @@ app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/subtitles", require("./routes/subtitleRoute"));
 app.use("/api/conversations", require("./routes/conversationRoute"));
 app.use("/api/messages", require("./routes/messageRoute"));
+app.use("/api/notification", require("./routes/notificationRoute"));
 
 // serve frontend
 if (process.env.NODE_ENV === "production") {

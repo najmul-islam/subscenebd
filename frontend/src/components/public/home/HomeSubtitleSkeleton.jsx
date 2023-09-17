@@ -6,7 +6,7 @@ const HomeSubtitleSkeleton = () => {
       <Skeleton variant="text" width={120} height={40} />
       <Grid container spacing={2} direction="row">
         {[...Array(9)].map((subtitle, i) => (
-          <Grid item>
+          <Grid item key={i}>
             <Card
               sx={{
                 width: { xs: "138px", sm: "160px" },

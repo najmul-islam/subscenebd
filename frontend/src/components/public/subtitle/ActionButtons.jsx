@@ -35,7 +35,7 @@ const ActionButtons = ({ subtitle }) => {
   };
   const handleLike = (subtitleId) => {
     if (user) {
-      likeSubtitle(subtitleId);
+      likeSubtitle({ subtitleId, data: { receiverId: subtitle.user._id } });
     } else {
       navigate("/login");
     }
@@ -43,7 +43,7 @@ const ActionButtons = ({ subtitle }) => {
 
   const handleDislike = (subtitleId) => {
     if (user) {
-      dislikeSubtitle(subtitleId);
+      dislikeSubtitle({ subtitleId, data: { receiverId: subtitle.user._id } });
     } else {
       navigate("/login");
     }

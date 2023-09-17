@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Subtitle = require("../models/subtitleModel");
 const User = require("../models/userModel");
+const Notification = require("../models/notificationModel");
 
 // get all sub
 const getAllSubtitle = asyncHandler(async (req, res) => {
@@ -182,20 +183,35 @@ const updateSubtitle = asyncHandler(async (req, res) => {
 
 // like / dislike a subtitle
 const likeSubtitle = asyncHandler(async (req, res) => {
-  const subtitle = await Subtitle.findById(req.params.id);
+  const { receiverId } = req.body;
+  const userId = req.user._id;
+  const subtitleId = req.params.id;
+
+  const subtitle = await Subtitle.findById(subtitleId);
 
   // remove user dislike
-  if (subtitle.dislikes.includes(req.user._id)) {
+  if (subtitle.dislikes.includes(userId)) {
     await subtitle.updateOne({
-      $pull: { dislikes: req.user._id },
+      $pull: { dislikes: userId },
     });
   }
 
   // add user like
-  if (!subtitle.likes.includes(req.user._id)) {
+  if (!subtitle.likes.includes(userId)) {
     const updatedSubtitle = await subtitle.updateOne({
-      $push: { likes: req.user._id },
+      $push: { likes: userId },
     });
+
+    if (updatedSubtitle && receiverId != userId) {
+      const notification = await Notification.create({
+        receiver: receiverId,
+        sender: userId,
+        subtitle: subtitleId,
+        action: "likeSubtitle",
+        seen: false,
+      });
+    }
+
     res.status(200).json(updatedSubtitle);
   } else {
     const updatedSubtitle = await subtitle.updateOne({
@@ -206,20 +222,39 @@ const likeSubtitle = asyncHandler(async (req, res) => {
 });
 
 const dislikeSubtitle = asyncHandler(async (req, res) => {
-  const subtitle = await Subtitle.findById(req.params.id);
+  const { receiverId } = req.body;
+  const userId = req.user._id;
+  const subtitleId = req.params.id;
+
+  const subtitle = await Subtitle.findById(subtitleId);
 
   // remove user like
-  if (subtitle.likes.includes(req.user._id)) {
+  if (subtitle.likes.includes(userId)) {
     await subtitle.updateOne({
-      $pull: { likes: req.user._id },
+      $pull: { likes: userId },
     });
   }
 
   // add user dislike
-  if (!subtitle.dislikes.includes(req.user._id)) {
+  if (!subtitle.dislikes.includes(userId)) {
     const updatedSubtitle = await subtitle.updateOne({
-      $push: { dislikes: req.user._id },
+      $push: { dislikes: userId },
     });
+
+    if (updatedSubtitle && receiverId != userId) {
+      console.log("reciverId", receiverId);
+      console.log("userid", userId);
+      // create notification
+      const notification = await Notification.create({
+        receiver: receiverId,
+        sender: userId,
+        action: "dislikeSubtitle",
+        subtitle: subtitleId,
+        seen: false,
+      });
+
+      console.log("notification", notification);
+    }
 
     res.status(200).json(updatedSubtitle);
   } else {
@@ -264,17 +299,36 @@ const downloadSubtitle = asyncHandler(async (req, res) => {
 });
 
 const commentSubtitle = asyncHandler(async (req, res) => {
-  const comment = req.body.comment;
-
+  const { comment, receiverId } = req.body;
+  const subtitleId = req.params.id;
+  const senderId = req.user._id;
   const newComment = { text: comment, commentBy: req.user._id };
 
   const updatedSubtitle = await Subtitle.findByIdAndUpdate(
-    req.params.id,
+    subtitleId,
     {
       $push: { comments: newComment },
     },
     { new: true }
   ).populate("comments.commentBy", "_id name avatar");
+
+  if (updatedSubtitle && receiverId != senderId) {
+    const notification = await Notification.create({
+      receiver: receiverId,
+      sender: senderId,
+      action: "commentSubtitle",
+      subtitle: subtitleId,
+      seen: false,
+    });
+
+    await notification.populate("receiver", "_id name avatar");
+    await notification.populate("sender", "_id name avatar");
+    await notification.populate("subtitle", "_id title poster_path");
+
+    req.io.emit("notification", {
+      notification,
+    });
+  }
 
   res.status(200).json(updatedSubtitle);
 });
