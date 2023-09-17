@@ -1,13 +1,10 @@
-// import useHeader from "../../../hooks/HeaderHook";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import SidebarList from "./SidebarList";
-import Header from "../header/Header";
-import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../features/theme/themeSlice";
+import AccordionList from "./AccordionList";
 
 const Sidebar = () => {
-  // const { toggleSidebar, setToggleSidebar, drawerWidth } = useHeader();
   const { sidebar, drawerWidth } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
@@ -19,7 +16,10 @@ const Sidebar = () => {
     <>
       <Box
         component="nav"
-        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+        sx={{
+          width: { lg: drawerWidth },
+          flexShrink: { lg: 0 },
+        }}
         aria-label="mailbox folders"
       >
         {/* mobile view */}
@@ -31,10 +31,11 @@ const Sidebar = () => {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", md: "none" },
+            display: { xs: "block", lg: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              background: (theme) => theme.palette.background.default,
             },
           }}
         >
@@ -50,29 +51,32 @@ const Sidebar = () => {
               <Menu />
             </IconButton>
             <Typography variant="h6" component="div" sm={{ flexGrow: 1 }}>
-              News
+              Subscenebd
             </Typography>
           </Toolbar>
-          <SidebarList />
+          {/* <SidebarList /> */}
+          <AccordionList />
         </Drawer>
 
         {/* desktop view */}
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", md: "block" },
+            display: { xs: "none", lg: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              // borderRight: "",
             },
           }}
         >
           <Toolbar disableGutters sx={{ paddingX: "20px" }}>
             <Typography variant="h6" component="div">
-              News
+              Subscenebd
             </Typography>
           </Toolbar>
-          <SidebarList />
+          <AccordionList />
+          {/* <SidebarList /> */}
         </Drawer>
       </Box>
     </>

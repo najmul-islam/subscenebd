@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
+const fs = require("fs");
 const User = require("../models/userModel");
 const Subtitle = require("../models/subtitleModel");
+const path = require("path");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -45,6 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
       token: user.generateToken(),
     });
   } else {
@@ -65,6 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      avatar: user.avatar,
       token: user.generateToken(),
     });
   } else {
@@ -75,41 +79,186 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // profile
 const profile = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
-});
+  const userId = req.user._id;
 
-// get all user
-const getAllUser = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.status(200).json({ nbHits: users.length, users });
-});
-
-// get single user
-const singleUser = asyncHandler(async (req, res) => {
-  const id = req.params.id;
-  const user = await User.findById({ _id: id }).select("-password -email");
+  const user = await User.findById(userId).select("-password");
 
   if (!user) {
-    res.status(400);
-    throw new Error("There no user with this id");
+    res.status(404);
+    throw new Error("User not found");
   }
+
   res.status(200).json(user);
 });
 
-// get single user subtitle
-const singleUserSubtitle = asyncHandler(async (req, res) => {
-  const id = req.params.id;
+// update profile
+const updateProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const name = req.body.name;
 
-  const subtitles = await Subtitle.find({ user: id });
+  if (user.nameChanged) {
+    return res.status(403).json({ message: "Name change already used" });
+  }
 
-  res.status(200).json(subtitles);
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { name: name, nameChanged: true },
+    { new: true, useFindAndModify: false }
+  ).select("-password");
+
+  if (!updatedUser) {
+    res.status(400);
+    throw new Error("Invalid credentials");
+  }
+
+  res.status(200).json(updatedUser);
+});
+
+const updateAvatar = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const avatar_link = req.avatar_link;
+
+  // Remove the old avatar file if it exists
+  if (user.avatar) {
+    fs.unlinkSync(path.join(__dirname, "../public", user.avatar));
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { avatar: avatar_link },
+    { new: true, useFindAndModify: false }
+  ).select("-password");
+
+  if (!updatedUser) {
+    res.status(400);
+    throw new Error("Invalid credentials");
+  }
+
+  res.status(200).json(updatedUser);
+});
+
+// get all user
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({})
+    .populate(
+      "subtitles",
+      "_id title relase_date poster_path downloads createdAt"
+    )
+    .select("-password -role -email -nameChanged -downloads");
+  res.status(200).json(users);
+});
+
+// get all user
+const getSingleUser = asyncHandler(async (req, res) => {
+  const userId = req.params.userId;
+
+  const user = await User.findById({ _id: userId })
+    .populate(
+      "subtitles",
+      "_id title relase_date poster_path downloads createdAt"
+    )
+    .select("-password -role -email -nameChanged -downloads");
+  res.status(200).json(user);
+});
+
+const getSearchUser = asyncHandler(async (req, res) => {
+  const { name } = req.query;
+
+  if (name !== "") {
+    const users = await User.find({
+      name: { $regex: name, $options: "i" },
+    })
+      .populate(
+        "subtitles",
+        "_id title relase_date poster_path downloads createdAt"
+      )
+      .select("-password -role -email");
+
+    res.status(200).json(users);
+  } else {
+    res.status(200).json([]);
+  }
+});
+
+// get user downloads subtitles
+const getUserDownloadsSubtitles = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const subtitlesIds = user.downloads;
+
+  const downloadedSubtitles = await Subtitle.find({
+    _id: { $in: subtitlesIds },
+  }).populate("user", "_id name avatar followers createdAt");
+
+  res.status(200).json(downloadedSubtitles);
+});
+
+const putUserDownloadsSubtitles = asyncHandler(async (req, res) => {
+  const subtitleId = req.params.id;
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+
+  if (userId && !user.downloads.includes(subtitleId)) {
+    await user.updateOne({
+      $push: { downloads: subtitleId },
+    });
+  }
+
+  res.status(200).json(user);
+});
+
+// follow user
+const followUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  // add user follow
+  if (!user.followers.includes(req.user._id)) {
+    const updatedUser = await user.updateOne({
+      $push: { followers: req.user._id },
+    });
+
+    res.status(200).json(updatedUser);
+  } else {
+    const updatedUser = await user.updateOne({
+      $pull: { followers: req.user._id },
+    });
+
+    res.status(200).json(updatedUser);
+  }
+});
+
+//notification
+const putUserNotification = asyncHandler(async (req, res) => {
+  const { type } = req.body;
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  const newNotification = {
+    type: type,
+    createdAt: new Date(),
+  };
+
+  const updatedUser = await user.notifications.push(newNotification);
+
+  res.status(200).json(updatedUser);
 });
 
 module.exports = {
   registerUser,
   loginUser,
+  getUsers,
+  getSingleUser,
+  getSearchUser,
   profile,
-  getAllUser,
-  singleUser,
-  singleUserSubtitle,
+  updateProfile,
+  updateAvatar,
+  followUser,
+  getUserDownloadsSubtitles,
+  putUserDownloadsSubtitles,
+  putUserNotification,
 };

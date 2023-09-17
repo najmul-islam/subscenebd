@@ -1,16 +1,20 @@
-import React from "react";
+import { Box, Typography } from "@mui/material";
+import BookmarkList from "../../../components/user/bookmark/BookmarkList";
 
 const BookmarksPage = () => {
   return (
-    <div>
-      <h1>Bookmarks Page</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam adipisci
-        recusandae cum ducimus eum minima debitis quis dolorum voluptatibus
-        eveniet, quibusdam excepturi impedit esse tempore dolores ratione dolore
-        est eos!
-      </p>
-    </div>
+    <Box>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        paddingY={3}
+        marginBottom={2}
+        sx={{ width: { lg: "calc(100% - 280px)", xs: "100%" } }}
+      >
+        My Bookmarks List
+      </Typography>
+      <BookmarkList />
+    </Box>
   );
 };
 

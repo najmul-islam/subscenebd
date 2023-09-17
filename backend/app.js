@@ -1,12 +1,30 @@
 const path = require("path");
 const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
 const cors = require("cors");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
 const fileUpoad = require("express-fileupload");
 const errorHandler = require("./middlewares/errorMiddleare");
 const connectDB = require("./config/db");
+
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("user connected...", socket.id);
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 app.use(cors());
 app.use(express.json());
@@ -19,8 +37,11 @@ app.use(
 );
 
 // routes
-app.use("/api/user", require("./routes/userRoute"));
+app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/subtitles", require("./routes/subtitleRoute"));
+app.use("/api/conversations", require("./routes/conversationRoute"));
+app.use("/api/messages", require("./routes/messageRoute"));
+app.use("/api/notification", require("./routes/notificationRoute"));
 
 // serve frontend
 if (process.env.NODE_ENV === "production") {
@@ -37,12 +58,12 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(errorHandler);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const start = async () => {
   try {
     // connectDB
     await connectDB(process.env.MONGO_URI);
-    app.listen(port, console.log(`Server is listening port ${port}...`));
+    server.listen(port, console.log(`Server is listening port ${port}...`));
   } catch (error) {
     console.log(error);
   }

@@ -1,75 +1,146 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import download from "downloadjs";
-// import { Button } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useGetSubtitlesQuery } from "../../../features/subtitle/subtitleApi";
+import HomeSubtitleList from "./HomeSubtitleList";
 
-// const url = "/api/subs";
-
-// const Home = () => {
-//   const [subtitles, setSubtitles] = useState([]);
-
-//   const fetchSubtitle = async () => {
-//     try {
-//       const response = await axios.get(url);
-//       setSubtitles(response.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const fetchSubFile = async (id, path, mimetype) => {
-//     try {
-//       const result = await axios.get(`${url}/${id}/download`, {
-//         responseType: "blob",
-//       });
-//       const split = path.split("/");
-//       const filename = split[split.length - 1];
-
-//       return download(result.data, filename, mimetype);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchSubtitle();
-//   }, []);
-
-//   const handleClick = (id) => {};
-
-//   console.log(subtitles);
-//   return (
-//     <>
-//       {subtitles.map((subtitle) => (
-//         <div>
-//           <h1>{subtitle.title}</h1>
-//           <h3>{subtitle.releaseDate}</h3>
-//           {/* <button type="button" onClick={() => handleClick(subtitle._id)}>
-//             Download
-//           </button> */}
-
-//           <a
-//             href="#/"
-//             onClick={() =>
-//               fetchSubFile(subtitle._id, subtitle.sublink, subtitle.mimetype)
-//             }
-//           >
-//             Download
-//           </a>
-//         </div>
-//       ))}
-
-//       <Button>Click me</Button>
-//     </>
-//   );
-// };
-
-// export default Home;
-
-import React from "react";
+import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
+import {
+  MovieOutlined,
+  SlideshowOutlined,
+  VideoLibraryOutlined,
+} from "@mui/icons-material";
+import HomeSubtitleSkeleton from "./HomeSubtitleSkeleton";
 
 const Home = () => {
-  return <div>Home</div>;
+  const useSubtitles = (type, media_type, limit) => {
+    return useGetSubtitlesQuery({
+      type,
+      media_type,
+      limit,
+    });
+  };
+
+  const {
+    data: latestAll,
+    isLoading: latestAllIsLoading,
+    isError: latestAllIsError,
+    error: latestAllerror,
+  } = useSubtitles("latest", "all", 9);
+
+  const {
+    data: latestMovies,
+    isLoading: latestMoviesIsLoading,
+    isError: latestMoviesIsError,
+    error: latestMoviesError,
+  } = useSubtitles("latest", "movie", 9);
+  const {
+    data: latestTv,
+    isLoading: latestTvIsLoading,
+    isError: latestTvIsError,
+    error: latestTvError,
+  } = useSubtitles("latest", "series", 9);
+  const {
+    data: popularAll,
+    isLoading: popularAllIsLoading,
+    isError: popularAllIsError,
+    error: popularAllError,
+  } = useSubtitles("popular", "all", 9);
+  const {
+    data: popularMovies,
+    isLoading: popularMoviesIsLoading,
+    isError: popularMoviesIsError,
+    error: popularMoviesError,
+  } = useSubtitles("popular", "movie", 9);
+  const {
+    data: popularTv,
+    isLoading: popularTvIsLoading,
+    isError: popularTvIsError,
+    error: popularTvError,
+  } = useSubtitles("popular", "series", 9);
+
+  // Determine the overall loading state
+  const isAnyLoading =
+    latestAllIsLoading ||
+    latestMoviesIsLoading ||
+    latestTvIsLoading ||
+    popularAllIsLoading ||
+    popularMoviesIsLoading ||
+    popularTvIsLoading;
+
+  const [isLoading, setIsLoading] = useState(isAnyLoading);
+
+  useEffect(() => {
+    setIsLoading(isAnyLoading);
+  }, [isAnyLoading]);
+
+  return (
+    <Box>
+      {latestAllIsLoading ? (
+        <HomeSubtitleSkeleton />
+      ) : (
+        <HomeSubtitleList
+          title="Latest subtitles"
+          icon={VideoLibraryOutlined}
+          subtitles={latestAll?.subtitles}
+          link="/latest/all"
+        />
+      )}
+
+      {latestMoviesIsLoading ? (
+        <HomeSubtitleSkeleton />
+      ) : (
+        <HomeSubtitleList
+          title="Latest Movies"
+          icon={MovieOutlined}
+          subtitles={latestMovies?.subtitles}
+          link="/latest/movies"
+        />
+      )}
+
+      {latestTvIsLoading ? (
+        <HomeSubtitleSkeleton />
+      ) : (
+        <HomeSubtitleList
+          title="Latest Tv-sereis"
+          icon={SlideshowOutlined}
+          subtitles={latestTv?.subtitles}
+          link="/latest/series"
+        />
+      )}
+
+      {popularAllIsLoading ? (
+        <HomeSubtitleSkeleton />
+      ) : (
+        <HomeSubtitleList
+          title="Popular subtitles"
+          icon={VideoLibraryOutlined}
+          subtitles={popularAll?.subtitles}
+          link="/popular/all"
+        />
+      )}
+
+      {popularMoviesIsLoading ? (
+        <HomeSubtitleSkeleton />
+      ) : (
+        <HomeSubtitleList
+          title="Popular Movies"
+          icon={MovieOutlined}
+          subtitles={popularMovies?.subtitles}
+          link="/popular/movies"
+        />
+      )}
+
+      {popularTvIsLoading ? (
+        <HomeSubtitleSkeleton />
+      ) : (
+        <HomeSubtitleList
+          title="Popular Tv-sereis"
+          icon={SlideshowOutlined}
+          subtitles={popularTv?.subtitles}
+          link="/popular/series"
+        />
+      )}
+    </Box>
+  );
 };
 
 export default Home;

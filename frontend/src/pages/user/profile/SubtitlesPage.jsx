@@ -1,16 +1,20 @@
-import React from "react";
+import { Box, Typography } from "@mui/material";
+import SubtitleList from "../../../components/user/subtitles/SubtitleList";
 
 const SubtitlesPage = () => {
   return (
-    <div>
-      <h1>Subtitles Page</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam amet ipsa
-        delectus veniam velit repellat ducimus vel odit minima, voluptatibus
-        unde voluptate alias explicabo iusto obcaecati dolorem similique fugiat
-        corrupti.
-      </p>
-    </div>
+    <Box>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        paddingY={3}
+        marginBottom={2}
+        sx={{ width: { lg: "calc(100% - 280px)", xs: "100%" } }}
+      >
+        My Subtitle List
+      </Typography>
+      <SubtitleList />
+    </Box>
   );
 };
 

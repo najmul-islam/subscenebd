@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../../features/auth/authSlice";
@@ -14,6 +14,7 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemButton,
+  Badge,
 } from "@mui/material";
 
 import {
@@ -26,12 +27,15 @@ import {
   NightlightRoundOutlined,
   LightModeOutlined,
 } from "@mui/icons-material";
+import { apiSlice } from "../../../features/api/apiSlice";
 // import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-const Profile = () => {
+const avatar_url = process.env.REACT_APP_AVATAR_URL;
+
+const Profile = ({ user }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
 
-  const { user } = useSelector((state) => state.auth);
+  // const { user } = useSelector((state) => state.auth);
   const { mode } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
@@ -46,6 +50,7 @@ const Profile = () => {
   };
 
   const onLogout = () => {
+    dispatch(apiSlice.util.resetApiState());
     dispatch(logout());
     navigate("/");
   };
@@ -54,13 +59,16 @@ const Profile = () => {
     dispatch(toggleColor(mode));
   };
 
+  const invisible = true;
   return (
     <>
       <IconButton onClick={handleOpenUserMenu}>
-        <Avatar
-          alt={user.name.toUpperCase()}
-          src="/static/images/avatar/2.jpg"
-        />
+        <Badge color="error" variant="dot" invisible={invisible}>
+          <Avatar
+            alt={user?.name?.toUpperCase()}
+            src={`${avatar_url}/${user?.avatar}`}
+          />
+        </Badge>
       </IconButton>
       <Menu
         anchorEl={anchorElUser}
@@ -72,16 +80,27 @@ const Profile = () => {
         PaperProps={{
           sx: {
             width: "300px",
+            paddingTop: "0",
+            paddingBottom: "0",
+            background: (theme) => theme.palette.background.secondery,
           },
         }}
+        sx={{ paddingTop: "0", paddingBottom: "0" }}
       >
-        <ListItem disablePadding>
+        <ListItem
+          onClick={() => navigate("/user/profile")}
+          disablePadding
+          sx={{
+            paddingTop: "0",
+            paddingBottom: "0",
+          }}
+        >
           <ListItemButton>
             <Avatar
-              alt={user.name.toUpperCase()}
-              src="/static/images/avatar/2.jpg"
+              alt={user?.name?.toUpperCase()}
+              src={`${avatar_url}/${user?.avatar}`}
             />
-            <ListItemText sx={{ ml: 2 }}>{user.name}</ListItemText>
+            <ListItemText sx={{ ml: 2 }}>{user?.name}</ListItemText>
           </ListItemButton>
         </ListItem>
 
@@ -98,7 +117,7 @@ const Profile = () => {
         />
 
         <HeaderListItem
-          link="/user/messages"
+          link="/messages"
           icon={<EmailOutlined />}
           text="Messages"
         />

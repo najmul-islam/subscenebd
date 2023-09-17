@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 // component
@@ -13,26 +12,21 @@ const UsersLayout = ({ roles = [] }) => {
   const { drawerWidth } = useSelector((state) => state.theme);
 
   return !roles.length || roles.includes(user?.role) ? (
-    <Box sx={{ display: "flex" }}>
+    <Box display="flex">
       <Header />
-
       <Sidebar />
-
       <Box
         component="main"
-        sx={{
-          flexGrow: 1,
-          p: 2,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
+        flexGrow={1}
+        width={{ sm: `calc(100% - ${drawerWidth}px)` }}
       >
         <CssBaseline />
-        <Toolbar sx={{ minHeight: "64px" }} />
-        <Box sx={{ minHeight: "80vh" }}>
+        <Toolbar sx={{ height: "65px" }} />
+        <Box padding={2}>
           <Outlet />
         </Box>
         <GoToTop />
-        <Footer />
+        {/* <Footer /> */}
       </Box>
     </Box>
   ) : (

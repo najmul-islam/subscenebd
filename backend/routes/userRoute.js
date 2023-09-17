@@ -3,20 +3,40 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
+  getUsers,
+  getSingleUser,
+  getSearchUser,
   profile,
-  getAllUser,
-  singleUser,
-  singleUserSubtitle,
+  updateProfile,
+  updateAvatar,
+  getUserDownloadsSubtitles,
+  putUserDownloadsSubtitles,
+  followUser,
+  putUserNotification,
 } = require("../controllers/userController");
 
 const { isUser } = require("../middlewares/authMiddleware");
+const avatarUpload = require("../middlewares/avatarMiddleware");
 
-// delete all route from here
-router.get("/all", getAllUser);
+// auth route
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/profile", isUser, profile);
-router.get("/:id", singleUser);
-router.get("/:id/subtitles", singleUserSubtitle);
+
+// user private route
+router.route("/profile").get(isUser, profile).put(isUser, updateProfile);
+router.route("/profile/avatar").put(isUser, avatarUpload, updateAvatar);
+
+// count get and save user download subtitles
+router.route("/downloads").get(isUser, getUserDownloadsSubtitles);
+router.route("/downloads/:id").put(isUser, putUserDownloadsSubtitles);
+router.put("/follow/:id", isUser, followUser);
+
+// notification
+router.put("/notification/:id", isUser, putUserNotification);
+
+// public route
+router.get("/", getUsers);
+router.get("/search", getSearchUser);
+router.get("/:userId", getSingleUser);
 
 module.exports = router;

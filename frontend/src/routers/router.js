@@ -3,6 +3,9 @@ import { Routes, Route } from "react-router-dom";
 // layout
 import PublicLayout from "../layouts/PublicLayout";
 import UsersLayout from "../layouts/UsersLayout";
+import LatestLayout from "../layouts/LatestLayout";
+import PopularLayout from "../layouts/PopularLayout";
+import MessageLayout from "../layouts/MessageLayout";
 
 // auth page
 import RegisterPage from "../pages/shared/RegisterPage";
@@ -10,20 +13,23 @@ import LoginPage from "../pages/shared/LoginPage";
 
 // public pages
 import HomePage from "../pages/public/HomePage";
-import LatestPage from "../pages/public/LatestPage";
-import PopularPage from "../pages/public/PopularPage";
 import AllPage from "../pages/public/AllPage";
 import MoviesPage from "../pages/public/MoviesPage";
 import SeriesPage from "../pages/public/SeriesPage";
 import ShortFilmsPage from "../pages/public/ShortFilmsPage";
 import MusicsPage from "../pages/public/MusicsPage";
-
+import SingleSubtitlePage from "../pages/public/SingleSubtitlePage";
+import GenreSubtitlePage from "../pages/public/GenreSubtitlePage";
+import UserProfilePage from "../pages/public/UserProfilePage";
+import SearchSubtitlePage from "../pages/public/SearchSubtitlePage";
 // user/profile pages
 import ProfilePage from "../pages/user/profile/ProfilePage";
 import SubtitlesPage from "../pages/user/profile/SubtitlesPage";
-import MessagesPage from "../pages/user/profile/MessagesPage";
 import BookmarksPage from "../pages/user/profile/BookmarksPage";
 import DownloadsPage from "../pages/user/profile/DownloadsPage";
+// user/message
+import ConversationsPage from "../pages/user/message/ConversationsPage";
+import ConversationPage from "../pages/user/message/ConversationPage";
 // user/movie pages
 import MovieSearchPage from "../pages/user/movie/MovieSearchPage";
 import MovieSubCreatePage from "../pages/user/movie/MovieSubCreatePage";
@@ -32,8 +38,10 @@ import SeriesSearchPage from "../pages/user/series/SeriesSearchPage";
 import SeriesDetailsPage from "../pages/user/series/SeriesDetailsPage";
 import SeriesSubCreatePage from "../pages/user/series/SeriesSubCreatePage";
 // user/shortfilm pages
+import ShortFilmSearchPage from "../pages/user/shortfilm/ShortFilmSearchPage";
+import ShortFilmSubCreatePage from "../pages/user/shortfilm/ShortFilmSubCreatePage";
 // user/music pages
-
+import MusicSearchPage from "../pages/user/music/MusicSearchPage";
 // other pages
 import NotFoundPage from "../pages/shared/NotFoundPage";
 
@@ -45,22 +53,46 @@ const Router = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/latest" element={<LatestPage />} />
-        <Route path="/popular" element={<PopularPage />} />
-        <Route path="/all" element={<AllPage />} />
-        <Route path="/movies" element={<MoviesPage />} />
-        <Route path="/series" element={<SeriesPage />} />
-        <Route path="/short-films" element={<ShortFilmsPage />} />
-        <Route path="/musics" element={<MusicsPage />} />
+
+        <Route path="/search" element={<SearchSubtitlePage />} />
+
+        <Route path="/latest/*" element={<LatestLayout />}>
+          <Route path="all" element={<AllPage />} />
+          <Route path="movies" element={<MoviesPage />} />
+          <Route path="series" element={<SeriesPage />} />
+          <Route path="short-films" element={<ShortFilmsPage />} />
+          <Route path="musics" element={<MusicsPage />} />
+        </Route>
+
+        <Route path="/popular/*" element={<PopularLayout />}>
+          <Route path="all" element={<AllPage />} />
+          <Route path="movies" element={<MoviesPage />} />
+          <Route path="series" element={<SeriesPage />} />
+          <Route path="short-films" element={<ShortFilmsPage />} />
+          <Route path="musics" element={<MusicsPage />} />
+        </Route>
+
+        <Route path="/subtitles/:subtitleId" element={<SingleSubtitlePage />} />
+        <Route
+          path="/subtitles/genres/:genreName"
+          element={<GenreSubtitlePage />}
+        />
+        <Route path="/user/:userId" element={<UserProfilePage />} />
       </Route>
 
       {/* user route */}
       <Route path="/user/*" element={<UsersLayout roles={["user"]} />}>
         <Route path="profile" element={<ProfilePage />} />
         <Route path="subtitles" element={<SubtitlesPage />} />
-        <Route path="messages" element={<MessagesPage />} />
+        {/* <Route path="messages" element={<MessagesPage />} /> */}
         <Route path="bookmarks" element={<BookmarksPage />} />
         <Route path="downloads" element={<DownloadsPage />} />
+      </Route>
+
+      {/* message route */}
+      <Route path="/messages" element={<MessageLayout roles={["user"]} />}>
+        <Route path="/messages" element={<ConversationsPage />} />
+        <Route path="/messages/:partnerId" element={<ConversationPage />} />
       </Route>
 
       {/* user upload */}
@@ -75,9 +107,13 @@ const Router = () => {
           path="series/:seriesId/season/:seasonId"
           element={<SeriesSubCreatePage />}
         />
-
-        {/* <Route path="short-film" element={<ShortFilmUpload />} /> */}
-        {/* <Route path="music" element={<MusicUpload />} />  */}
+        {/* short film route */}
+        <Route path="short-film" element={<ShortFilmSearchPage />} />
+        <Route
+          path="short-film/:shortFilmId"
+          element={<ShortFilmSubCreatePage />}
+        />
+        <Route path="music" element={<MusicSearchPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

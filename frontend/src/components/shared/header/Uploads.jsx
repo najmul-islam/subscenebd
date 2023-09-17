@@ -27,7 +27,7 @@ const Uploads = () => {
     <>
       <Tooltip title="Add Subtitle">
         <IconButton onClick={handleOpenCreateMenu}>
-          <PostAddOutlined sx={{ fontSize: "25px", color: "white" }} />
+          <PostAddOutlined sx={{ fontSize: "25px" }} />
         </IconButton>
       </Tooltip>
       <Menu

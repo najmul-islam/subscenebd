@@ -2,13 +2,14 @@ const asyncHandler = require("express-async-handler");
 const path = require("path");
 
 const avatarUpload = asyncHandler(async (req, res, next) => {
-  console.log(req.user);
   const avatar = req.files.avatar;
+  const user = req.user;
+
   if (!avatar) {
     res.status(400);
     throw new Error("Please add a avatar");
   }
-  const avatarSize = avatar.size;
+
   const extension = path.extname(avatar.name);
 
   // check file format
@@ -20,50 +21,29 @@ const avatarUpload = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // check size
-  if (subSize > 1024 * 512) {
-    res.status(400);
-    throw new Error("File size error. file to big");
-  }
-
   // change name
-  let subName;
-  if (!year) {
-    subName =
-      title
-        .toLowerCase()
-        .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
-        .join("-") +
-      "-bengali" +
-      "-" +
-      Date.now() +
-      path.extname(subtitle.name);
-  }
-  if (year) {
-    subName =
-      title
-        .toLowerCase()
-        .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
-        .join("-") +
-      "-" +
-      year +
-      "-bengali" +
-      "-" +
-      Date.now() +
-      path.extname(subtitle.name);
-  }
+  let avatarName;
+
+  avatarName =
+    user.name
+      .toLowerCase()
+      .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
+      .join("-") +
+    "-" +
+    Date.now() +
+    path.extname(avatar.name);
 
   // file path
-  const subPath = path.join(
+  const avatarPath = path.join(
     __dirname,
     "../public",
     "uploads",
-    "subtitles",
-    subName
+    "avatar",
+    avatarName
   );
 
-  await subtitle.mv(subPath);
-  req.subPath = subPath;
+  await avatar.mv(avatarPath);
+  req.avatar_link = `/uploads/avatar/${avatarName}`;
   next();
 });
 

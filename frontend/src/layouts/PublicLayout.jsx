@@ -11,22 +11,21 @@ import Footer from "../components/shared/footer/Footer";
 const PublicLayout = () => {
   const { drawerWidth } = useSelector((state) => state.theme);
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box display="flex">
       <Header />
       <Sidebar />
       <Box
         component="main"
-        sx={{
-          flexGrow: 1,
-          p: 2,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
+        flexGrow={1}
+        width={{ sm: `calc(100% - ${drawerWidth}px)` }}
       >
         <CssBaseline />
-        <Toolbar sx={{ minHeight: "64px" }} />
-        <Outlet />
+        <Toolbar sx={{ height: "65px" }} />
+        <Box padding={2}>
+          <Outlet />
+        </Box>
         <GoToTop />
-        <Footer />
+        {/* <Footer /> */}
       </Box>
     </Box>
   );

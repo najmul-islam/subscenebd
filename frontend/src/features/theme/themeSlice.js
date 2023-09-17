@@ -5,7 +5,8 @@ const initialState = {
   mode: color ? color : "light",
   sidebar: false,
   selectedUrl: window.location.pathname,
-  drawerWidth: 240,
+  drawerWidth: 280,
+  isUserSearchFocus: false,
 };
 
 export const themeSlice = createSlice({
@@ -23,9 +24,16 @@ export const themeSlice = createSlice({
     toggleSidebar: (state, action) => {
       state.sidebar = action.payload;
     },
+    toggleUserSearchFocus: (state, action) => {
+      state.isUserSearchFocus = action.payload;
+    },
   },
 });
 
-export const { toggleColor, toggleListitem, toggleSidebar } =
-  themeSlice.actions;
+export const {
+  toggleColor,
+  toggleListitem,
+  toggleSidebar,
+  toggleUserSearchFocus,
+} = themeSlice.actions;
 export default themeSlice.reducer;

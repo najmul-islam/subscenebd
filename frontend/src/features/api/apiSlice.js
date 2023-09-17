@@ -23,6 +23,18 @@ export const apiSlice = createApi({
     }
     return result;
   },
-  tagTypes: ["Subtitles, Subtitle"],
+  tagTypes: [
+    "Subtitles",
+    "Subtitle",
+    "Users",
+    "User",
+    "UserSubtitles",
+    "UserSubtitle",
+    "DownloadSubtitles",
+    "DownloadSubtitle",
+    "SearchUsers",
+    "SearchSubtitles",
+    "Notifications",
+  ],
   endpoints: (builder) => ({}),
 });

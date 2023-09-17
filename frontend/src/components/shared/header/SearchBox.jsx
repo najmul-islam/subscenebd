@@ -1,70 +1,112 @@
-import React, { useState } from "react";
-import { IconButton, InputBase, Tooltip, styled } from "@mui/material";
-import { SearchRounded } from "@mui/icons-material";
-
-const Search = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.primary,
-  width: "35%",
-  display: "flex",
-  // justifyContent: "end",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  width: "100%",
-  display: "flex",
-  justifyContent: "end",
-  "& .MuiInputBase-input": {
-    width: "80%",
-    padding: "5px 15px",
-    border: "1px solid",
-    borderColor: theme.palette.primary,
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderBottomLeftRadius: theme.shape.borderRadius,
-    fontSize: "18px",
-    fontWeight: theme.typography.fontWeightRegular,
-    "&:focus": {
-      width: "90%",
-    },
-    // padding: theme.spacing(1, 2),
-    // padding: "10px 20px",
-    // padding: `calc(1em + ${theme.spacing(4)})`,
-    // transition: theme.transitions.create("width"),
-    // "&:focus": {
-    //   border: "2px solid",
-    // },
-    // width: "100%",
-    // [theme.breakpoints.up("sm")]: {
-    //   maxWidth: "600px",
-    //   "&:focus": {
-    //     maxWidth: "600px",
-    //   },
-    // },
-  },
-}));
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  padding: "0px 15px",
-  borderTop: "1px solid",
-  borderRight: "1px solid",
-  borderBottom: "1px solid",
-  borderTopLeftRadius: "0",
-  borderBottomLeftRadius: "0",
-  borderTopRightRadius: theme.shape.borderRadius,
-  borderBottomRightRadius: theme.shape.borderRadius,
-}));
+import { useEffect, useState } from "react";
+import { Box, InputBase, IconButton, Tooltip } from "@mui/material";
+import { Search as SearchIcon, Clear } from "@mui/icons-material";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchBox = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery !== "") {
+      const formattedQuery = searchQuery.replace(/ /g, "+");
+      navigate(`/search?title=${formattedQuery}`);
+    }
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleClear = () => {
+    setSearchQuery("");
+    setSearchParams("");
+  };
+
+  useEffect(() => {
+    if (pathname === "/search") {
+      const isSearchParams = searchParams.get("title");
+      if (isSearchParams) {
+        setSearchQuery(searchParams.get("title"));
+      }
+    }
+  }, [searchParams, pathname]);
+
   return (
-    <>
-      <Search sx={{ display: { xs: "none", sm: "flex" } }}>
-        <StyledInputBase placeholder="Search..." />
-        <Tooltip title="search">
-          <StyledIconButton aria-label="search">
-            <SearchRounded />
-          </StyledIconButton>
-        </Tooltip>
-      </Search>
-    </>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      display="flex"
+      flex="0 1 600px"
+      alignItems="center"
+      borderRadius={2}
+      paddingX={5}
+      sx={{ display: { xs: "none", sm: "flex" } }}
+    >
+      <Box width="100%" sx={{ position: "relative" }}>
+        <InputBase
+          fullWidth
+          placeholder="Search subtitle"
+          name="search"
+          value={searchQuery}
+          onChange={handleSearch}
+          sx={{
+            paddingLeft: "20px",
+            height: "40px",
+            borderRadius: "40px 0px 0px 40px",
+            boxShadow: (theme) =>
+              `inset 0 1px 5px ${theme.palette.background.secondary}`,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            "&:focus-within": { border: "1px solid #2962B7" },
+          }}
+        />
+
+        {searchQuery === "" ? null : (
+          <Tooltip title="clear search">
+            <IconButton
+              onClick={handleClear}
+              sx={{ position: "absolute", right: "0" }}
+            >
+              <Clear />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Box>
+
+      <Tooltip title="search">
+        <Box
+          component="button"
+          type="submit"
+          display="flex"
+          height="40px"
+          width="64px"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            borderRadius: "0 40px 40px 0",
+            borderLeft: "0",
+            cursor: "pointer",
+            background: (theme) => theme.palette.background.secondary,
+            color: (theme) => theme.palette.text.primary,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            // boxShadow: "inset 0 1px 2px #eee",
+            // "&:hover": { background: (theme) => theme.palette.background. },
+            // "&:focus": { background: "#f0f0f0" },
+          }}
+        >
+          <SearchIcon
+            sx={{
+              fontSize: "25px",
+              fontWeight: "400",
+            }}
+          />
+        </Box>
+      </Tooltip>
+    </Box>
   );
 };
 
