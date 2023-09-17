@@ -5,7 +5,7 @@ export const notificationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotifications: builder.query({
       query: () => ({
-        url: `/notification?page=1&limit=10`,
+        url: `/notification`,
         method: "GET",
       }),
       async onCacheEntryAdded(
@@ -28,13 +28,12 @@ export const notificationApi = apiSlice.injectEndpoints({
           socket.on("notification", (data) => {
             const { notification } = data;
             updateCachedData((draft) => {
-              console.log("");
-              const index = draft.notifications.findIndex(
+              const index = draft.findIndex(
                 (item) => item.receiver._id === notification.receiver._id
               );
 
               if (index !== -1) {
-                draft.notifications.unshift(notification);
+                draft.unshift(notification);
               }
             });
           });
@@ -46,13 +45,6 @@ export const notificationApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // getMoreNotifications: builder.query({
-    //   query:({page}) => ({
-    //     url: `/notificaiton?page=${page}&limit=10`,
-    //     method:"GET"
-    //   })
-    //   async onCacheEntryAdded(arg, {updateCachedData, cacheDataLoaded, ca})
-    // }),
     editNotifications: builder.mutation({
       query: () => ({
         url: `/notification/seen`,
@@ -61,17 +53,14 @@ export const notificationApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log("result", result);
           if (result?.data.length > 0) {
             dispatch(
               apiSlice.util.updateQueryData(
                 "getNotifications",
                 undefined,
                 (draft) => {
-                  console.log("draft", JSON.stringify(draft));
                   draft.length = 0;
                   draft.push(...result.data);
-                  console.log("updated draft", JSON.stringify(draft));
                 }
               )
             );

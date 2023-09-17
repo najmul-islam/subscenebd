@@ -46,7 +46,12 @@ const Notifications = () => {
   const open = Boolean(anchorElNotifications);
 
   const navigate = useNavigate();
-  const { data, isLoading, isError, error } = useGetNotificationsQuery();
+  const {
+    data: notifications,
+    isLoading,
+    isError,
+    error,
+  } = useGetNotificationsQuery();
   const [editNotification] = useEditNotificationsMutation();
 
   const handleOpenNotificationsMenu = (event) => {
@@ -88,15 +93,15 @@ const Notifications = () => {
 
     return message;
   };
-
-  console.log(data);
   return (
     <>
       <Tooltip title="Notification">
         <IconButton onClick={handleOpenNotificationsMenu}>
           <StyledBadge
             color="error"
-            badgeContent={data?.unseenNotifications}
+            badgeContent={
+              notifications?.filter((notification) => !notification.seen).length
+            }
             max={9}
           >
             {open ? (
@@ -121,14 +126,7 @@ const Notifications = () => {
           },
         }}
       >
-        <Box
-        // sx={{
-        //   width: "100%",
-        //   height: "40px",
-        //   position: "sticky",
-        //   top: "0",
-        // }}
-        >
+        <Box>
           <Typography variant="subtitle1" sx={{ px: 2, py: 1 }}>
             Notifications
           </Typography>
@@ -138,7 +136,7 @@ const Notifications = () => {
         {isLoading ? (
           <h1>Loading...</h1>
         ) : (
-          data.notifications.map((notification) => (
+          notifications?.map((notification) => (
             <MenuItem
               key={notification._id}
               onClick={() =>
@@ -242,20 +240,6 @@ const Notifications = () => {
                   <Typography variant="body2" fontSize={12} marginTop={1}>
                     {moment(notification.createdAt).startOf("m").fromNow()}
                   </Typography>
-                  {/* <Typography
-                    sx={{ overflowWrap: "break-word", whiteSpace: "pre-line" }}
-                  >
-                    <span style={{ fontWeight: "bold" }}>
-                      {notification.sender.name}
-                    </span>{" "}
-                   comment in {" "}
-                    <span style={{ fontWeight: "bold" }}>
-                      {" "}
-                      {notification?.subtitle
-                        ? notification?.subtitle?.title
-                        : notification?.post?.title}
-                    </span>: {}
-                  </Typography> */}
                 </Box>
 
                 <img
