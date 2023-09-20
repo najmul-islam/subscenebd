@@ -146,12 +146,10 @@ export const subtitleApi = apiSlice.injectEndpoints({
 
     deleteSubtitle: builder.mutation({
       query: (id) => ({
-        query: (id) => ({
-          url: `/subtitles/${id}`,
-          method: "DELETE",
-        }),
-        invalidatesTags: ["Subtitles"],
+        url: `/subtitles/${id}`,
+        method: "DELETE",
       }),
+      invalidatesTags: ["Subtitles"],
     }),
   }),
 });

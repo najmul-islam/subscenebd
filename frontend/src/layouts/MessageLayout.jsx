@@ -3,8 +3,6 @@ import { Navigate, Outlet } from "react-router-dom";
 // component
 import Header from "../components/shared/header/Header";
 import Sidebar from "../components/user/message/sidebar/Sidebar";
-import GoToTop from "../components/shared/others/GoToTop";
-import Footer from "../components/shared/footer/Footer";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 
 const UsersLayout = ({ roles = [] }) => {

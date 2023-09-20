@@ -17,8 +17,11 @@ const getAllNotification = asyncHandler(async (req, res) => {
     .limit(limit)
     .exec();
 
-  const total = await Notification.countDocuments({});
-  const unseenNotificatons = await Notification.countDocuments({ seen: false });
+  const total = await Notification.countDocuments({ receiver: userId });
+  const unseenNotificatons = await Notification.countDocuments({
+    receiver: userId,
+    seen: false,
+  });
 
   res.status(200).json({
     notifications,
@@ -29,15 +32,11 @@ const getAllNotification = asyncHandler(async (req, res) => {
   });
 });
 
-const editNotification = asyncHandler(async (req, res) => {
+const seenNotification = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
-  // const notifications = await Notification.find({
-  //   receiver: userId,
-  //   seen: false,
-  // });
 
   await Notification.updateMany(
     { receiver: userId, seen: false },
@@ -57,26 +56,39 @@ const editNotification = asyncHandler(async (req, res) => {
     .limit(limit)
     .exec();
 
-  // await Notification.populate(notifications, [
-  //   { path: "receiver", select: "_id name avatar" },
-  //   { path: "sender", select: "_id name avatar" },
-  //   { path: "subtitle", select: "_id title poster_path" },
-  // ]);
+  const total = await Notification.countDocuments({ receiver: userId });
+  const unseenNotificatons = await Notification.countDocuments({
+    receiver: userId,
+    seen: false,
+  });
 
-  // await notifications.populate("receiver", "_id name avatar");
-  // await notifications.populate("sender", "_id name avatar");
-  // await notifications.populate("subtitle", "_id title poster_path");
+  res.status(200).json({
+    notifications,
+    unseenNotificatons,
+    total,
+    page,
+    limit,
+  });
+});
 
-  // if (notifications) {
-  //   req.io.emit("notifications", {
-  //     notifications,
-  //   });
-  // }
+const readNotification = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-  res.status(200).json(notifications);
+  const updatedNotification = await Notification.findByIdAndUpdate(
+    id,
+    { read: true },
+    { new: true }
+  );
+
+  if (!updatedNotification) {
+    return res.status(404).json({ message: "Notification not found" });
+  }
+
+  res.status(200).json(updatedNotification);
 });
 
 module.exports = {
   getAllNotification,
-  editNotification,
+  seenNotification,
+  readNotification,
 };

@@ -28,13 +28,14 @@ export const notificationApi = apiSlice.injectEndpoints({
           socket.on("notification", (data) => {
             const { notification } = data;
             updateCachedData((draft) => {
-              console.log("");
+              // console.log("draft", JSON.stringify(draft));
               const index = draft.notifications.findIndex(
                 (item) => item.receiver._id === notification.receiver._id
               );
 
               if (index !== -1) {
                 draft.notifications.unshift(notification);
+                draft.unseenNotificatons += 1;
               }
             });
           });
@@ -46,14 +47,37 @@ export const notificationApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // getMoreNotifications: builder.query({
-    //   query:({page}) => ({
-    //     url: `/notificaiton?page=${page}&limit=10`,
-    //     method:"GET"
-    //   })
-    //   async onCacheEntryAdded(arg, {updateCachedData, cacheDataLoaded, ca})
-    // }),
-    editNotifications: builder.mutation({
+    getMoreNotifications: builder.query({
+      query: (page) => ({
+        url: `/notification?page=${page}`,
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+
+          if (result) {
+            dispatch(
+              apiSlice.util.updateQueryData(
+                "getNotifications",
+                undefined,
+                (draft) => {
+                  draft.page = result.data.page;
+                  draft.notifications = [
+                    ...draft.notifications,
+                    ...result.data.notifications,
+                  ];
+                }
+              )
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+
+    seenNotifications: builder.mutation({
       query: () => ({
         url: `/notification/seen`,
         method: "PUT",
@@ -61,17 +85,53 @@ export const notificationApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log("result", result);
-          if (result?.data.length > 0) {
+          // console.log("result", result);
+          if (result) {
             dispatch(
               apiSlice.util.updateQueryData(
                 "getNotifications",
                 undefined,
                 (draft) => {
-                  console.log("draft", JSON.stringify(draft));
-                  draft.length = 0;
-                  draft.push(...result.data);
-                  console.log("updated draft", JSON.stringify(draft));
+                  // console.log("draft", JSON.stringify(draft));
+                  draft.unseenNotificatons = result.data.unseenNotificatons;
+                  draft.notifications = result.data.notifications;
+                  draft.limit = result.data.limit;
+                  draft.page = result.data.page;
+                  draft.total = result.data.total;
+                  // console.log("updated draft", JSON.stringify(draft));
+                }
+              )
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+
+    readNotification: builder.mutation({
+      query: (notificationId) => ({
+        url: `/notification/read/${notificationId}`,
+        method: "PATCH",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          // console.log("result", result);
+          if (result) {
+            dispatch(
+              apiSlice.util.updateQueryData(
+                "getNotifications",
+                undefined,
+                (draft) => {
+                  // console.log("draft", JSON.stringify(draft));
+                  const notification = draft.notifications.find(
+                    (notification) => notification._id === result.data._id
+                  );
+
+                  if (notification) {
+                    notification.read = result.data.read;
+                  }
                 }
               )
             );
@@ -84,5 +144,9 @@ export const notificationApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetNotificationsQuery, useEditNotificationsMutation } =
-  notificationApi;
+export const {
+  useGetNotificationsQuery,
+  useGetMoreNotificationsQuery,
+  useSeenNotificationsMutation,
+  useReadNotificationMutation,
+} = notificationApi;

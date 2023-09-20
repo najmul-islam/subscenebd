@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import {
-  useEditNotificationsMutation,
+  notificationApi,
+  useSeenNotificationsMutation,
   useGetNotificationsQuery,
+  useReadNotificationMutation,
 } from "../../../features/notification/notificationApi";
 
 import {
@@ -18,15 +20,20 @@ import {
   Box,
   Stack,
   styled,
+  Skeleton,
 } from "@mui/material";
 
 import {
+  Circle,
   CommentOutlined,
   Notifications as NotificationsIcon,
   NotificationsNone,
   ThumbDownOutlined,
   ThumbUpOutlined,
 } from "@mui/icons-material";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch } from "react-redux";
+import NotificationsSkeleton from "./NotificationsSkeleton";
 
 const avatar_url = process.env.REACT_APP_AVATAR_URL;
 const img_url = process.env.REACT_APP_IMG_API;
@@ -41,25 +48,31 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Notifications = () => {
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   // const [notifications, setNotificatios] = useState([]);
   const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const open = Boolean(anchorElNotifications);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const isLoading = true;
   const { data, isLoading, isError, error } = useGetNotificationsQuery();
-  const [editNotification] = useEditNotificationsMutation();
-
+  const [seenNotification] = useSeenNotificationsMutation();
+  const [readNotification] = useReadNotificationMutation();
   const handleOpenNotificationsMenu = (event) => {
     setAnchorElNotifications(event.currentTarget);
-    editNotification();
+    seenNotification();
   };
 
   const handleCloseNotificationsMenu = () => {
     setAnchorElNotifications(null);
   };
 
-  const handleMenuItem = ({ type, id }) => {
-    navigate(`/${type}/${id}`);
+  const handleMenuItem = ({ type, subtitleId, notificationId }) => {
+    navigate(`/${type}/${subtitleId}`);
+    readNotification(notificationId);
   };
 
   const generateNotificationMessage = (action) => {
@@ -89,14 +102,31 @@ const Notifications = () => {
     return message;
   };
 
-  console.log(data);
+  // infinit scroll
+  const fetchMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  useEffect(() => {
+    if (page > 1) {
+      dispatch(notificationApi.endpoints.getMoreNotifications.initiate(page));
+    }
+  }, [dispatch, page]);
+
+  useEffect(() => {
+    if (data?.total > 0) {
+      const more = Math.ceil(data?.total / Number(10)) > page;
+      setHasMore(more);
+    }
+  }, [data, page]);
+
   return (
     <>
       <Tooltip title="Notification">
         <IconButton onClick={handleOpenNotificationsMenu}>
           <StyledBadge
             color="error"
-            badgeContent={data?.unseenNotifications}
+            badgeContent={data?.unseenNotificatons}
             max={9}
           >
             {open ? (
@@ -107,176 +137,224 @@ const Notifications = () => {
           </StyledBadge>
         </IconButton>
       </Tooltip>
-      <Menu
-        anchorEl={anchorElNotifications}
-        keepMounted
-        open={open}
-        onClose={handleCloseNotificationsMenu}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        PaperProps={{
-          sx: {
-            width: "420px",
-            height: "600px",
-          },
-        }}
-      >
-        <Box
-        // sx={{
-        //   width: "100%",
-        //   height: "40px",
-        //   position: "sticky",
-        //   top: "0",
-        // }}
+      {isLoading ? (
+        <Menu
+          anchorEl={anchorElNotifications}
+          keepMounted
+          open={open}
+          onClose={handleCloseNotificationsMenu}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          PaperProps={{
+            sx: {
+              width: "420px",
+              height: "600px",
+            },
+          }}
         >
-          <Typography variant="subtitle1" sx={{ px: 2, py: 1 }}>
-            Notifications
-          </Typography>
-        </Box>
+          <Box>
+            <Typography variant="subtitle1" sx={{ px: 2, py: 1 }}>
+              Notifications
+            </Typography>
+          </Box>
 
-        <Divider />
-        {isLoading ? (
-          <h1>Loading...</h1>
-        ) : (
-          data.notifications.map((notification) => (
-            <MenuItem
-              key={notification._id}
-              onClick={() =>
-                handleMenuItem(
-                  notification?.subtitle
-                    ? { type: "subtitles", id: notification?.subtitle._id }
-                    : { type: "posts", id: notification?.post._id }
-                )
-              }
-            >
-              <Stack
-                direction="row"
-                spacing={1}
-                display="flex"
-                alignItems="center"
-              >
-                <Badge
-                  overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                  badgeContent={
-                    notification?.action === "likeSubtitle" ||
-                    notification?.action === "likePost" ? (
-                      <Avatar
-                        sx={{
-                          width: "20px",
-                          height: "20px",
-                          padding: "5px",
-                          background: (theme) =>
-                            theme.palette.background.secondary,
-                        }}
-                      >
-                        <ThumbUpOutlined
-                          sx={{
-                            width: "14px",
-                            height: "14px",
-                            color: (theme) => theme.palette.text.primary,
-                          }}
-                        />
-                      </Avatar>
-                    ) : notification?.action === "dislikeSubtitle" ? (
-                      <Avatar
-                        sx={{
-                          width: "20px",
-                          height: "20px",
-                          padding: "5px",
-                          background: (theme) =>
-                            theme.palette.background.secondary,
-                        }}
-                      >
-                        <ThumbDownOutlined
-                          sx={{
-                            width: "14px",
-                            height: "14px",
-                            color: (theme) => theme.palette.text.primary,
-                          }}
-                        />
-                      </Avatar>
-                    ) : notification?.action === "commentSubtitle" ||
-                      notification?.action === "commentPost" ? (
-                      <Avatar
-                        sx={{
-                          width: "20px",
-                          height: "20px",
-                          padding: "5px",
-                          background: (theme) =>
-                            theme.palette.background.secondary,
-                        }}
-                      >
-                        <CommentOutlined
-                          sx={{
-                            width: "14px",
-                            height: "14px",
-                            color: (theme) => theme.palette.text.primary,
-                          }}
-                        />
-                      </Avatar>
-                    ) : null
-                  }
-                >
-                  <Avatar
-                    alt={notification?.sender.name}
-                    src={`${avatar_url}/${notification.sender.avatar}`}
-                    sx={{ width: 48, height: 48 }}
-                  />
-                </Badge>
-                <Box>
-                  <Typography
-                    sx={{ overflowWrap: "break-word", whiteSpace: "pre-line" }}
-                  >
-                    <span style={{ fontWeight: "bold" }}>
-                      {notification.sender.name}
-                    </span>{" "}
-                    {generateNotificationMessage(notification.action)} :{" "}
-                    <span style={{ fontWeight: "bold" }}>
-                      {" "}
-                      {notification?.subtitle
-                        ? notification?.subtitle?.title
-                        : notification?.post?.title}
-                    </span>
-                  </Typography>
-                  <Typography variant="body2" fontSize={12} marginTop={1}>
-                    {moment(notification.createdAt).startOf("m").fromNow()}
-                  </Typography>
-                  {/* <Typography
-                    sx={{ overflowWrap: "break-word", whiteSpace: "pre-line" }}
-                  >
-                    <span style={{ fontWeight: "bold" }}>
-                      {notification.sender.name}
-                    </span>{" "}
-                   comment in {" "}
-                    <span style={{ fontWeight: "bold" }}>
-                      {" "}
-                      {notification?.subtitle
-                        ? notification?.subtitle?.title
-                        : notification?.post?.title}
-                    </span>: {}
-                  </Typography> */}
-                </Box>
+          <Divider />
 
-                <img
-                  alt={
-                    notification?.subtitle
-                      ? `${notification?.subtitle.title}`
-                      : `${notification?.post.title}`
-                  }
-                  src={
-                    notification?.subtitle
-                      ? `${img_url}/${notification?.subtitle.poster_path}`
-                      : `${img_url}/${notification?.post.poster_path}`
-                  }
-                  width="50px"
-                  style={{ borderRadius: "5px" }}
-                />
-              </Stack>
+          {[...Array(10)].map((notification, i) => (
+            <MenuItem key={i}>
+              <NotificationsSkeleton />
             </MenuItem>
-          ))
-        )}
-      </Menu>
+          ))}
+        </Menu>
+      ) : (
+        <Menu
+          anchorEl={anchorElNotifications}
+          keepMounted
+          open={open}
+          onClose={handleCloseNotificationsMenu}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          PaperProps={{
+            id: "scrollableDiv",
+            sx: {
+              width: "440px",
+              height: "600px",
+            },
+          }}
+        >
+          <Box>
+            <Typography variant="subtitle1" sx={{ px: 2, py: 1 }}>
+              Notifications
+            </Typography>
+          </Box>
+
+          <Divider />
+
+          <InfiniteScroll
+            scrollableTarget="scrollableDiv"
+            dataLength={data?.notifications.length}
+            next={fetchMore}
+            hasMore={hasMore}
+            loader={[...Array(3)].map((notification, i) => (
+              <MenuItem key={i}>
+                <NotificationsSkeleton />
+              </MenuItem>
+            ))}
+            endMessage={
+              <Typography
+                variant="subtitle2"
+                paddingY={2}
+                sx={{ textAlign: "center" }}
+              >
+                You have seen it all
+              </Typography>
+            }
+          >
+            {data?.notifications.map((notification) => (
+              <MenuItem
+                key={notification._id}
+                onClick={() =>
+                  handleMenuItem(
+                    notification?.subtitle
+                      ? {
+                          type: "subtitles",
+                          subtitleId: notification?.subtitle._id,
+                          notificationId: notification?._id,
+                        }
+                      : {
+                          type: "posts",
+                          subtitleId: notification?.post._id,
+                          notificationId: notification?._id,
+                        }
+                  )
+                }
+              >
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  display="flex"
+                  alignItems="center"
+                >
+                  {notification?.read ? (
+                    <Box component="span" width="7px" height="7px"></Box>
+                  ) : (
+                    <Circle
+                      sx={{ width: "5px", height: "5px", color: "#3E88FC" }}
+                    />
+                  )}
+
+                  <Badge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    badgeContent={
+                      notification?.action === "likeSubtitle" ||
+                      notification?.action === "likePost" ? (
+                        <Avatar
+                          sx={{
+                            width: "20px",
+                            height: "20px",
+                            padding: "5px",
+                            background: (theme) =>
+                              theme.palette.background.secondary,
+                          }}
+                        >
+                          <ThumbUpOutlined
+                            sx={{
+                              width: "14px",
+                              height: "14px",
+                              color: (theme) => theme.palette.text.primary,
+                            }}
+                          />
+                        </Avatar>
+                      ) : notification?.action === "dislikeSubtitle" ? (
+                        <Avatar
+                          sx={{
+                            width: "20px",
+                            height: "20px",
+                            padding: "5px",
+                            background: (theme) =>
+                              theme.palette.background.secondary,
+                          }}
+                        >
+                          <ThumbDownOutlined
+                            sx={{
+                              width: "14px",
+                              height: "14px",
+                              color: (theme) => theme.palette.text.primary,
+                            }}
+                          />
+                        </Avatar>
+                      ) : notification?.action === "commentSubtitle" ||
+                        notification?.action === "commentPost" ? (
+                        <Avatar
+                          sx={{
+                            width: "20px",
+                            height: "20px",
+                            padding: "5px",
+                            background: (theme) =>
+                              theme.palette.background.secondary,
+                          }}
+                        >
+                          <CommentOutlined
+                            sx={{
+                              width: "14px",
+                              height: "14px",
+                              color: (theme) => theme.palette.text.primary,
+                            }}
+                          />
+                        </Avatar>
+                      ) : null
+                    }
+                  >
+                    <Avatar
+                      alt={notification?.sender.name}
+                      src={`${avatar_url}/${notification.sender.avatar}`}
+                      sx={{ width: 48, height: 48 }}
+                    />
+                  </Badge>
+                  <Box>
+                    <Typography
+                      sx={{
+                        overflowWrap: "break-word",
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      <span style={{ fontWeight: "bold" }}>
+                        {notification.sender.name}
+                      </span>{" "}
+                      {generateNotificationMessage(notification.action)} :{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {" "}
+                        {notification?.subtitle
+                          ? notification?.subtitle?.title
+                          : notification?.post?.title}
+                      </span>
+                    </Typography>
+                    <Typography variant="body2" fontSize={12} marginTop={1}>
+                      {moment(notification.createdAt).startOf("m").fromNow()}
+                    </Typography>
+                  </Box>
+
+                  <img
+                    alt={
+                      notification?.subtitle
+                        ? `${notification?.subtitle.title}`
+                        : `${notification?.post.title}`
+                    }
+                    src={
+                      notification?.subtitle
+                        ? `${img_url}/${notification?.subtitle.poster_path}`
+                        : `${img_url}/${notification?.post.poster_path}`
+                    }
+                    width="50px"
+                    style={{ borderRadius: "5px" }}
+                  />
+                </Stack>
+              </MenuItem>
+            ))}
+          </InfiniteScroll>
+        </Menu>
+      )}
     </>
   );
 };
