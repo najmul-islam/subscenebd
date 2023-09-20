@@ -58,6 +58,11 @@ const SubtitleList = ({
         dataLength={subtitles.length}
         next={fetchMore}
         hasMore={hasMore}
+        // loader={[...Array(36)].map((subtitle, i) => (
+        //   <Grid item key={i}>
+        //     <SubtitleItemSkeleton />
+        //   </Grid>
+        // ))}
         loader={
           <Box
             sx={{
@@ -74,11 +79,11 @@ const SubtitleList = ({
             />
           </Box>
         }
-        endMessage={
-          <Typography sx={{ textAlign: "center", padding: "5px" }}>
-            <b>Yay! You have seen it all</b>
-          </Typography>
-        }
+        // endMessage={
+        //   <Typography sx={{ textAlign: "center", padding: "5px" }}>
+        //     <b>Yay! You have seen it all</b>
+        //   </Typography>
+        // }
       >
         <Grid container spacing={2}>
           {subtitles?.map((subtitle) => (

@@ -6,7 +6,6 @@ import { Box, CssBaseline, Toolbar } from "@mui/material";
 import Header from "../components/shared/header/Header";
 import Sidebar from "../components/shared/sidebar/Sidebar";
 import GoToTop from "../components/shared/others/GoToTop";
-import Footer from "../components/shared/footer/Footer";
 
 const PublicLayout = () => {
   const { drawerWidth } = useSelector((state) => state.theme);
@@ -25,7 +24,6 @@ const PublicLayout = () => {
           <Outlet />
         </Box>
         <GoToTop />
-        {/* <Footer /> */}
       </Box>
     </Box>
   );

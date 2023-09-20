@@ -17,7 +17,7 @@ const Header = () => {
   const { user } = useSelector((state) => state.auth);
 
   const isXs = useMediaQuery((theme) => theme.breakpoints.only("xs"));
-  const isMd = useMediaQuery((theme) => theme.breakpoints.only("md"));
+  // const isMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const [showSerachBox, setShowSearchBox] = useState(false);
   const [showMobileToolbar, setShowMobileToolbar] = useState(false);
 
@@ -70,7 +70,8 @@ const Header = () => {
         boxShadow: 0,
         background: (theme) => theme.palette.background.default,
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-        zIndex: (theme) => (!isMd ? theme.zIndex.drawer + 1 : null),
+        // zIndex: (theme) => (isMd ? theme.zIndex.drawer + 1 : null),
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       {showMobileToolbar ? (
