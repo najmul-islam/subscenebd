@@ -61,6 +61,7 @@ const Notifications = () => {
   const { data, isLoading, isError, error } = useGetNotificationsQuery();
   const [seenNotification] = useSeenNotificationsMutation();
   const [readNotification] = useReadNotificationMutation();
+
   const handleOpenNotificationsMenu = (event) => {
     setAnchorElNotifications(event.currentTarget);
     seenNotification();
@@ -102,6 +103,7 @@ const Notifications = () => {
     return message;
   };
 
+
   // infinit scroll
   const fetchMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -137,6 +139,7 @@ const Notifications = () => {
           </StyledBadge>
         </IconButton>
       </Tooltip>
+
       {isLoading ? (
         <Menu
           anchorEl={anchorElNotifications}
@@ -205,6 +208,7 @@ const Notifications = () => {
                 variant="subtitle2"
                 paddingY={2}
                 sx={{ textAlign: "center" }}
+ 
               >
                 You have seen it all
               </Typography>

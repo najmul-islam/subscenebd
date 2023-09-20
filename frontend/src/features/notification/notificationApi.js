@@ -5,7 +5,7 @@ export const notificationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotifications: builder.query({
       query: () => ({
-        url: `/notification?page=1&limit=10`,
+        url: `/notification`,
         method: "GET",
       }),
       async onCacheEntryAdded(
@@ -28,14 +28,16 @@ export const notificationApi = apiSlice.injectEndpoints({
           socket.on("notification", (data) => {
             const { notification } = data;
             updateCachedData((draft) => {
+
               // console.log("draft", JSON.stringify(draft));
-              const index = draft.notifications.findIndex(
+
                 (item) => item.receiver._id === notification.receiver._id
               );
 
               if (index !== -1) {
                 draft.notifications.unshift(notification);
                 draft.unseenNotificatons += 1;
+
               }
             });
           });
@@ -87,11 +89,13 @@ export const notificationApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           // console.log("result", result);
           if (result) {
+
             dispatch(
               apiSlice.util.updateQueryData(
                 "getNotifications",
                 undefined,
                 (draft) => {
+
                   // console.log("draft", JSON.stringify(draft));
                   draft.unseenNotificatons = result.data.unseenNotificatons;
                   draft.notifications = result.data.notifications;
@@ -132,6 +136,7 @@ export const notificationApi = apiSlice.injectEndpoints({
                   if (notification) {
                     notification.read = result.data.read;
                   }
+
                 }
               )
             );
