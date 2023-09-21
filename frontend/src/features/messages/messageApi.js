@@ -13,7 +13,7 @@ export const messageApi = apiSlice.injectEndpoints({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
-        const socket = io("http://localhost:5000", {
+        const socket = io(process.env.REACT_APP_API_URI, {
           reconnectionDelay: 1000,
           reconnection: true,
           reconnectionAttemps: 10,

@@ -122,6 +122,7 @@ const Notifications = () => {
     }
   }, [data, page]);
 
+  console.log(data);
   return (
     <>
       <Tooltip title="Notification">
@@ -195,7 +196,9 @@ const Notifications = () => {
 
           <InfiniteScroll
             scrollableTarget="scrollableDiv"
-            dataLength={data?.notifications.length}
+            dataLength={
+              data?.notifications?.length ? data?.notifications?.length : 10
+            }
             next={fetchMore}
             hasMore={hasMore}
             loader={[...Array(3)].map((notification, i) => (
@@ -214,9 +217,9 @@ const Notifications = () => {
               </Typography>
             }
           >
-            {data?.notifications.map((notification) => (
+            {data?.notifications?.map((notification) => (
               <MenuItem
-                key={notification._id}
+                key={notification?._id}
                 onClick={() =>
                   handleMenuItem(
                     notification?.subtitle
@@ -312,7 +315,7 @@ const Notifications = () => {
                   >
                     <Avatar
                       alt={notification?.sender.name}
-                      src={`${avatar_url}/${notification.sender.avatar}`}
+                      src={`${avatar_url}/${notification?.sender?.avatar}`}
                       sx={{ width: 48, height: 48 }}
                     />
                   </Badge>
@@ -324,9 +327,9 @@ const Notifications = () => {
                       }}
                     >
                       <span style={{ fontWeight: "bold" }}>
-                        {notification.sender.name}
+                        {notification?.sender.name}
                       </span>{" "}
-                      {generateNotificationMessage(notification.action)} :{" "}
+                      {generateNotificationMessage(notification?.action)} :{" "}
                       <span style={{ fontWeight: "bold" }}>
                         {" "}
                         {notification?.subtitle
@@ -335,7 +338,7 @@ const Notifications = () => {
                       </span>
                     </Typography>
                     <Typography variant="body2" fontSize={12} marginTop={1}>
-                      {moment(notification.createdAt).startOf("m").fromNow()}
+                      {moment(notification?.createdAt).startOf("m").fromNow()}
                     </Typography>
                   </Box>
 
