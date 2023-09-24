@@ -28,16 +28,13 @@ export const notificationApi = apiSlice.injectEndpoints({
           socket.on("notification", (data) => {
             const { notification } = data;
             updateCachedData((draft) => {
-
-              // console.log("draft", JSON.stringify(draft));
-
+              const index = draft.notification.findIndex(
                 (item) => item.receiver._id === notification.receiver._id
               );
 
               if (index !== -1) {
                 draft.notifications.unshift(notification);
                 draft.unseenNotificatons += 1;
-
               }
             });
           });
@@ -87,22 +84,17 @@ export const notificationApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          // console.log("result", result);
           if (result) {
-
             dispatch(
               apiSlice.util.updateQueryData(
                 "getNotifications",
                 undefined,
                 (draft) => {
-
-                  // console.log("draft", JSON.stringify(draft));
                   draft.unseenNotificatons = result.data.unseenNotificatons;
                   draft.notifications = result.data.notifications;
                   draft.limit = result.data.limit;
                   draft.page = result.data.page;
                   draft.total = result.data.total;
-                  // console.log("updated draft", JSON.stringify(draft));
                 }
               )
             );
@@ -121,14 +113,12 @@ export const notificationApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          // console.log("result", result);
           if (result) {
             dispatch(
               apiSlice.util.updateQueryData(
                 "getNotifications",
                 undefined,
                 (draft) => {
-                  // console.log("draft", JSON.stringify(draft));
                   const notification = draft.notifications.find(
                     (notification) => notification._id === result.data._id
                   );
@@ -136,7 +126,6 @@ export const notificationApi = apiSlice.injectEndpoints({
                   if (notification) {
                     notification.read = result.data.read;
                   }
-
                 }
               )
             );
