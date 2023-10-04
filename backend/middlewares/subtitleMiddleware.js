@@ -44,10 +44,6 @@ const subtitleUpload = asyncHandler(async (req, res, next) => {
     Date.now() +
     path.extname(subtitle.name);
 
-  // await subtitle.mv(subPath);
-  // req.subtitle_link = `/uploads/subtitles/${subName}`;
-  // req.mime_type = subtitle.mimetype;
-
   try {
     const result = await cloudinary.uploader.upload(subtitle.tempFilePath, {
       folder: "subtitles",

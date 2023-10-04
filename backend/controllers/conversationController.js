@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Conversation = require("../models/conversationModel");
 const Message = require("../models/messageModel");
-// const io = require("../config/socketio");
 
 const getAllConversations = asyncHandler(async (req, res) => {
   const userId = req.user._id;

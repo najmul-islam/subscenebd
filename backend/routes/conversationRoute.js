@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {
   getAllConversations,
-  getSearchConversations,
   getSingleConversations,
   createConversation,
   editConversation,
@@ -15,7 +14,7 @@ router
   .route("/")
   .get(isUser, getAllConversations)
   .post(isUser, createConversation);
-// router.route("/search").get(isUser, getSearchConversations);
+
 router
   .route("/:conversationId")
   .get(isUser, getSingleConversations)

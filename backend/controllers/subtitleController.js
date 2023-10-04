@@ -30,12 +30,6 @@ const getAllSubtitle = asyncHandler(async (req, res) => {
     }
   }
 
-  // if (search) {
-  //   querySubtitle = querySubtitle.or([
-  //     { title: { $regex: search, $options: "i" } },
-  //   ]);
-  // }
-
   querySubtitle = querySubtitle
     .populate("user", "_id name avatar followers createdAt")
     .sort({ createdAt: -1 })
@@ -96,11 +90,6 @@ const getSingleSubtitle = asyncHandler(async (req, res) => {
 
   res.status(200).json(subtitle);
 });
-
-// // get user subtitle
-// const getUserSubtitle = asyncHandler(async (req, res) => {
-//   const subtitles = await Subtitle.find({ user: req.user.id });
-// });
 
 // create sub
 const createSubtitle = asyncHandler(async (req, res) => {

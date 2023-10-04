@@ -1,9 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const fs = require("fs");
 const User = require("../models/userModel");
 const Subtitle = require("../models/subtitleModel");
-const path = require("path");
-const cloudinary = require("../config/cloudinary");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -117,18 +114,8 @@ const updateProfile = asyncHandler(async (req, res) => {
 
 const updateAvatar = asyncHandler(async (req, res) => {
   const user = req.user;
-  // const avatar = req.files.avatar;
-  // console.log("avatar", avatar);
   const avatar_link = req.avatar_link;
 
-  // Remove the old avatar file if it exists
-  // if (user.avatar) {
-  //   fs.unlinkSync(path.join(__dirname, "../public", user.avatar));
-  // }
-  // const result = await cloudinary.uploader.upload(req.file.path, {
-  //   folder: "avatars",
-  // });
-  // console.log("result: ", result);
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
     { avatar: avatar_link },
