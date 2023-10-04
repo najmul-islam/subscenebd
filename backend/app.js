@@ -5,7 +5,7 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
-const fileUpoad = require("express-fileupload");
+const fileUpload = require("express-fileupload");
 const errorHandler = require("./middlewares/errorMiddleare");
 const connectDB = require("./config/db");
 
@@ -30,11 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
-app.use(
-  fileUpoad({
-    createParentPath: true,
-  })
-);
+app.use(fileUpload({ useTempFiles: true }));
 
 // routes
 app.use("/api/users", require("./routes/userRoute"));

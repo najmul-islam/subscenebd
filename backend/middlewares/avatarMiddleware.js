@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const path = require("path");
+const cloudinary = require("../config/cloudinary");
 
 const avatarUpload = asyncHandler(async (req, res, next) => {
   const avatar = req.files.avatar;
@@ -13,7 +14,7 @@ const avatarUpload = asyncHandler(async (req, res, next) => {
   const extension = path.extname(avatar.name);
 
   // check file format
-  const allowedExtensions = /jpg|png/;
+  const allowedExtensions = /jpg|jpeg|png$!/;
   if (!allowedExtensions.test(extension)) {
     res.status(400);
     throw new Error(
@@ -24,27 +25,23 @@ const avatarUpload = asyncHandler(async (req, res, next) => {
   // change name
   let avatarName;
 
-  avatarName =
-    user.name
-      .toLowerCase()
-      .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
-      .join("-") +
-    "-" +
-    Date.now() +
-    path.extname(avatar.name);
+  avatarName = user.name
+    .toLowerCase()
+    .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
+    .join("-");
 
-  // file path
-  const avatarPath = path.join(
-    __dirname,
-    "../public",
-    "uploads",
-    "avatar",
-    avatarName
-  );
+  try {
+    const result = await cloudinary.uploader.upload(avatar.tempFilePath, {
+      folder: "avatars",
+      public_id: avatarName,
+    });
 
-  await avatar.mv(avatarPath);
-  req.avatar_link = `/uploads/avatar/${avatarName}`;
-  next();
+    req.avatar_link = result.secure_url;
+    next();
+  } catch (error) {
+    console.log(error);
+    next();
+  }
 });
 
 module.exports = avatarUpload;
