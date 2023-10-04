@@ -35,7 +35,7 @@ const SearchedList = ({ searchUsers }) => {
         >
           <ListItemButton>
             <ListItemAvatar>
-              <Avatar src={`${avatar_url}/${user?.avatar}`} />
+              <Avatar src={user?.avatar} />
             </ListItemAvatar>
             <ListItemText>
               <Typography>{user?.name}</Typography>

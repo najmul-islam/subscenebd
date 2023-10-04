@@ -103,7 +103,7 @@ const CommentItem = ({ subtitle, comment }) => {
     >
       <Avatar
         alt={comment?.commentBy.name}
-        src={`${avatar_url}/${comment?.commentBy.avatar}`}
+        src={comment?.commentBy.avatar}
         sx={{ width: "40px", height: "40px", cursor: "pointer" }}
         onClick={() => navigate(`/user/${comment?.commentBy._id}`)}
       />

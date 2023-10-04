@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const path = require("path");
+const cloudinary = require("../config/cloudinary");
 
 const subtitleUpload = asyncHandler(async (req, res, next) => {
   const { subtitle_name } = req.body;
@@ -43,43 +44,20 @@ const subtitleUpload = asyncHandler(async (req, res, next) => {
     Date.now() +
     path.extname(subtitle.name);
 
-  // if (!year) {
-  //   subName =
-  //     title
-  //       .toLowerCase()
-  //       .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
-  //       .join("-") +
-  //     "-bengali" +
-  //     "-" +
-  //     Date.now() +
-  //     path.extname(subtitle.name);
-  // }
-  // if (year) {
-  //   subName =
-  //     title
-  //       .toLowerCase()
-  //       .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
-  //       .join("-") +
-  //     "-" +
-  //     year +
-  //     "-bengali" +
-  //     "-" +
-  //     Date.now() +
-  //     path.extname(subtitle.name);
-  // }
-
-  // file path
-  const subPath = path.join(
-    __dirname,
-    "../public",
-    "uploads",
-    "subtitles",
-    subName
-  );
-
-  await subtitle.mv(subPath);
-  req.subtitle_link = `/uploads/subtitles/${subName}`;
-  req.mime_type = subtitle.mimetype;
+  try {
+    const result = await cloudinary.uploader.upload(subtitle.tempFilePath, {
+      folder: "subtitles",
+      public_id: subName,
+      resource_type: "raw",
+    });
+    console.log("result", result);
+    req.mime_type = subtitle.mimetype;
+    req.subtitle_link = result.secure_url;
+    next();
+  } catch (error) {
+    console.log(error);
+    next();
+  }
   next();
 });
 

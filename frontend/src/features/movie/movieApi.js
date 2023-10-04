@@ -7,14 +7,14 @@ export const movieApi = tmdbApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMovieBySearch: builder.query({
       query: (query) => ({
-        url: `/search/movie?&api_key=${process.env.REACT_APP_TMDB_API_KEY}&query=${query}`,
+        url: `/search/movie?query=${query}`,
         method: "GET",
       }),
     }),
 
     getMovieById: builder.query({
       query: (tmdbId) => ({
-        url: `/movie/${tmdbId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`,
+        url: `/movie/${tmdbId}`,
         method: "GET",
       }),
     }),

@@ -41,10 +41,7 @@ const TopBar = ({ partner }) => {
             },
           }}
         >
-          <Avatar
-            alt={partner?.name}
-            src={`${avatar_url}/${partner?.avatar}`}
-          />
+          <Avatar alt={partner?.name} src={partner?.avatar} />
           <Typography color={(theme) => theme.palette.text.primary}>
             {partner?.name}
           </Typography>

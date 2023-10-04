@@ -160,7 +160,7 @@ const BookmarkItem = ({ subtitle }) => {
             component="img"
             image={`${img_url}${subtitle?.poster_path}`}
             // sx={{ height: "200px" }}
-            alt={subtitle?.title}
+            alt={subtitle?.title.toLowerCase()}
           />
         </Box>
         <Box position="relative">

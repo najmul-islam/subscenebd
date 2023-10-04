@@ -8,21 +8,21 @@ export const seriesApi = tmdbApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSeriesBySearch: builder.query({
       query: (query) => ({
-        url: `/search/tv?&api_key=${process.env.REACT_APP_TMDB_API_KEY}&query=${query}`,
+        url: `/search/tv?query=${query}`,
         method: "GET",
       }),
     }),
 
     getSeriesById: builder.query({
       query: (tmdbId) => ({
-        url: `/tv/${tmdbId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`,
+        url: `/tv/${tmdbId}`,
         method: "GET",
       }),
     }),
 
     getSeasonById: builder.query({
       query: ({ seriesId, seasonId }) => ({
-        url: `/tv/${seriesId}/season/${seasonId}?&api_key=${process.env.REACT_APP_TMDB_API_KEY}`,
+        url: `/tv/${seriesId}/season/${seasonId}`,
         method: "GET",
       }),
     }),

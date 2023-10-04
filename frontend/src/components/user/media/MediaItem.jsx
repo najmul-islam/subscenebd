@@ -18,7 +18,7 @@ const MediaItem = ({ media }) => {
           component="img"
           image={`${img_url}${media?.poster_path}`}
           // sx={{ height: "200px" }}
-          alt={media?.title}
+          alt={media?.title.toLowerCase()}
         />
       </Card>
 

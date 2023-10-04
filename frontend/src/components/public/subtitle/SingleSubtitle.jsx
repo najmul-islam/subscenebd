@@ -21,7 +21,6 @@ import UserInfoSkeleton from "./UserInfoSkeleton";
 import ActionButtonsSkeleton from "./ActionButtonsSkeleton";
 
 const img_url = process.env.REACT_APP_IMG_API;
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const SingleSubtitle = () => {
   const { drawerWidth } = useSelector((state) => state.theme);
@@ -64,7 +63,7 @@ const SingleSubtitle = () => {
           ) : (
             <Card
               component="a"
-              href={`${img_url}/${subtitle?.poster_path}`}
+              href={`${img_url}${subtitle?.poster_path}`}
               target="_blank"
               sx={{
                 width: "200px",

@@ -1,8 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const fs = require("fs");
 const User = require("../models/userModel");
 const Subtitle = require("../models/subtitleModel");
-const path = require("path");
 
 // register user
 const registerUser = asyncHandler(async (req, res) => {
@@ -117,11 +115,6 @@ const updateProfile = asyncHandler(async (req, res) => {
 const updateAvatar = asyncHandler(async (req, res) => {
   const user = req.user;
   const avatar_link = req.avatar_link;
-
-  // Remove the old avatar file if it exists
-  if (user.avatar) {
-    fs.unlinkSync(path.join(__dirname, "../public", user.avatar));
-  }
 
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
