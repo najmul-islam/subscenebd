@@ -21,7 +21,6 @@ import UserInfoSkeleton from "./UserInfoSkeleton";
 import ActionButtonsSkeleton from "./ActionButtonsSkeleton";
 
 const img_url = process.env.REACT_APP_IMG_API;
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const SingleSubtitle = () => {
   const { drawerWidth } = useSelector((state) => state.theme);
