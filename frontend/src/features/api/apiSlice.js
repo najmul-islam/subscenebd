@@ -17,10 +17,10 @@ export const apiSlice = createApi({
   baseQuery: async (args, api, extraOption) => {
     let result = await baseQuery(args, api, extraOption);
 
-    if (result?.error?.status === 401) {
-      api.dispatch(logout());
-      localStorage.removeItem("user");
-    }
+    // if (result?.error?.status === 401) {
+    //   api.dispatch(logout());
+    //   localStorage.removeItem("user");
+    // }
     return result;
   },
   tagTypes: [

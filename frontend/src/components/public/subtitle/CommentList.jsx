@@ -72,7 +72,7 @@ const CommentList = ({ subtitle }) => {
       <Stack direction="row" spacing={2} alignItems="center" marginY={8}>
         <Avatar
           alt={user?.name}
-          src={`${avatar_url}/${user?.avatar}`}
+          src={user?.avatar}
           sx={{ width: "40px", height: "40px", cursor: "pointer" }}
           onClick={user ? () => navigate(`/user/${user?._id}`) : null}
         />

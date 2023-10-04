@@ -91,7 +91,7 @@ const Profile = () => {
                 <CircularProgress />
               ) : (
                 <Image
-                  src={`${avatar_url}/${profile?.avatar}`}
+                  src={profile?.avatar}
                   width={250}
                   showLoading={<CircularProgress />}
                   sx={{

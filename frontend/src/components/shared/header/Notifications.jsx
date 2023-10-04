@@ -103,7 +103,6 @@ const Notifications = () => {
     return message;
   };
 
-
   // infinit scroll
   const fetchMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -122,7 +121,7 @@ const Notifications = () => {
     }
   }, [data, page]);
 
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <Tooltip title="Notification">
@@ -211,7 +210,6 @@ const Notifications = () => {
                 variant="subtitle2"
                 paddingY={2}
                 sx={{ textAlign: "center" }}
- 
               >
                 You have seen it all
               </Typography>
@@ -315,7 +313,7 @@ const Notifications = () => {
                   >
                     <Avatar
                       alt={notification?.sender.name}
-                      src={`${avatar_url}/${notification?.sender?.avatar}`}
+                      src={notification?.sender?.avatar}
                       sx={{ width: 48, height: 48 }}
                     />
                   </Badge>

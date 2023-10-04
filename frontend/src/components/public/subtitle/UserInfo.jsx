@@ -28,7 +28,7 @@ const UserInfo = ({ subtitle }) => {
     <Stack direction="row" spacing={1} marginTop={3} alignItems="center">
       <Avatar
         alt={subtitle?.user.name}
-        src={`${avatar_url}/${subtitle?.user.avatar}`}
+        src={subtitle?.user.avatar}
         variant="rounded"
         sx={{ width: "40px", height: "40px", cursor: "pointer" }}
         onClick={() => handleUsername(subtitle?.user._id)}

@@ -64,7 +64,7 @@ const SingleSubtitle = () => {
           ) : (
             <Card
               component="a"
-              href={`${img_url}/${subtitle?.poster_path}`}
+              href={`${img_url}${subtitle?.poster_path}`}
               target="_blank"
               sx={{
                 width: "200px",

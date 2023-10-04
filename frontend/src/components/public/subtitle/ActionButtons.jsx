@@ -15,8 +15,6 @@ import {
 } from "../../../features/subtitle/subtitleApi";
 import { useNavigate } from "react-router-dom";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const ActionButtons = ({ subtitle }) => {
   const [putUserDownloadSub] = usePutUserDownloadSubMutation();
   const [likeSubtitle] = useLikeSubtitleMutation();
@@ -58,7 +56,7 @@ const ActionButtons = ({ subtitle }) => {
             variant="contained"
             download
             startIcon={<Download />}
-            href={`${avatar_url}/${subtitle?.subtitle_link}`}
+            href={subtitle?.subtitle_link}
             onClick={() => handleDownload(subtitle?._id)}
           >
             Download

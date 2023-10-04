@@ -28,8 +28,6 @@ import {
   LightModeOutlined,
 } from "@mui/icons-material";
 import { apiSlice } from "../../../features/api/apiSlice";
-// import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const Profile = ({ user }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -60,14 +58,12 @@ const Profile = ({ user }) => {
   };
 
   const invisible = true;
+
   return (
     <>
       <IconButton onClick={handleOpenUserMenu}>
         <Badge color="error" variant="dot" invisible={invisible}>
-          <Avatar
-            alt={user?.name?.toUpperCase()}
-            src={`${avatar_url}/${user?.avatar}`}
-          />
+          <Avatar alt={user?.name.toLowerCase()} src={user?.avatar} />
         </Badge>
       </IconButton>
       <Menu
@@ -96,10 +92,7 @@ const Profile = ({ user }) => {
           }}
         >
           <ListItemButton>
-            <Avatar
-              alt={user?.name?.toUpperCase()}
-              src={`${avatar_url}/${user?.avatar}`}
-            />
+            <Avatar alt={user?.name.toLowerCase()} src={user?.avatar} />
             <ListItemText sx={{ ml: 2 }}>{user?.name}</ListItemText>
           </ListItemButton>
         </ListItem>

@@ -201,7 +201,7 @@ const SearchSubtitleItem = ({ subtitle }) => {
             >
               <Avatar
                 alt={subtitle?.user.name}
-                src={`${avatar_url}/${subtitle?.user.avatar}`}
+                src={subtitle?.user.avatar}
                 sx={{ width: "24px", height: "24px", marginRight: "5px" }}
               />
               <Typography

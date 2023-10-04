@@ -20,10 +20,7 @@ const Messages = ({ partner, messages }) => {
         alignContent="center"
         alignItems="center"
       >
-        <Avatar
-          sx={{ width: "60px", height: "60px" }}
-          src={`${avatar_url}/${partner?.avatar}`}
-        />
+        <Avatar sx={{ width: "60px", height: "60px" }} src={partner?.avatar} />
         <Typography>{partner?.name}</Typography>
       </Stack>
     );
@@ -37,10 +34,7 @@ const Messages = ({ partner, messages }) => {
         alignContent="center"
         alignItems="center"
       >
-        <Avatar
-          sx={{ width: "60px", height: "60px" }}
-          src={`${avatar_url}/${partner?.avatar}`}
-        />
+        <Avatar sx={{ width: "60px", height: "60px" }} src={partner?.avatar} />
         <Typography>{partner?.name}</Typography>
       </Stack>
       <Box

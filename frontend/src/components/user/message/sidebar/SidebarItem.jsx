@@ -72,11 +72,11 @@ const SidebarItem = ({ conversation }) => {
           >
             <Avatar
               sx={{ width: "50px", height: "50px" }}
-              src={`${avatar_url}/${otherParticipants.avatar}`}
+              src={otherParticipants?.avatar}
             />
           </ListItemAvatar>
           <ListItemText
-            primary={otherParticipants.name}
+            primary={otherParticipants?.name}
             secondary={
               <Typography
                 sx={{ display: "inline" }}
