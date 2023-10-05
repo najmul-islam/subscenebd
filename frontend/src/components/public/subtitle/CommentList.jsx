@@ -15,8 +15,6 @@ import { usePostCommentMutation } from "../../../features/subtitle/subtitleApi";
 import CommentItem from "./CommentItem";
 // import CommentItem from "./CommentItem";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const CommentList = ({ subtitle }) => {
   const [commentValue, setCommentValue] = useState("");
 

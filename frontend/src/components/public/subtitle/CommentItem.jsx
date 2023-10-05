@@ -29,8 +29,6 @@ import {
   useEditCommentMutation,
 } from "../../../features/subtitle/subtitleApi";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const CommentItem = ({ subtitle, comment }) => {
   const [commentValue, setCommentValue] = useState(comment?.text);
 

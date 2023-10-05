@@ -12,8 +12,6 @@ import {
 import { toggleUserSearchFocus } from "../../../../features/theme/themeSlice";
 import { userSearch } from "../../../../features/user/userSlice";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const SearchedList = ({ searchUsers }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { Avatar, Box, Stack, Tooltip, Typography } from "@mui/material";
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
 
 const Messages = ({ partner, messages }) => {
   const { user } = useSelector((state) => state.auth);

@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { usePutFollowerMutation } from "../../../features/user/usersApi";
 import { useSelector } from "react-redux";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const UserInfo = ({ subtitle }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();

@@ -23,7 +23,7 @@ import {
 } from "../../../features/subtitle/subtitleSlice";
 
 const img_url = process.env.REACT_APP_IMG_API;
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
+
 const SearchSubtitleItem = ({ subtitle }) => {
   const { user } = useSelector((state) => state.auth);
   const { subtitles } = useSelector((state) => state.subtitles);

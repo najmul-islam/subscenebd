@@ -21,7 +21,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileSkeleton from "./ProfileSkeleton";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
 const Profile = () => {
   const [avatarValue, setAvatarValue] = useState("");
   const [nameValue, setNameValue] = useState("");

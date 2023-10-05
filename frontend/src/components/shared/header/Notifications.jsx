@@ -35,7 +35,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import NotificationsSkeleton from "./NotificationsSkeleton";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
 const img_url = process.env.REACT_APP_IMG_API;
 
 const StyledBadge = styled(Badge)(({ theme }) => ({

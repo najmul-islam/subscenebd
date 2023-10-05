@@ -1,8 +1,6 @@
 import { AppBar, Avatar, Stack, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const TopBar = ({ partner }) => {
   return (
     <AppBar
