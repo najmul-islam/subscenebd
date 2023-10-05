@@ -17,7 +17,7 @@ const {
 
 const { isUser } = require("../middlewares/authMiddleware");
 const avatarUpload = require("../middlewares/avatarMiddleware");
-const upload = require("../middlewares/multer");
+
 // auth route
 router.post("/register", registerUser);
 router.post("/login", loginUser);
