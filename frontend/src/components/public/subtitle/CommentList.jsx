@@ -53,7 +53,7 @@ const CommentList = ({ subtitle }) => {
     setCommentValue("");
     setIsEdit(false);
   };
-  console.log(subtitle);
+
   return (
     <Box minHeight="200px" paddingY={5} sx={{ wordBreak: "break-word" }}>
       <Divider

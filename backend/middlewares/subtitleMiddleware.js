@@ -50,7 +50,6 @@ const subtitleUpload = asyncHandler(async (req, res, next) => {
       public_id: subName,
       resource_type: "raw",
     });
-    console.log("result", result);
     req.mime_type = subtitle.mimetype;
     req.subtitle_link = result.secure_url;
     next();

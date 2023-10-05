@@ -21,21 +21,18 @@ export const subtitleApi = apiSlice.injectEndpoints({
       ) {
         try {
           const result = await queryFulfilled;
-          // console.log("data.data.subtitles", data.data.subtitles);
+
           if (result?.data?.subtitles.length > 0) {
-            // console.log("data?.data?.subtitles", result?.data?.subtitles);
             dispatch(
               apiSlice.util.updateQueryData(
                 "getSubtitles",
                 { type, media_type, limit },
                 (draft) => {
-                  // console.log("draft", JSON.stringify(draft));
                   draft.page = result.data.page;
                   draft.subtitles = [
                     ...draft.subtitles,
                     ...result.data.subtitles,
                   ];
-                  // console.log("updated draft", JSON.stringify(draft));
                 }
               )
             );
