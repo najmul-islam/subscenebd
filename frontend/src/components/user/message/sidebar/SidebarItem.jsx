@@ -11,8 +11,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toggleListitem } from "../../../../features/theme/themeSlice";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const SidebarItem = ({ conversation }) => {
   const { user } = useSelector((state) => state.auth);
   const { selectedUrl } = useSelector((state) => state.theme);

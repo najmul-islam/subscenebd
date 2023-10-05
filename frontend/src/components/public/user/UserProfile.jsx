@@ -16,8 +16,6 @@ import { useSelector } from "react-redux";
 import UserProfileSkeleton from "./UserProfileSkeleton";
 import UserSubtitleItemSkeleton from "./UserSubtitleItemSkeleton";
 
-const avatar_url = process.env.REACT_APP_AVATAR_URL;
-
 const UserProfile = () => {
   const { userId } = useParams();
   const { drawerWidth } = useSelector((state) => state.theme);
@@ -44,7 +42,7 @@ const UserProfile = () => {
             >
               <CardMedia
                 component="img"
-                image={`${avatar_url}${user?.avatar}`}
+                image={user?.avatar}
                 sx={{ height: "200px" }}
                 alt={user?.name}
               />
