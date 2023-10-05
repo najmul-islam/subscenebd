@@ -76,7 +76,7 @@ const SingleSubtitle = () => {
               <CardMedia
                 component="img"
                 alt="green iguana"
-                image={`${img_url}/${subtitle?.poster_path}`}
+                image={`${img_url}${subtitle?.poster_path}`}
               />
               <Typography
                 sx={{

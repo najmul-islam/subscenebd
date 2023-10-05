@@ -347,8 +347,8 @@ const Notifications = () => {
                     }
                     src={
                       notification?.subtitle
-                        ? `${img_url}/${notification?.subtitle.poster_path}`
-                        : `${img_url}/${notification?.post.poster_path}`
+                        ? `${img_url}${notification?.subtitle.poster_path}`
+                        : `${img_url}${notification?.post.poster_path}`
                     }
                     width="50px"
                     style={{ borderRadius: "5px" }}
