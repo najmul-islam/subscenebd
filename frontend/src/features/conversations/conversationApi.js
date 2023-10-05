@@ -72,9 +72,7 @@ export const conversationApi = apiSlice.injectEndpoints({
                 "getMessages",
                 arg.partnerId.toString(),
                 (draft) => {
-                  // console.log("message", JSON.stringify(draft));
                   draft.push(result.data.message);
-                  // console.log("after message", JSON.stringify(draft));
                 }
               )
             );

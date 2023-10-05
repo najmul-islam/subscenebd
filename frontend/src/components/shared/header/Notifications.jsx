@@ -120,7 +120,6 @@ const Notifications = () => {
     }
   }, [data, page]);
 
-  // console.log(data);
   return (
     <>
       <Tooltip title="Notification">

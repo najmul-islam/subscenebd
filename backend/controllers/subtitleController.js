@@ -231,8 +231,6 @@ const dislikeSubtitle = asyncHandler(async (req, res) => {
     });
 
     if (updatedSubtitle && receiverId != userId) {
-      console.log("reciverId", receiverId);
-      console.log("userid", userId);
       // create notification
       const notification = await Notification.create({
         receiver: receiverId,
