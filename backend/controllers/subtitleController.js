@@ -239,8 +239,6 @@ const dislikeSubtitle = asyncHandler(async (req, res) => {
         subtitle: subtitleId,
         seen: false,
       });
-
-      console.log("notification", notification);
     }
 
     res.status(200).json(updatedSubtitle);
