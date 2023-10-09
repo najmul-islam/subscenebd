@@ -163,10 +163,10 @@ const MovieSubCreate = () => {
   }, [dispatch, movieId]);
 
   useEffect(() => {
-    if (subtitle && isSuccess) {
+    if (isSuccess) {
       navigate("/latest/all");
     }
-  }, [isSuccess, subtitle, navigate]);
+  }, [isSuccess, navigate]);
 
   return (
     movie && (

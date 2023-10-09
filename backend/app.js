@@ -32,7 +32,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use(
   fileUpload({
-    debug: true,
     useTempFiles: true,
     tempFileDir: path.join(__dirname, "./tmp"),
   })
