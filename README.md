@@ -22,6 +22,6 @@ Feel free to open issues or propose changes to improve subscenebd. We welcome an
 
 ## License
 
-subscenebd is open-source and available under the [MIT License](LICENSE).
+subscenebd is open-source and available under the [MIT License](LICENSE.md).
 
 Enhance your media experience today with subscenebd, the platform where subtitle enthusiasts unite!
