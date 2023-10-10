@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const path = require("path");
-const fs = require("fs")
+const fs = require("fs");
 const cloudinary = require("../config/cloudinary");
 
 const subtitleUpload = asyncHandler(async (req, res, next) => {
