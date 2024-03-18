@@ -1,3 +1,5 @@
+import logo from "../../../assets/image/subscenebd-logo.png";
+import logoDark from "../../../assets/image/subsceneb-dark-logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../features/theme/themeSlice";
 import { IconButton, Typography } from "@mui/material";
@@ -5,7 +7,7 @@ import { Menu } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 const Logo = () => {
-  const { sidebar } = useSelector((state) => state.theme);
+  const { sidebar, mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
   const handleSidebar = (value) => {
@@ -29,18 +31,15 @@ const Logo = () => {
       >
         <Menu />
       </IconButton>
-      <Typography
-        component={Link}
-        to={`/`}
-        sx={{
-          color: (theme) => theme.palette.text.primary,
-          textDecoration: "none",
-        }}
-        variant="h6"
-        noWrap
-      >
-        Subscenebd
-      </Typography>
+      {mode === "light" ? (
+        <Link to="/">
+          <img src={logo} alt="logo" width={150} />
+        </Link>
+      ) : (
+        <Link to="/">
+          <img src={logoDark} alt="logo" width={150} />
+        </Link>
+      )}
     </>
   );
 };
