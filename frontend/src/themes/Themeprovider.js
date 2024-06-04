@@ -1,23 +1,13 @@
+import {
+  ThemeProvider as MuiThemeProvider,
+  createTheme,
+} from "@mui/material/styles";
 import React from "react";
 import { useSelector } from "react-redux";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-const Themeprovider = ({ children }) => {
+const ThemeProvider = ({ children }) => {
   const { mode } = useSelector((state) => state.theme);
 
-  // https://www.color-hex.com/color-palette/6837
-  // black #1a1a1a font color
-  // red #dd2826
-  // white #ffffff background color
-  // #f1f1f1
-  // gray #8e8e8c
-
-  // const darkColors = {
-  //   primary: "#FF0000",
-  //   secondary: "#909090",
-  //   background: "#1F1F1F",#0F0F0F
-  //   text: "#EFEFEF", background: "palette.background.default",
-  // };
   const darkTheme = createTheme({
     palette: {
       mode: "dark",
@@ -26,6 +16,7 @@ const Themeprovider = ({ children }) => {
         paper: "#0F0F0F",
         primary: "#0F0F0F",
         secondary: "#282828",
+        tertiary: "#222222",
       },
       text: {
         primary: "#f1f1f1",
@@ -46,15 +37,6 @@ const Themeprovider = ({ children }) => {
     },
   });
 
-  // const lightColors = {
-  //   primary: "#FF0000",
-  //   secondary: "#606060",
-  //   background: "#FFFFFF",
-  //   text: "#3C3C3C",
-  // };
-
-  // YouTube light theme
-  // #E5E5E5
   const lightTheme = createTheme({
     palette: {
       mode: "light",
@@ -63,6 +45,7 @@ const Themeprovider = ({ children }) => {
         paper: "#ffffff",
         primary: "#ffffff",
         secondary: "#E5E5E5",
+        tertiary: "#F0F0F0",
       },
       text: {
         primary: "#0f0f0f",
@@ -84,10 +67,10 @@ const Themeprovider = ({ children }) => {
   });
 
   return (
-    <ThemeProvider theme={mode === "dark" ? darkTheme : lightTheme}>
+    <MuiThemeProvider theme={mode === "dark" ? darkTheme : lightTheme}>
       {children}
-    </ThemeProvider>
+    </MuiThemeProvider>
   );
 };
 
-export default Themeprovider;
+export default ThemeProvider;
