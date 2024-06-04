@@ -1,6 +1,7 @@
+import { Clear } from "@mui/icons-material";
+import { Box, IconButton, InputBase, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Box, InputBase, IconButton, Tooltip } from "@mui/material";
-import { Search as SearchIcon, Clear } from "@mui/icons-material";
+import { CiSearch } from "react-icons/ci";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchBox = () => {
@@ -83,23 +84,20 @@ const SearchBox = () => {
           type="submit"
           display="flex"
           height="40px"
-          width="64px"
+          width="70px"
           alignItems="center"
           justifyContent="center"
           sx={{
             borderRadius: "0 40px 40px 0",
             borderLeft: "0",
             cursor: "pointer",
-            background: (theme) => theme.palette.background.secondary,
+            background: (theme) => theme.palette.background.tertiary,
             color: (theme) => theme.palette.text.primary,
             border: (theme) => `1px solid ${theme.palette.divider}`,
-            // boxShadow: "inset 0 1px 2px #eee",
-            // "&:hover": { background: (theme) => theme.palette.background. },
-            // "&:focus": { background: "#f0f0f0" },
           }}
         >
-          <SearchIcon
-            sx={{
+          <CiSearch
+            style={{
               fontSize: "25px",
               fontWeight: "400",
             }}

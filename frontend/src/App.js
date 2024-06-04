@@ -1,17 +1,17 @@
+import { Analytics } from "@vercel/analytics/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Router from "./routers/router";
-
-// theme provider
-import Themeprovider from "./themes/Themeprovider";
+import ThemeProvider from "./themes/ThemeProvider";
 
 const App = () => {
   return (
     <>
-      <Themeprovider>
+      <ThemeProvider>
         <Router />
         <ToastContainer />
-      </Themeprovider>
+      </ThemeProvider>
+      <Analytics />
     </>
   );
 };

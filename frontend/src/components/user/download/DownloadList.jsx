@@ -1,8 +1,9 @@
 import { Box, Grid, Typography } from "@mui/material";
-import SubtitleItemSkeleton from "../../public/subtitles/SubtitleItemSkeleton";
+import { TbDatabaseX } from "react-icons/tb";
 import { useSelector } from "react-redux";
-import DownloadItem from "./DownloadItem";
 import { useGetUserDownloadSubQuery } from "../../../features/user/usersApi";
+import SubtitleItemSkeleton from "../../public/subtitles/SubtitleItemSkeleton";
+import DownloadItem from "./DownloadItem";
 
 const DownloadList = () => {
   const { user } = useSelector((state) => state.auth);
@@ -36,10 +37,23 @@ const DownloadList = () => {
       </Box>
     );
 
-  if (!isLoading && !isError && subtitles?.length === 0) {
-    <Box>
-      <Typography>No Subtitle Found</Typography>
-    </Box>;
+  if (!isLoading && !isError && subtitles.length === 0) {
+    content = (
+      <Box
+        sx={{
+          width: {
+            xs: "100%",
+            lg: "calc(100% - 280px)",
+          },
+          height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TbDatabaseX style={{ fontSize: "100px" }} />
+      </Box>
+    );
   }
 
   if (!isLoading && !isError && subtitles?.length > 0) {

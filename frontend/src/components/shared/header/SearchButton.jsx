@@ -1,10 +1,10 @@
-import { SearchRounded } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { CiSearch } from "react-icons/ci";
 
 const SearchButton = ({ handleShowSearchBox }) => {
   return (
     <IconButton onClick={() => handleShowSearchBox(true)}>
-      <SearchRounded sx={{ fontSize: "25px", display: { sm: "none" } }} />
+      <CiSearch style={{ fontSize: "25px", display: { sm: "none" } }} />
     </IconButton>
   );
 };
