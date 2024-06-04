@@ -1,3 +1,4 @@
+import { AddPhotoAlternateOutlined } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,17 +9,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import moment from "moment";
+import { Image } from "mui-image";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import unknownUser from "../../../assets/image/unknown-user.png";
 import {
   useGetUserProfileQuery,
   usePutUserAvatarMutation,
   usePutUserProfileMutation,
 } from "../../../features/user/usersApi";
-import { Image } from "mui-image";
-import moment from "moment";
-import { AddPhotoAlternateOutlined } from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import ProfileSkeleton from "./ProfileSkeleton";
 
 const Profile = () => {
@@ -90,9 +91,9 @@ const Profile = () => {
                 <CircularProgress />
               ) : (
                 <Image
-                  src={profile?.avatar}
+                  src={profile.avatar ? profile.avatar : unknownUser}
+                  // showLoading={<img src={unknownUser} alt="unknwon-user" />}
                   width={250}
-                  showLoading={<CircularProgress />}
                   sx={{
                     borderRadius: "5px",
                   }}

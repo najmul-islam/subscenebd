@@ -1,18 +1,31 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import DownloadList from "../../../components/user/download/DownloadList";
 
 const DownloadsPage = () => {
   return (
     <Box>
-      <Typography
-        variant="h4"
-        textAlign="center"
-        paddingY={3}
-        marginBottom={2}
-        sx={{ width: { lg: "calc(100% - 280px)", xs: "100%" } }}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", // Center align items horizontally
+          width: { lg: "calc(100% - 280px)", xs: "100%" },
+          paddingBottom: 2,
+        }}
       >
-        My Downloads List
-      </Typography>
+        <Typography
+          variant="h6"
+          textAlign="center"
+          sx={{
+            width: "100%",
+            paddingBottom: 2,
+          }}
+        >
+          Downloads List
+        </Typography>
+        <Divider sx={{ width: "150px", margin: "0 auto", marginBottom: 2 }} />
+      </Box>
+
       <DownloadList />
     </Box>
   );

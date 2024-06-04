@@ -1,40 +1,37 @@
-import React, { useEffect, useState } from "react";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   notificationApi,
-  useSeenNotificationsMutation,
   useGetNotificationsQuery,
   useReadNotificationMutation,
+  useSeenNotificationsMutation,
 } from "../../../features/notification/notificationApi";
 
 import {
+  Avatar,
+  Badge,
+  Box,
+  Divider,
+  IconButton,
   Menu,
   MenuItem,
-  IconButton,
-  Typography,
-  Divider,
-  Tooltip,
-  Badge,
-  Avatar,
-  Box,
   Stack,
+  Tooltip,
+  Typography,
   styled,
-  Skeleton,
 } from "@mui/material";
 
 import {
   Circle,
   CommentOutlined,
-  Notifications as NotificationsIcon,
-  NotificationsNone,
   ThumbDownOutlined,
   ThumbUpOutlined,
 } from "@mui/icons-material";
+import { IoNotificationsOutline, IoNotificationsSharp } from "react-icons/io5";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import NotificationsSkeleton from "./NotificationsSkeleton";
-
 const img_url = process.env.REACT_APP_IMG_API;
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -130,9 +127,9 @@ const Notifications = () => {
             max={9}
           >
             {open ? (
-              <NotificationsIcon sx={{ fontSize: "25px" }} />
+              <IoNotificationsSharp style={{ fontSize: "25px" }} />
             ) : (
-              <NotificationsNone sx={{ fontSize: "25px" }} />
+              <IoNotificationsOutline style={{ fontSize: "25px" }} />
             )}
           </StyledBadge>
         </IconButton>

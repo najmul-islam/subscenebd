@@ -1,4 +1,4 @@
-import { Avatar, MenuItem, Skeleton, Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 
 const NotificationsSkeleton = () => {

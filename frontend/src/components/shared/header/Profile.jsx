@@ -1,31 +1,31 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../../features/auth/authSlice";
 import { toggleColor } from "../../../features/theme/themeSlice";
 import HeaderListItem from "./HeaderListItem";
 
 import {
   Avatar,
-  Menu,
-  IconButton,
-  Divider,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  ListItemButton,
   Badge,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
 } from "@mui/material";
 
 import {
   AccountCircleOutlined,
-  SubtitlesOutlined,
-  EmailOutlined,
-  FileDownloadOutlined,
-  ExitToAppOutlined,
   BookmarksOutlined,
-  NightlightRoundOutlined,
+  EmailOutlined,
+  ExitToAppOutlined,
+  FileDownloadOutlined,
   LightModeOutlined,
+  NightlightRoundOutlined,
+  SubtitlesOutlined,
 } from "@mui/icons-material";
 import { apiSlice } from "../../../features/api/apiSlice";
 
@@ -63,7 +63,11 @@ const Profile = ({ user }) => {
     <>
       <IconButton onClick={handleOpenUserMenu}>
         <Badge color="error" variant="dot" invisible={invisible}>
-          <Avatar alt={user?.name?.toLowerCase()} src={user?.avatar} />
+          <Avatar
+            alt={user?.name?.toLowerCase()}
+            sx={{ width: "30px", height: "30px" }}
+            src={user?.avatar}
+          />
         </Badge>
       </IconButton>
       <Menu
