@@ -1,22 +1,22 @@
-import moment from "moment";
 import {
+  AccessTimeRounded,
+  BookmarkAddOutlined,
+  BookmarkAdded,
+  DownloadRounded,
+} from "@mui/icons-material";
+import {
+  Box,
   Card,
   CardMedia,
   Grid,
-  Typography,
-  Box,
   IconButton,
   Tooltip,
+  Typography,
 } from "@mui/material";
-import {
-  DownloadRounded,
-  AccessTimeRounded,
-  BookmarkAdded,
-  BookmarkAddOutlined,
-} from "@mui/icons-material";
-import wordsToNumbers from "words-to-numbers";
-import { Link, useNavigate } from "react-router-dom";
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import wordsToNumbers from "words-to-numbers";
 import {
   addSubtitle,
   removeSubtitle,
@@ -73,7 +73,7 @@ const SubtitleItem = ({ subtitle }) => {
     <Grid item>
       <Card
         sx={{
-          width: { xs: "138px", sm: "160px" },
+          width: "160px",
           transition: "transform 0.3s",
           zIndex: "1",
           position: "relative",

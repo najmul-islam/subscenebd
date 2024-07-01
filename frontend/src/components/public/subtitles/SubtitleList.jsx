@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import SubtitleItem from "./SubtitleItem";
 import SubtitleItemSkeleton from "./SubtitleItemSkeleton";
 
@@ -85,7 +85,7 @@ const SubtitleList = ({
         //   </Typography>
         // }
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           {subtitles?.map((subtitle) => (
             <SubtitleItem key={subtitle._id} subtitle={subtitle} />
           ))}
