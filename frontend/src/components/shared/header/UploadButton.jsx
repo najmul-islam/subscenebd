@@ -1,16 +1,16 @@
+import { Divider, IconButton, Menu, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import HeaderListItem from "./HeaderListItem";
-import { Menu, IconButton, Typography, Divider, Tooltip } from "@mui/material";
 
 import {
-  PostAddOutlined,
-  MovieOutlined,
-  SmartDisplayOutlined,
   MovieFilterOutlined,
+  // PostAddOutlined,
+  MovieOutlined,
   MusicVideoOutlined,
+  SmartDisplayOutlined,
 } from "@mui/icons-material";
-
-const Uploads = () => {
+import { VscDiffAdded } from "react-icons/vsc";
+const UploadButton = () => {
   const [anchorElCreate, setAnchorElCreate] = useState(null);
 
   const open = Boolean(anchorElCreate);
@@ -26,8 +26,11 @@ const Uploads = () => {
   return (
     <>
       <Tooltip title="Add Subtitle">
-        <IconButton onClick={handleOpenCreateMenu}>
-          <PostAddOutlined sx={{ fontSize: "25px" }} />
+        <IconButton
+          onClick={handleOpenCreateMenu}
+          sx={{ color: (theme) => theme.palette.text.primary }}
+        >
+          <VscDiffAdded style={{ fontSize: "23px" }} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -43,7 +46,7 @@ const Uploads = () => {
           },
         }}
       >
-        <Typography variant="h6" sx={{ px: 2, py: 1 }}>
+        <Typography variant="subtitle1" sx={{ px: 2, py: 1 }}>
           Uploads
         </Typography>
 
@@ -73,4 +76,4 @@ const Uploads = () => {
   );
 };
 
-export default Uploads;
+export default UploadButton;

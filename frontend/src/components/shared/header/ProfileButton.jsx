@@ -29,7 +29,7 @@ import {
 } from "@mui/icons-material";
 import { apiSlice } from "../../../features/api/apiSlice";
 
-const Profile = ({ user }) => {
+const ProfileButton = ({ user }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
 
@@ -158,4 +158,4 @@ const Profile = ({ user }) => {
   );
 };
 
-export default Profile;
+export default ProfileButton;

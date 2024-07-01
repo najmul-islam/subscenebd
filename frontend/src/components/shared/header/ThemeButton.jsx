@@ -1,10 +1,10 @@
+import {
+  LightModeOutlined,
+  NightlightRoundOutlined,
+} from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleColor } from "../../../features/theme/themeSlice";
-import { IconButton } from "@mui/material";
-import {
-  NightlightRoundOutlined,
-  LightModeOutlined,
-} from "@mui/icons-material";
 
 const ThemeButton = () => {
   const { mode } = useSelector((state) => state.theme);
@@ -16,7 +16,10 @@ const ThemeButton = () => {
   };
 
   return (
-    <IconButton sx={{}} onClick={handleColor}>
+    <IconButton
+      sx={{ color: (theme) => theme.palette.text.primary }}
+      onClick={handleColor}
+    >
       {mode === "dark" ? (
         <LightModeOutlined />
       ) : (

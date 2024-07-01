@@ -1,7 +1,7 @@
 import { Skeleton, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 
-const NotificationsSkeleton = () => {
+const NotificationSkeleton = () => {
   return (
     <Stack
       direction="row"
@@ -19,4 +19,4 @@ const NotificationsSkeleton = () => {
     </Stack>
   );
 };
-export default NotificationsSkeleton;
+export default NotificationSkeleton;

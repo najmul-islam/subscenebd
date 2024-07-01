@@ -31,7 +31,7 @@ import {
 import { IoNotificationsOutline, IoNotificationsSharp } from "react-icons/io5";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
-import NotificationsSkeleton from "./NotificationsSkeleton";
+import NotificationSkeleton from "../skeleton/NotificationSkeleton";
 const img_url = process.env.REACT_APP_IMG_API;
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -43,7 +43,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Notifications = () => {
+const NotificationButton = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -120,7 +120,10 @@ const Notifications = () => {
   return (
     <>
       <Tooltip title="Notification">
-        <IconButton onClick={handleOpenNotificationsMenu}>
+        <IconButton
+          onClick={handleOpenNotificationsMenu}
+          sx={{ color: (theme) => theme.palette.text.primary }}
+        >
           <StyledBadge
             color="error"
             badgeContent={data?.unseenNotificatons}
@@ -160,9 +163,38 @@ const Notifications = () => {
 
           {[...Array(10)].map((notification, i) => (
             <MenuItem key={i}>
-              <NotificationsSkeleton />
+              <NotificationSkeleton />
             </MenuItem>
           ))}
+        </Menu>
+      ) : data?.notifications?.length === 0 ? (
+        <Menu
+          anchorEl={anchorElNotifications}
+          keepMounted
+          open={open}
+          onClose={handleCloseNotificationsMenu}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          PaperProps={{
+            sx: {
+              width: "420px",
+              height: "600px",
+            },
+          }}
+        >
+          <Box>
+            <Typography variant="subtitle1" sx={{ px: 2, py: 1 }}>
+              Notifications
+            </Typography>
+          </Box>
+          <Divider />
+          {/* <MenuItem textAlign="center">
+            You have no notification right now
+          </MenuItem> */}
+
+          <Typography variant="h6" textAlign="center" paddingY={4}>
+            You have no notification right now
+          </Typography>
         </Menu>
       ) : (
         <Menu
@@ -197,7 +229,7 @@ const Notifications = () => {
             hasMore={hasMore}
             loader={[...Array(3)].map((notification, i) => (
               <MenuItem key={i}>
-                <NotificationsSkeleton />
+                <NotificationSkeleton />
               </MenuItem>
             ))}
             endMessage={
@@ -359,4 +391,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default NotificationButton;

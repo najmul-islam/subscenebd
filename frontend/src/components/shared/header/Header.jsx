@@ -2,16 +2,17 @@ import { AppBar, Box, Stack, Toolbar, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userApi } from "../../../features/user/usersApi";
+import ProfileSkeleton from "../skeleton/ProfileSkeleton";
 import Logo from "./Logo";
+import MessageButton from "./MessageButton";
 import MobileSearchBox from "./MobileSearchBox";
-import Notifications from "./Notifications";
-import Profile from "./Profile";
-import ProfileSkeleton from "./ProfileSkeleton";
+import NotificationButton from "./NotificationButton";
+import ProfileButton from "./ProfileButton";
 import SearchBox from "./SearchBox";
 import SearchButton from "./SearchButton";
 import SigninButton from "./SigninButton";
 import ThemeButton from "./ThemeButton";
-import Uploads from "./Uploads";
+import UploadButton from "./UploadButton";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
@@ -110,12 +111,14 @@ const Header = () => {
                   <ProfileSkeleton />
                   <ProfileSkeleton />
                   <ProfileSkeleton />
+                  <ProfileSkeleton />
                 </Stack>
               ) : (
                 <>
-                  <Uploads />
-                  <Notifications />
-                  <Profile user={profile} />
+                  <UploadButton />
+                  <MessageButton />
+                  <NotificationButton />
+                  <ProfileButton user={profile} />
                 </>
               )}
             </Stack>
