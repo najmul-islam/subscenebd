@@ -35,6 +35,7 @@ export const apiSlice = createApi({
     "SearchUsers",
     "SearchSubtitles",
     "Notifications",
+    "UnseenMessage",
   ],
   endpoints: (builder) => ({}),
 });

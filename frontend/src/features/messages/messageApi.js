@@ -42,7 +42,20 @@ export const messageApi = apiSlice.injectEndpoints({
         socket.close();
       },
     }),
-
+    getUnseenMessage: builder.query({
+      query: () => ({
+        url: `/messages`,
+        method: "GET",
+      }),
+      providesTags: ["UnseenMessage"],
+    }),
+    putUnseenMessage: builder.mutation({
+      query: () => ({
+        url: `/messages`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["UnseenMessage"],
+    }),
     createMessage: builder.mutation({
       query: ({ senderId, partnerId, data }) => ({
         url: `/messages/${partnerId}`,
@@ -129,4 +142,9 @@ export const messageApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetMessagesQuery, useCreateMessageMutation } = messageApi;
+export const {
+  useGetMessagesQuery,
+  useGetUnseenMessageQuery,
+  usePutUnseenMessageMutation,
+  useCreateMessageMutation,
+} = messageApi;
