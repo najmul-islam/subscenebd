@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
 import {
   Avatar,
   ListItem,
@@ -8,7 +6,9 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toggleListitem } from "../../../../features/theme/themeSlice";
 
 const SidebarItem = ({ conversation }) => {
@@ -81,6 +81,7 @@ const SidebarItem = ({ conversation }) => {
                 component="span"
                 variant="body2"
                 color="text.primary"
+                // fontWeight={conversation?.lastMessage?.read ? "500" : "700"}
               >
                 {conversation?.lastMessage?.sender === user._id
                   ? "You: "

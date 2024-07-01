@@ -9,7 +9,7 @@ const getAllConversations = asyncHandler(async (req, res) => {
     participants: { $in: [userId] },
   })
     .populate("participants", "_id name avatar")
-    .populate("lastMessage", "-_id sender receiver text createdAt")
+    .populate("lastMessage", "-_id sender receiver seen read text createdAt")
     .sort({ updatedAt: -1 });
 
   res.status(200).json(conversations);
@@ -23,7 +23,7 @@ const getSingleConversations = asyncHandler(async (req, res) => {
     $and: [{ participants: userId }, { participants: partnerId }],
   })
     .populate("participants", "_id name avatar")
-    .populate("lastMessage", "sender receiver text createdAt");
+    .populate("lastMessage", "sender receiver text seen read createdAt");
 
   if (!conversation) {
     res.status(404);
@@ -46,6 +46,8 @@ const createConversation = asyncHandler(async (req, res) => {
     sender: userId,
     receiver: participantId,
     text,
+    seen: false,
+    read: false,
   });
 
   // check conversation exist
@@ -70,7 +72,7 @@ const createConversation = asyncHandler(async (req, res) => {
     await newConversation.populate("participants", "_id name avatar");
     await newConversation.populate(
       "lastMessage",
-      "sender receiver text createdAt"
+      "sender receiver text seen read createdAt"
     );
 
     req.io.emit("conversation", {
@@ -94,7 +96,7 @@ const createConversation = asyncHandler(async (req, res) => {
   await existingConversation.populate("participants", "_id name avatar");
   await existingConversation.populate(
     "lastMessage",
-    "sender receiver text createdAt"
+    "sender receiver text seen read createdAt"
   );
 
   io.emit("conversation", {
