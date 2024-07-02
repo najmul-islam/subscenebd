@@ -22,6 +22,7 @@ const SubtitleList = ({
           container
           spacing={2}
           sx={{ height: "89vh", overflowY: "hidden" }}
+          justifyContent="center"
         >
           {[...Array(36)].map((subtitle, i) => (
             <Grid item key={i}>
