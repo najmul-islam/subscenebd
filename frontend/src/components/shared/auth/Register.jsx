@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useRegisterMutation } from "../../../features/auth/authApi";
-import { toast } from "react-toastify";
+import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { VisibilityOutlined, VisibilityOffOutlined } from "@mui/icons-material";
+import { useRegisterMutation } from "../../../features/auth/authApi";
 import SocialLogin from "./SocialLogin";
 
 // material-ui
@@ -14,10 +14,10 @@ import {
   Button,
   Divider,
   FormHelperText,
-  Link,
   IconButton,
   InputAdornment,
   InputLabel,
+  Link,
   OutlinedInput,
   Stack,
   Typography,
