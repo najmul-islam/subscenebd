@@ -7,13 +7,13 @@ import {
 } from "@mui/icons-material";
 import { Box, Button, Stack, Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
-import { usePutUserDownloadSubMutation } from "../../../features/user/usersApi";
+import { useNavigate } from "react-router-dom";
 import {
   useCountDownloadSubtitleMutation,
   useDisLikeSubtitleMutation,
   useLikeSubtitleMutation,
 } from "../../../features/subtitle/subtitleApi";
-import { useNavigate } from "react-router-dom";
+import { usePutUserDownloadSubMutation } from "../../../features/user/usersApi";
 
 const ActionButtons = ({ subtitle }) => {
   const [putUserDownloadSub] = usePutUserDownloadSubMutation();
@@ -50,7 +50,7 @@ const ActionButtons = ({ subtitle }) => {
   return (
     <Box>
       <Stack direction="row" spacing={2} marginTop="25px">
-        <Tooltip title="download subtitle">
+        <Tooltip title="download">
           <Button
             size="small"
             variant="contained"
@@ -73,7 +73,9 @@ const ActionButtons = ({ subtitle }) => {
           </Button>
         </Tooltip>
 
-        <Tooltip title="like subtitle">
+        <Tooltip
+          title={subtitle?.likes.includes(user?._id) ? "unlike" : "like"}
+        >
           <Button
             onClick={() => handleLike(subtitle?._id)}
             variant="outlined"
@@ -89,7 +91,7 @@ const ActionButtons = ({ subtitle }) => {
           </Button>
         </Tooltip>
 
-        <Tooltip title="dislike subtitle">
+        <Tooltip title="dislike">
           <Button
             onClick={() => handleDislike(subtitle?._id)}
             variant="outlined"
