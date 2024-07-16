@@ -162,7 +162,7 @@ const Login = () => {
               name="email"
               onBlur={handleBlur}
               onChange={handleChange}
-              placeholder="Enter email address"
+              placeholder="johndoe@gmail.com"
               fullWidth
               error={Boolean(touched.email && errors.email)}
               sx={{ height: "45px" }}
@@ -205,7 +205,7 @@ const Login = () => {
                   </IconButton>
                 </InputAdornment>
               }
-              placeholder="Enter password"
+              placeholder="123456"
               sx={{ height: "45px" }}
             />
             {touched.password && errors.password && (
