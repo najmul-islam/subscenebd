@@ -3,7 +3,7 @@ import { logout } from "../auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${process.env.REACT_APP_API_URL}/api`,
-  prepareHeaders: async (headers, { getState, endpoing }) => {
+  prepareHeaders: async (headers, { getState, endpoint }) => {
     const token = getState()?.auth?.user?.token;
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
